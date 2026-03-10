@@ -3,12 +3,9 @@
 	<!-- TEST CASES -->
 	<!--Open Register-->	
     <TestCase name="STOREOP-OPEN-REG-001" priority="-991" applicationKey="REGISTER" >
-		<Parameter name="countAMT" value="20000" />
 		<Assertion target="@getWorkstationState" compareType="EQUALS" compareVal="CLOSED" />
 		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
-		<SequenceRef name="REGISTER_OPEN_MN" />		
-		<SequenceRef name="REGISTER_OPEN_COUNT_DENOMINATION"  values="!{countAMT}"/>  		
-        <SequenceRef name="REGISTER_OPEN_STEPS" />
+		<SequenceRef name="REGISTER_OPEN_MN" />
 		<Assertion target="@getWorkstationState" compareType="EQUALS" compareVal="OPEN" />
     </TestCase>
 	<!--Close Register and count type as DENOMINATION-->
