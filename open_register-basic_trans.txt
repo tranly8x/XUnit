@@ -1,0 +1,315 @@
+***INITIALIZING...
+Xstore version 25.0.0.0.20250723220418 - 0.0.0 - 0.0 (null)
+
+********************
+LOCATION INFORMATION
+********************
+
+dtv.CustomerId: XST
+OrganizationId: 1000
+RetailLocationId: 101
+WorkstationId: 2
+
+Loading config...
+Added parameter: newQty [3]
+Added parameter: priceReasonCode [PC2]
+Added parameter: transDiscountOpAMT [TRANS_AMT]
+Added parameter: transDiscountOpPCT [TRANS_PCT]
+Added parameter: discountOpAMT [TRANS_AMT]
+Added parameter: discountOpPCT [TRANS_PCT]
+Loaded data pool DISCOUNT_REASONS, size: 4
+Added parameter: discountReasonCode [DC4]
+Added parameter: newPostalCode [60046]
+Added parameter: newTaxAMT [1.20]
+Added parameter: newTaxPCT [5]
+Added parameter: discountAMT [5]
+Added parameter: discountPCT [5]
+Added parameter: certificateHolderName [Test Tax Exempt]
+Added parameter: certificateNbr [123456]
+Added parameter: taxExemptReasonCode [TE3]
+Added parameter: voidReasoncode [VL1]
+Added parameter: transTaxReasonCode [TC2]
+Added parameter: couponid [XUNITCOUPON]
+Loaded data pool PRICE_CHANGE_REASONS, size: 5
+Added parameter: priceChangereascode [PC5]
+Added parameter: newprice [10]
+Loaded data pool CUSTOMERS_DB, size: 17
+Added parameter: custID [C01010001000015]
+Loaded data pool ITEMS_DB, size: 187
+Added parameter: itemId [6005]
+Added parameter: origTransSeq [120]
+Added parameter: origTransBusinessDate [Tue Jul 01 00:00:00 ICT 2025]
+Added parameter: origLocationId [1005]
+Added parameter: origWorkStationId [1]
+Added parameter: associateID [100]
+***Unable to evaluate parameter with name: custPartyId
+        CAUSE: No local variable for name: rtlLocId
+Loaded data pool RETURN_REASONS, size: 9
+Added parameter: returnRC [RET43]
+Added parameter: returnComment [PROMPT]
+Added parameter: dealId [86:2654:BUYXORYGETZ%]
+Added parameter: LID%_dealExpiredItem [6005]
+Added parameter: LID%_itemDealX [6000]
+Added parameter: LID%_itemDealY [6001]
+Added parameter: LID%_itemNotDeal [6004]
+Added parameter: LID$_dealExpiredItem [6001]
+Added parameter: LID$_itemDealX [6002]
+Added parameter: LID$_itemNotDeal [6001]
+Added parameter: LID$_itemDealY [6001]
+Added parameter: FQP_dealExpiredItem [6001]
+Added parameter: FQP_itemDealX [6000]
+Added parameter: FQP_itemNotDeal [6002]
+Added parameter: FQP_itemDealY [6001]
+Added parameter: BXG_$YOR%Y_dealExpiredItem [6000]
+Added parameter: BXG_$YOR%Y_itemDealY [6001]
+Added parameter: BXG_$YOR%Y_itemDealX [6000]
+Added parameter: BXG_$YOR%Y_itemNotDeal [6005]
+Added parameter: B2XG$Yor%Y_each_dealExpiredItem [6000]
+Added parameter: B2XG$Yor%Y_each_itemDealX [6000]
+Added parameter: B2XG$Yor%Y_each_itemDealY [6001]
+Added parameter: B2XG$Yor%Y_each_itemNotDeal [6002]
+Added parameter: BXG_Ydisc_itemDealX [6000]
+Added parameter: BXG_Ydisc_itemDealY [6001]
+Added parameter: BXG_Ydisc_itemNotDeal [6002]
+Added parameter: BXG_Ydisc_dealExpiredItem [6000]
+Added parameter: BXnY_Zoff_dealExpiredItem [6000]
+Added parameter: BXnY_Zoff_itemDealY [6001]
+Added parameter: BXnY_Zoff_itemDealX [6000]
+Added parameter: BXnY_Zoff_itemDealZ [6002]
+Added parameter: BXnY_Zoff_itemNotDeal [6002]
+Added parameter: BXnY_Zoff__Suspend_itemDealX [6000]
+Added parameter: BXnY_Zoff__Suspend_itemDealY [6001]
+Added parameter: BXnY_Zoff__Suspend_itemDealZ [6002]
+Added parameter: B2X_%Z_dealExpiredItem [6004]
+Added parameter: B2X_%Z_itemDealZ [6001]
+Added parameter: B2X_%Z_itemDealX [6000]
+Added parameter: B2X_%Z_itemNotDeal [6003]
+Added parameter: BXG_%Y_other_dealExpiredItem [6003]
+Added parameter: BXG_%Y_other_itemDealY [6001]
+Added parameter: BXG_%Y_other_itemDealX [6000]
+Added parameter: BXG_%Y_other_itemNotDeal [6005]
+Added parameter: BXorY_%Z_dealExpiredItem [6003]
+Added parameter: BXorY_%Z_itemDealZ [6001]
+Added parameter: BXorY_%Z_itemDealX [6000]
+Added parameter: BXorY_%Z_itemNotDeal [6005]
+Added parameter: GroupDiscountOpPer [GRP_PCT]
+Added parameter: item1 [1113]
+Added parameter: item2 [70012]
+Added parameter: custSSLastName [BTMSendS]
+Added parameter: custSOLastName [BTMSO]
+Added parameter: custLAYLastName [BTMLAY]
+Added parameter: teleNumberSS [3333333333]
+Added parameter: teleNumberSO [2222222222]
+Added parameter: itemid []
+Added parameter: Dept []
+Added parameter: SubDept []
+Added parameter: Class []
+Added parameter: SubClass []
+Added parameter: Style []
+Added parameter: Desc []
+Added parameter: reascode [DC2]
+Added parameter: tranBarcode [T3HH1IP117111G34C1443]
+Added parameter: tranBarcodeNOTcorrect [T3HH1IP117111G34C1445]
+Loaded data pool TAX_EXEMPT_REASONS, size: 11
+Added parameter: TaxExemptReasonCode [TE3]
+Added parameter: newTaxPER [2.5]
+Added parameter: SELECT_BTN_COUPON [XUNITCOUPON]
+Added parameter: newPrice [100]
+Added parameter: userid [100]
+Added parameter: password [1]
+Added parameter: orgId [1000]
+Added parameter: rtlLocId [101]
+Added parameter: wkstnId [2]
+Added parameter: currencyId [USD]
+Added parameter: localCurrency [USD_CURRENCY]
+Added parameter: incomingExchangeTender [MALL_CERTIFICATE]
+Added parameter: outgoingExchangeTender [USD_CURRENCY]
+Added parameter: receivingValidSubTypeNew [ASN]
+Added parameter: shippingValidSubTypeNew [DEFECTIVE_RETURN]
+Added parameter: xunit.tags.enabled [BASIC_TRANS, OPEN_REGISTER]
+Added exception: APPLY_TRANS_TAX_EXEMPTION
+Added exception: BELOW_MIN_CASH_AMOUNT
+Added exception: CLOSE_CASHDRAWER_CHANGE_OK
+Added exception: CREDIT_VOUCHER_SIGNATURE
+Added exception: DISCOUNT_AUTO_REMOVE
+Added exception: DISCOUNT_PROMPT
+Added exception: EMAIL_RECEIPTS
+Added exception: EXCEED_MAX_CASH_AMOUNT
+Added exception: EXCEED_MAX_TILL_AMOUNT
+Added exception: FORCE_CCA_PICKUP_ALL
+Added exception: FORCE_PICKUP_ALL
+Added exception: IMPRINT_CREDIT_CARD
+Added exception: JOIN_LOYALTY_CUSTOMER_CENTRIC
+Added exception: KIT_RETURN
+Added exception: LAYAWAY_DEPOSIT_OVERRIDE
+Added exception: LOYALTY_CARD
+Added exception: NO_CHALLENGE_QUESTIONS
+Added exception: NO_SIGNATURE_REQUIRED
+Added exception: OLD_INVENTORY_DOCUMENTS
+Added exception: ORDER_CONFIRM_ON_HAND_ITEM
+Added exception: PAYROLL_ERROR_LIST
+Added exception: PRINT_ACKNOWLEDGEMENT
+Added exception: PRINT_RECEIPTS
+Added exception: PROMPT_FOR_ROUNDUP_DONATION
+Added exception: PROMPT_LOYALTY_CARD
+Added exception: PROMPT_VOID_DONATION_ITEM
+Added exception: RECEIVED_SP_ORDER_ACCOUNT_LIST
+Added exception: RECOMMENDED_LAYAWAY_PAYMENT_CHECK
+Added exception: RESTOCKING_FEE_APPLY_MESSAGE
+Added exception: RETURN_PRICE_HISTORY_EMPTY
+Added exception: SALE_COMPLETE_CHECK
+Added exception: SCHEDULE_TIME_OFF_NOTIFY
+Added exception: SIGNATURE_REQUIRED
+Added exception: SP_ORDER_CONFIRM_ONHAND
+Added exception: SUSPEND_TRANSACTIONS_TO_CANCEL
+Added exception: WORK_ORDER_REQ_ATTENTION_LIST
+Added exception: PRINTER_ERROR
+CONFIG - No test case configured for name: BASICTRN-S-TOP-014, skipping...
+Loading test suites:
+[0] Loading test suite: OPEN_REGISTER, source: file:/C:/xstoredata/xstore/cust_config/version1/xunit/BTM_TestSuite.xml:9
+[0] Loading test suite: BASIC_TRANS, source: file:/C:/xstoredata/xstore/cust_config/version1/xunit/BTM_TestSuite.xml:140
+
+Xunit will wait 0 milliseconds before executing each step
+Config loaded
+Loading test cases:
+Loaded test case 1 of 102: Run test case STOREOP-OPEN-REG-001 to open register <<STOREOP-OPEN-REG-001>>
+Loaded test case 2 of 102: Run Basic Transaction test case BASICTRN-S-ITM-001 <<BASICTRN-S-ITM-001>>
+Loaded test case 3 of 102: Run Basic Transaction test case BASICTRN-BR-ITM-007 <<BASICTRN-BR-ITM-007>>
+Loaded test case 4 of 102: Run Basic Transaction test case BASICTRN-S-IOP-001 <<BASICTRN-S-IOP-001>>
+Loaded test case 5 of 102: Run Basic Transaction test case BASICTRN-S-IOP-002 <<BASICTRN-S-IOP-002>>
+Loaded test case 6 of 102: Run Basic Transaction test case BASICTRN-S-IOP-003 <<BASICTRN-S-IOP-003>>
+Loaded test case 7 of 102: Run Basic Transaction test case BASICTRN-S-IOP-004 <<BASICTRN-S-IOP-004>>
+Loaded test case 8 of 102: Run Basic Transaction test case BASICTRN-S-IOP-006 <<BASICTRN-S-IOP-006>>
+Loaded test case 9 of 102: Run Basic Transaction test case BASICTRN-S-IOP-007 <<BASICTRN-S-IOP-007>>
+Loaded test case 10 of 102: Run Basic Transaction test case BASICTRN-S-IOP-009 <<BASICTRN-S-IOP-009>>
+Loaded test case 11 of 102: Run Basic Transaction test case BASICTRN-S-IOP-010 <<BASICTRN-S-IOP-010>>
+Loaded test case 12 of 102: Run Basic Transaction test case BASICTRN-S-IOP-011 <<BASICTRN-S-IOP-011>>
+Loaded test case 13 of 102: Run Basic Transaction test case BASICTRN-S-IOP-012 <<BASICTRN-S-IOP-012>>
+Loaded test case 14 of 102: Run Basic Transaction test case BASICTRN-S-TOP-001 <<BASICTRN-S-TOP-001>>
+Loaded test case 15 of 102: Run Basic Transaction test case BASICTRN-S-TOP-002 <<BASICTRN-S-TOP-002>>
+Loaded test case 16 of 102: Run Basic Transaction test case BASICTRN-S-TOP-003 <<BASICTRN-S-TOP-003>>
+Loaded test case 17 of 102: Run Basic Transaction test case BASICTRN-S-TOP-008 <<BASICTRN-S-TOP-008>>
+Loaded test case 18 of 102: Run Basic Transaction test case BASICTRN-S-TOP-009 <<BASICTRN-S-TOP-009>>
+Loaded test case 19 of 102: Run Basic Transaction test case BASICTRN-S-TOP-010 <<BASICTRN-S-TOP-010>>
+Loaded test case 20 of 102: Run Basic Transaction test case BASICTRN-S-TOP-011 <<BASICTRN-S-TOP-011>>
+Loaded test case 21 of 102: Run Basic Transaction test case BASICTRN-S-TOP-012 <<BASICTRN-S-TOP-012>>
+Loaded test case 22 of 102: Run Basic Transaction test case BASICTRN-S-TOP-013 <<BASICTRN-S-TOP-013>>
+Loaded test case 23 of 102: Run Basic Transaction test case BASICTRN-S-COP-001 <<BASICTRN-S-COP-001>>
+Loaded test case 24 of 102: Run Basic Transaction test case BASICTRN-S-COP-002 <<BASICTRN-S-COP-002>>
+Loaded test case 25 of 102: Run Basic Transaction test case BASICTRN-S-COP-003 <<BASICTRN-S-COP-003>>
+Loaded test case 26 of 102: Run Basic Transaction test case BASICTRN-S-COP-004 <<BASICTRN-S-COP-004>>
+Loaded test case 27 of 102: Run test case BASICTRN-ER-TRN-001 to perform Verified return items are added before sale items <<BASICTRN-ER-TRN-001>>
+Loaded test case 28 of 102: Run test case BASICTRN-ER-TRN-002 to perform Sale items are added before the verified return items <<BASICTRN-ER-TRN-002>>
+Loaded test case 29 of 102: Run test case BASICTRN-ER-TRN-003 to perform Unverified return items are added before sale items <<BASICTRN-ER-TRN-003>>
+Loaded test case 30 of 102: Run test case BASICTRN-ER-TRN-004 to perform Sale items are added before the unverified return items <<BASICTRN-ER-TRN-004>>
+Loaded test case 31 of 102: Run test case BASICTRN-ER-TRN-005 to perform Blind return items are added before then sale items <<BASICTRN-ER-TRN-005>>
+Loaded test case 32 of 102: Run test case BASICTRN-ER-TRN-006 to perform Sale items are added before the blind return items <<BASICTRN-ER-TRN-006>>
+Loaded test case 33 of 102: Run test case BASICTRN-ER-TRN-007 to perform Transaction includes items are added from verified return, unverified return, blind return, and sales <<BASICTRN-ER-TRN-007>>
+Loaded test case 34 of 102: Run Basic Transaction test case BASICTRN-ER-TOP-012 <<BASICTRN-ER-TOP-012>>
+Loaded test case 35 of 102: Run Basic Transaction test case BASICTRN-ES-TRN-001 <<BASICTRN-ES-TRN-001>>
+Loaded test case 36 of 102: Run Basic Transaction test case BASICTRN-ES-TRN-002 <<BASICTRN-ES-TRN-002>>
+Loaded test case 37 of 102: Run Basic Transaction test case BASICTRN-ES-TRN-003 <<BASICTRN-ES-TRN-003>>
+Loaded test case 38 of 102: Run Basic Transaction test case BASICTRN-ES-TRN-004 <<BASICTRN-ES-TRN-004>>
+Loaded test case 39 of 102: Run Basic Transaction test case BASICTRN-ES-TRN-005 <<BASICTRN-ES-TRN-005>>
+Loaded test case 40 of 102: Run Basic Transaction test case BASICTRN-ES-TRN-006 <<BASICTRN-ES-TRN-006>>
+Loaded test case 41 of 102: Run Basic Transaction test case BASICTRN-ES-TRN-007 <<BASICTRN-ES-TRN-007>>
+Loaded test case 42 of 102: Run Basic Transaction test case BASICTRN-ES-TOP-001 <<BASICTRN-ES-TOP-001>>
+Loaded test case 43 of 102: Run Basic Transaction test case BASICTRN-ES-TOP-003 <<BASICTRN-ES-TOP-003>>
+Loaded test case 44 of 102: Run Basic Transaction test case BASICTRN-ES-TOP-008 <<BASICTRN-ES-TOP-008>>
+Loaded test case 45 of 102: Run Basic Transaction test case BASICTRN-ES-TOP-009 <<BASICTRN-ES-TOP-009>>
+Loaded test case 46 of 102: Run Basic Transaction test case BASICTRN-ES-TOP-010 <<BASICTRN-ES-TOP-010>>
+Loaded test case 47 of 102: Run Basic Transaction test case BASICTRN-ES-TOP-011 <<BASICTRN-ES-TOP-011>>
+Loaded test case 48 of 102: Run Basic Transaction test case BASICTRN-ES-TOP-012 <<BASICTRN-ES-TOP-012>>
+Loaded test case 49 of 102: Run Basic Transaction test case BASICTRN-ES-TOP-013 <<BASICTRN-ES-TOP-013>>
+Loaded test case 50 of 102: Run Basic Transaction test case BASICTRN-ER-ITM-001 <<BASICTRN-ER-ITM-001>>
+Loaded test case 51 of 102: Run Basic Transaction test case BASICTRN-ER-ITM-002 <<BASICTRN-ER-ITM-002>>
+Loaded test case 52 of 102: Run Basic Transaction test case BASICTRN-ER-ITM-007 <<BASICTRN-ER-ITM-007>>
+Loaded test case 53 of 102: Run Basic Transaction test case BASICTRN-ER-ITM-009 <<BASICTRN-ER-ITM-009>>
+Loaded test case 54 of 102: Run Basic Transaction test case BASICTRN-ER-ITM-010 <<BASICTRN-ER-ITM-010>>
+Loaded test case 55 of 102: Run Basic Transaction test case BASICTRN-ER-IOP-001 <<BASICTRN-ER-IOP-001>>
+Loaded test case 56 of 102: Run Basic Transaction test case BASICTRN-ER-IOP-002 <<BASICTRN-ER-IOP-002>>
+Loaded test case 57 of 102: Run Basic Transaction test case BASICTRN-ER-IOP-003 <<BASICTRN-ER-IOP-003>>
+Loaded test case 58 of 102: Run Basic Transaction test case BASICTRN-ER-IOP-006 <<BASICTRN-ER-IOP-006>>
+Loaded test case 59 of 102: Run Basic Transaction test case BASICTRN-ER-IOP-007 <<BASICTRN-ER-IOP-007>>
+Loaded test case 60 of 102: Run Basic Transaction test case BASICTRN-ER-IOP-009 <<BASICTRN-ER-IOP-009>>
+Loaded test case 61 of 102: Run Basic Transaction test case BASICTRN-ER-IOP-010 <<BASICTRN-ER-IOP-010>>
+Loaded test case 62 of 102: Run Basic Transaction test case BASICTRN-ER-IOP-011 <<BASICTRN-ER-IOP-011>>
+Loaded test case 63 of 102: Run Basic Transaction test case BASICTRN-ER-IOP-012 <<BASICTRN-ER-IOP-012>>
+Loaded test case 64 of 102: Run Basic Transaction test case BASICTRN-ER-IOP-013 <<BASICTRN-ER-IOP-013>>
+Loaded test case 65 of 102: Run Basic Transaction test case BASICTRN-ES-IOP-001 <<BASICTRN-ES-IOP-001>>
+Loaded test case 66 of 102: Run Basic Transaction test case BASICTRN-ES-IOP-002 <<BASICTRN-ES-IOP-002>>
+Loaded test case 67 of 102: Run Basic Transaction test case BASICTRN-ES-IOP-003 <<BASICTRN-ES-IOP-003>>
+Loaded test case 68 of 102: Run Basic Transaction test case BASICTRN-ES-IOP-006 <<BASICTRN-ES-IOP-006>>
+Loaded test case 69 of 102: Run Basic Transaction test case BASICTRN-ES-IOP-007 <<BASICTRN-ES-IOP-007>>
+Loaded test case 70 of 102: Run Basic Transaction test case BASICTRN-ES-IOP-009 <<BASICTRN-ES-IOP-009>>
+Loaded test case 71 of 102: Run Basic Transaction test case BASICTRN-ES-IOP-010 <<BASICTRN-ES-IOP-010>>
+Loaded test case 72 of 102: Run Basic Transaction test case BASICTRN-ES-IOP-011 <<BASICTRN-ES-IOP-011>>
+Loaded test case 73 of 102: Run Basic Transaction test case BASICTRN-ES-IOP-012 <<BASICTRN-ES-IOP-012>>
+Loaded test case 74 of 102: Run Basic Transaction test case BASICTRN-ES-IOP-013 <<BASICTRN-ES-IOP-013>>
+Loaded test case 75 of 102: Run Basic Transaction test case BASICTRN-BR-IOP-003 <<BASICTRN-BR-IOP-003>>
+Loaded test case 76 of 102: Run Basic Transaction test case BASICTRN-BR-IOP-006 <<BASICTRN-BR-IOP-006>>
+Loaded test case 77 of 102: Run Basic Transaction test case BASICTRN-BR-IOP-007 <<BASICTRN-BR-IOP-007>>
+Loaded test case 78 of 102: Run Basic Transaction test case BASICTRN-VR-ORG-007 <<BASICTRN-VR-ORG-007>>
+Loaded test case 79 of 102: Run Basic Transaction test case BASICTRN-VR-TRN-001 <<BASICTRN-VR-TRN-001>>
+Loaded test case 80 of 102: Run Basic Transaction test case BASICTRN-VR-TRN-003 <<BASICTRN-VR-TRN-003>>
+Loaded test case 81 of 102: Run Basic Transaction test case BASICTRN-VR-ITM-001 <<BASICTRN-VR-ITM-001>>
+Loaded test case 82 of 102: Run Basic Transaction test case BASICTRN-VR-ITM-002 <<BASICTRN-VR-ITM-002>>
+Loaded test case 83 of 102: Run Basic Transaction test case BASICTRN-VR-IOP-001 <<BASICTRN-VR-IOP-001>>
+Loaded test case 84 of 102: Run Basic Transaction test case BASICTRN-VR-TOP-001 <<BASICTRN-VR-TOP-001>>
+Loaded test case 85 of 102: Run Basic Transaction test case BASICTRN-VR-COP-002 <<BASICTRN-VR-COP-002>>
+Loaded test case 86 of 102: Run Basic Transaction test case BASICTRN-UR-TOP-011 <<BASICTRN-UR-TOP-011>>
+Loaded test case 87 of 102: Run Basic Transaction test case BASICTRN-UR-TOP-013 <<BASICTRN-UR-TOP-013>>
+Loaded test case 88 of 102: Run Basic Transaction test case BASICTRN-BR-ITM-001 <<BASICTRN-BR-ITM-001>>
+Loaded test case 89 of 102: Run Basic Transaction test case BASICTRN-BR-IOP-001 <<BASICTRN-BR-IOP-001>>
+Loaded test case 90 of 102: Run Basic Transaction test case BASICTRN-BR-IOP-002 <<BASICTRN-BR-IOP-002>>
+Loaded test case 91 of 102: Run Basic Transaction test case BASICTRN-BR-IOP-009 <<BASICTRN-BR-IOP-009>>
+Loaded test case 92 of 102: Run Basic Transaction test case BASICTRN-BR-IOP-010 <<BASICTRN-BR-IOP-010>>
+Loaded test case 93 of 102: Run Basic Transaction test case BASICTRN-BR-IOP-011 <<BASICTRN-BR-IOP-011>>
+Loaded test case 94 of 102: Run Basic Transaction test case BASICTRN-BR-IOP-012 <<BASICTRN-BR-IOP-012>>
+Loaded test case 95 of 102: Run Basic Transaction test case BASICTRN-BR-TOP-008 <<BASICTRN-BR-TOP-008>>
+Loaded test case 96 of 102: Run Basic Transaction test case BASICTRN-BR-TOP-009 <<BASICTRN-BR-TOP-009>>
+Loaded test case 97 of 102: Run Basic Transaction test case BASICTRN-BR-TOP-010 <<BASICTRN-BR-TOP-010>>
+Loaded test case 98 of 102: Run Basic Transaction test case BASICTRN-BR-TOP-011 <<BASICTRN-BR-TOP-011>>
+Loaded test case 99 of 102: Run Basic Transaction test case BASICTRN-BR-TOP-012 <<BASICTRN-BR-TOP-012>>
+Loaded test case 100 of 102: Run Basic Transaction test case BASICTRN-BR-TOP-013 <<BASICTRN-BR-TOP-013>>
+Loaded test case 101 of 102: Run Basic Transaction test case BASICTRN-BR-COP-001 <<BASICTRN-BR-COP-001>>
+Loaded test case 102 of 102: Run Basic Transaction test case BASICTRN-BR-COP-002 <<BASICTRN-BR-COP-002>>
+
+STARTING XUNIT
+*****************************************************
+STARTING TEST CASE 1 of 102: Run test case STOREOP-OPEN-REG-001 to open register <<STOREOP-OPEN-REG-001>>, RunTest source: file:/C:/xstoredata/xstore/cust_config/version1/xunit/BTM_TestSuite.xml:10
+*****************************************************
+Added parameter: countAMT [20000]
+Verified application: REGISTER
+Step 1 of 13: (Assertion)
+OK - Assertion passed: CLOSED equals CLOSED
+Step 2 of 13: ACCEPT (PromptOp)
+***Incident reported: Missing translation: _promptMessageLabel
+Step 3 of 13: ACCEPT (PromptIdPasswordFormOp)
+***Error while invoking field handler: java.lang.ClassCastException: java.lang.String [Start Sale] is not assignable to a dtv.i18n.IFormattable
+Step 4 of 13: Open Register
+Step 5 of 13: Verify Open Register
+Step 6 of 13: COUNT_SELECTED (PromptRegisterStartTillCountOp)
+***No event mapped for key: COUNT_SELECTED
+***Current prompt: HOME_SCREEN_LOGGED_IN
+***Parameters: {defaultFloat=20000}
+****************************
+***TEST CASE FAILED
+****************************
+***1 of 102 - FAILED - Run test case STOREOP-OPEN-REG-001 to open register <<STOREOP-OPEN-REG-001>>
+***STACK TRACE: file:/C:/xstoredata/xstore/cust_config/version1/xunit/BTM_StoreOperations.xml:55
+        [REGISTER_OPEN_COUNT_DENOMINATION] file:/C:/xstoredata/xstore/cust_config/version1/xunit/BTM_StoreOperations.xml:51
+        [STOREOP-OPEN-REG-001] file:/C:/xstoredata/xstore/cust_config/version1/xunit/BTM_StoreOperations.xml:5
+*****************************************************
+***ONE OR MORE TEST CASES DID NOT COMPLETE
+Passed: 0
+Failed: 1
+    (1 of 102)  Run test case STOREOP-OPEN-REG-001 to open register <<STOREOP-OPEN-REG-001>>
+        CAUSE: No event mapped for key: COUNT_SELECTED
+            Source: file:/C:/xstoredata/xstore/cust_config/version1/xunit/BTM_StoreOperations.xml:52
+            Active prompt: HOME_SCREEN_LOGGED_IN
+Incidents reported: 1
+    Missing translation: _promptMessageLabel [source: PosTextFormatter]
+***Error report written to: C:\xunit-export\errorReport-1773143368958.html
+TOTAL TIME ELAPSED: 4.605 seconds
+STOPPING XUNIT
