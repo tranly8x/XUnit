@@ -1,0 +1,747 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<!-- TEST CASES -->
+		<Parameter name="itemid" value="" />	
+		<Parameter name="Dept" value="" />
+		<Parameter name="SubDept" value="" />
+		<Parameter name="Class" value="" />
+		<Parameter name="SubClass" value="" />
+		<Parameter name="Style" value="" />
+		<Parameter name="Desc" value="" />	
+		<Parameter name="origTransSeq" value="37" />
+		<Parameter name="origTransBusinessDate" value="8/25/2025" />
+		<Parameter name="origLocationId" value="357" />
+		<Parameter name="origWorkStationId" value="5" />
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+<!-- SALE TRANSACTION-->
+	<!--FIND-ITEM-LOOKUP-SALE-001: Verify that the item details are displayed correctly in the search results when searching an item in sale transaction by item ID and exactly one matching item is found.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-SALE-001" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />			
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="ADD_ITEMLOOKUP_TO_TRANSACTION" />		
+		<SequenceRef name="CHECK_ITEM_IN_THE_TRANSACTION" values="!{itemid}"/>		
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+    </TestCase>
+
+	<!--FIND-ITEM-LOOKUP-SALE-002: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Department.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-SALE-002" applicationKey="REGISTER" >
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SelectItem" value="73003" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-SALE-003: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Subdepartment.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-SALE-003" applicationKey="REGISTER" >
+	 	<Parameter name="SelectItem" value="73003" />
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SubDept" value="910120" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />		
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-SALE-004: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Class.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-SALE-004" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="73003" />
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SubDept" value="910120" />
+		<Parameter name="Class" value="910120100" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-SALE-005: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Subclass.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-SALE-005" applicationKey="REGISTER" >
+	 	<Parameter name="SelectItem" value="%?STYLE_ITEM_DB.ItemId" />
+		<Parameter name="Dept" value="910" />
+		<Parameter name="Class" value="910120" />
+		<Parameter name="SubClass" value="910120" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<Assertion promptKey=" ITEM_LOOKUP" />
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+		<!--FIND-ITEM-LOOKUP-SALE-006: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Style ID.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-SALE-006" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="230001" />
+		<Parameter name="Style" value="230000" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-SALE-007: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Description.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-SALE-007" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="Desc" value="Career Dress Moleskin" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result 
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />-->
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-SALE-008: Verify that the message displays if no items are found. --> 
+	 <TestCase name="FIND-ITEM-LOOKUP-SALE-008" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="600000" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check message -->
+    </TestCase>	
+	
+	<!-- WIHTOUT TRANS-->	
+	<!--FIND-ITEM-LOOKUP-WOTRN-001: Verify that the item details are displayed correctly in the search results when searching an item in sale transaction by item ID and exactly one matching item is found.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-WOTRN-001" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />		
+		<SequenceRef name="ITEM_LOOKUP_BEFORE_LOGIN" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<!-- Need to check item details -->
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-WOTRN-002: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Department.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-WOTRN-002" applicationKey="REGISTER" >
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SelectItem" value="73003" />
+		<SequenceRef name="ITEM_LOOKUP_BEFORE_LOGIN" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-WOTRN-003: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Subdepartment.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-WOTRN-003" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="73003" />
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SubDept" value="910120" />
+		<SequenceRef name="ITEM_LOOKUP_BEFORE_LOGIN" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />		
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-WOTRN-004: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Class.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-WOTRN-004" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="73003" />
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SubDept" value="910120" />
+		<Parameter name="Class" value="910120100" />
+		<SequenceRef name="ITEM_LOOKUP_BEFORE_LOGIN" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-WOTRN-005: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Subclass.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-WOTRN-005" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="73003" />
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SubDept" value="910120" />
+		<Parameter name="Class" value="910120100" />
+		<Parameter name="SubClass" value="910120" />
+		<SequenceRef name="ITEM_LOOKUP_BEFORE_LOGIN" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<Assertion promptKey=" ITEM_LOOKUP" />
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+		<!--FIND-ITEM-LOOKUP-WOTRN-006: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Style ID.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-WOTRN-006" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="230001" />
+		<Parameter name="Style" value="230000" />
+		<SequenceRef name="ITEM_LOOKUP_BEFORE_LOGIN" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-WOTRN-007: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Description.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-WOTRN-007" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="Desc" value="Career Dress Moleskin" />	
+		<SequenceRef name="ITEM_LOOKUP_BEFORE_LOGIN" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-WOTRN-008: Verify that the message displays if no items are found. --> 
+	 <TestCase name="FIND-ITEM-LOOKUP-WOTRN-008" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="600000" />		
+		<SequenceRef name="ITEM_LOOKUP_BEFORE_LOGIN" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check message -->
+    </TestCase>	
+	
+	<!-- BLIND RETURN-->
+	<!--FIND-ITEM-LOOKUP-BLIND-001: Verify that the item details are displayed correctly in the search results when searching an item in sale transaction by item ID and exactly one matching item is found. --> 
+	<TestCase name="FIND-ITEM-LOOKUP-BLIND-001" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<!-- <SequenceRef name="CHECK_ITEM_DETAILS" values="!{itemid}" /> -->			
+    </TestCase>
+	
+	<!--FIND-ITEM-LOOKUP-BLIND-002: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Department.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-BLIND-002" applicationKey="REGISTER" >
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SelectItem" value="73003" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />	
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-BLIND-003: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Subdepartment.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-BLIND-003" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="73003" />
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SubDept" value="910120" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />		
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-BLIND-004: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Class.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-BLIND-004" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="73003" />
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SubDept" value="910120" />
+		<Parameter name="Class" value="910120100" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />		
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-BLIND-005: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Subclass.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-BLIND-005" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="73003" />
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SubDept" value="910120" />
+		<Parameter name="Class" value="910120100" />
+		<Parameter name="SubClass" value="910120" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />		
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-BLIND-006: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Style ID.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-BLIND-006" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="230001" />
+		<Parameter name="Style" value="230000" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-BLIND-007: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Description.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-BLIND-007" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="Desc" value="Career Dress Moleskin" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />	
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-BLIND-008: Verify that the message displays if no items are found. --> 
+	 <TestCase name="FIND-ITEM-LOOKUP-BLIND-008" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="600000" />		
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />	
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check message -->
+    </TestCase>	
+
+	<!-- UNVERIFIED RETURN-->
+	<!--FIND-ITEM-LOOKUP-UNVERIFIED-001: Verify that the item details are displayed correctly in the search results when searching an item in sale transaction by item ID and exactly one matching item is found.--> 
+	<TestCase name="FIND-ITEM-LOOKUP-UNVERIFIED-001" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+		<Parameter name="reascode" value="DC1" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check message -->	
+    </TestCase>
+	
+	<!--FIND-ITEM-LOOKUP-UNVERIFIED-002: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Department.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-UNVERIFIED-002" applicationKey="REGISTER" >
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SelectItem" value="73003" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-UNVERIFIED-003: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Subdepartment.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-UNVERIFIED-003" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="73003" />
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SubDept" value="910120" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-UNVERIFIED-004: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Class.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-UNVERIFIED-004" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="73003" />
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SubDept" value="910120" />
+		<Parameter name="Class" value="910120100" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />		
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-UNVERIFIED-005: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Subclass.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-UNVERIFIED-005" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="73003" />
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SubDept" value="910120" />
+		<Parameter name="Class" value="910120100" />
+		<Parameter name="SubClass" value="910120" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />		
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-UNVERIFIED-006: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Style ID.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-UNVERIFIED-006" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="230001" />
+		<Parameter name="Style" value="230000" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-UNVERIFIED-007: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Description.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-UNVERIFIED-007" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="Desc" value="Career Dress Moleskin" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST"  />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-UNVERIFIED-008: Verify that the message displays if no items are found. --> 
+	 <TestCase name="FIND-ITEM-LOOKUP-UNVERIFIED-008" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="600000" />		
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />	
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check message -->
+    </TestCase>	
+	
+	<!-- LAYAWAY-->
+	<!--FIND-ITEM-LOOKUP-LAYAWAY-001: Verify that the item details are displayed correctly in the search results when searching an item in sale transaction by item ID and exactly one matching item is found.-->
+	<TestCase name="FIND-ITEM-LOOKUP-LAYAWAY-001" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY_SETUP" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check message--> 
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>
+			<!--FIND-ITEM-LOOKUP-LAYAWAY-002: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Department.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-LAYAWAY-002" applicationKey="REGISTER" >
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SelectItem" value="73003" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY_SETUP" />	
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-LAYAWAY-003: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Subdepartment.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-LAYAWAY-003" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="73003" />
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SubDept" value="910120" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY_SETUP" />	
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-LAYAWAY-004: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Class.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-LAYAWAY-004" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="73003" />
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SubDept" value="910120" />
+		<Parameter name="Class" value="910120100" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY_SETUP" />	
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />		
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-LAYAWAY-005: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Subclass.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-LAYAWAY-005" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="73003" />
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SubDept" value="910120" />
+		<Parameter name="Class" value="910120100" />
+		<Parameter name="SubClass" value="910120" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY_SETUP" />	
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />		
+    </TestCase>	
+	
+		<!--FIND-ITEM-LOOKUP-LAYAWAY-006: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Style ID.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-LAYAWAY-006" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="230001" />
+		<Parameter name="Style" value="230000" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY_SETUP" />	
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-LAYAWAY-007: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Description.-->	 
+	 <TestCase name="FIND-ITEM-LOOKUP-LAYAWAY-007" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="Desc" value="Career Dress Moleskin" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY_SETUP" />	
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-LAYAWAY-008: Verify that the message displays if no items are found. --> 
+	 <TestCase name="FIND-ITEM-LOOKUP-LAYAWAY-008" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="600000" />		
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY_SETUP" />	
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check message -->
+    </TestCase>	
+	
+		<!-- SPECIAL ORDER -->
+	<!--FIND-ITEM-LOOKUP-SO-001: Verify that the item details are displayed correctly in the search results when searching an item in sale transaction by item ID and exactly one matching item is found.-->
+	<TestCase name="FIND-ITEM-LOOKUP-SO-001" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<TestSequence name="SO_SHIP_STORE_SETUP" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check message-->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>
+	
+	<!--FIND-ITEM-LOOKUP-SO-002: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Department. -->
+	 <TestCase name="FIND-ITEM-LOOKUP-SO-002" applicationKey="REGISTER" >
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SelectItem" value="73003" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<TestSequence name="SO_SHIP_STORE_SETUP" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-SO-003: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Subdepartment.-->
+	 <TestCase name="FIND-ITEM-LOOKUP-SO-003" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="73003" />
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SubDept" value="910120" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<TestSequence name="SO_SHIP_STORE_SETUP" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result-->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-SO-004: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Class. -->
+	 <TestCase name="FIND-ITEM-LOOKUP-SO-004" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="73003" />
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SubDept" value="910120" />
+		<Parameter name="Class" value="910120100" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<TestSequence name="SO_SHIP_STORE_SETUP" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{SelectItem},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />		
+    </TestCase>	
+	<!--FIND-ITEM-LOOKUP-SO-005: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Subclass. -->
+	 <TestCase name="FIND-ITEM-LOOKUP-SO-005" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="73003" />
+		<Parameter name="Dept" value="910" />
+		<Parameter name="SubDept" value="910120" />
+		<Parameter name="Class" value="910120100" />
+		<Parameter name="SubClass" value="910120" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<TestSequence name="SO_SHIP_STORE_SETUP" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />		
+    </TestCase>	
+	
+		<!--FIND-ITEM-LOOKUP-SO-006: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Style ID.--> 
+	 <TestCase name="FIND-ITEM-LOOKUP-SO-006" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="230001" />
+		<Parameter name="Style" value="230000" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<TestSequence name="SO_SHIP_STORE_SETUP" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-SO-007: Verify that the item details are displayed correctly in the search results when searching items in sale transaction by Description.-->
+	 <TestCase name="FIND-ITEM-LOOKUP-SO-007" applicationKey="REGISTER" >
+		<Parameter name="SelectItem" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="Desc" value="Career Dress Moleskin" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<TestSequence name="SO_SHIP_STORE_SETUP" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check some items in Search Result -->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+    </TestCase>	
+	
+	<!--FIND-ITEM-LOOKUP-SO-008: Verify that the message displays if no items are found. -->
+	 <TestCase name="FIND-ITEM-LOOKUP-SO-008" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="600000" />		
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<TestSequence name="SO_SHIP_STORE_SETUP" />		
+		<SequenceRef name="ITEM_LOOKUP" />
+		<SequenceRef name="ENTER_VALUE_ITEM_LOOKUP" values="!{itemid},!{Dept},!{SubDept},!{Class},!{SubClass},!{Style},!{Desc}"/>
+		<!-- Need to check message -->
+    </TestCase>
+</XunitConfig>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<!-- Global exceptions -->
+	<Exception name="APPLY_TRANS_TAX_EXEMPTION" action="NO" />
+	<Exception name="BELOW_MIN_CASH_AMOUNT" action="ACCEPT" />
+	<Exception name="CLOSE_CASHDRAWER_CHANGE_OK" action="ACCEPT" />
+	<Exception name="CREDIT_VOUCHER_SIGNATURE" action="ACCEPT" />
+	<Exception name="DISCOUNT_AUTO_REMOVE" action="ACCEPT" />
+	<Exception name="DISCOUNT_PROMPT" action="ACCEPT" />
+	<Exception name="EMAIL_RECEIPTS" action="PRINT_ONLY" />
+	<Exception name="EXCEED_MAX_CASH_AMOUNT" action="ACCEPT" />
+	<Exception name="EXCEED_MAX_TILL_AMOUNT" action="ACCEPT" />
+	<Exception name="FORCE_CCA_PICKUP_ALL" action="YES" />
+	<Exception name="FORCE_PICKUP_ALL" action="YES" />
+	<Exception name="IMPRINT_CREDIT_CARD" action="ACCEPT" />
+	<Exception name="JOIN_LOYALTY_CUSTOMER_CENTRIC" action="NO" />
+	<Exception name="KIT_RETURN" action="ACCEPT" />
+	<Exception name="LAYAWAY_DEPOSIT_OVERRIDE" action="YES" />
+	<Exception name="LOYALTY_CARD" action="CONTINUE" />
+	<Exception name="NO_CHALLENGE_QUESTIONS" action="NO" />
+	<Exception name="NO_SIGNATURE_REQUIRED" action="ACCEPT" />
+	<Exception name="OLD_INVENTORY_DOCUMENTS" action="CONTINUE" />
+	<Exception name="ORDER_CONFIRM_ON_HAND_ITEM" action="YES" />
+	<Exception name="PAYROLL_ERROR_LIST" action="ACCEPT" />
+	<Exception name="PRINT_ACKNOWLEDGEMENT" action="ACCEPT" />
+	<Exception name="PRINT_RECEIPTS" action="ACCEPT" />
+	<Exception name="PROMPT_FOR_ROUNDUP_DONATION" action="NO" />
+	<Exception name="PROMPT_LOYALTY_CARD" action="CONTINUE" />
+	<Exception name="PROMPT_VOID_DONATION_ITEM" action="YES" />
+	<Exception name="RECEIVED_SP_ORDER_ACCOUNT_LIST" action="ACCEPT" />
+	<Exception name="RECOMMENDED_LAYAWAY_PAYMENT_CHECK" action="YES" />
+	<Exception name="RESTOCKING_FEE_APPLY_MESSAGE" action="ACCEPT" />
+	<Exception name="RETURN_PRICE_HISTORY_EMPTY" action="ACCEPT" />
+	<Exception name="SALE_COMPLETE_CHECK" action="YES" />
+	<Exception name="SCHEDULE_TIME_OFF_NOTIFY" action="ACCEPT" />
+	<Exception name="SIGNATURE_REQUIRED" action="ACCEPT" />
+	<Exception name="SP_ORDER_CONFIRM_ONHAND" action="YES" />
+	<Exception name="SUSPEND_TRANSACTIONS_TO_CANCEL" action="ACCEPT" />
+	<Exception name="WORK_ORDER_REQ_ATTENTION_LIST" action="ACCEPT" />
+	<!-- This exception is needed to support register open with the "noreceipts" flag set. Base ops 
+				don't skip register open receipt functionality when no receipt printer is available. -->
+	<Exception name="PRINTER_ERROR" action="EXIT" />
+</XunitConfig>

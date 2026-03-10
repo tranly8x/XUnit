@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<!-- TEST CASES -->
+	<!--PRICE-INQ-SALE-001: Verify that the item id, description and price are displayed correctly when scanning or entering a merchandise item.-->	
+    <TestCase name="PRICE-INQ-SALE-001" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="ITEM_PRICE_INQUIRY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"/>
+		<SequenceRef name="SELECT_ADD_ITEM" />
+		<SequenceRef name="CHECK_ITEM_IN_THE_TRANSACTION" values="!{itemid}"/>		
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+    </TestCase>
+	
+	<!--PRICE-INQ-SALE-002: Verify that the item id, description and price are displayed correctly when scanning or entering a Non-Merchandise Item that allows for sale.-->	
+    <TestCase name="PRICE-INQ-SALE-002" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?ITEMS_NONMERCH_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="ITEM_PRICE_INQUIRY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"/>
+		<SequenceRef name="SELECT_ADD_ITEM" />
+		<SequenceRef name="CHECK_ITEM_IN_THE_TRANSACTION" values="!{itemid}"/>		
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+    </TestCase>
+	
+	<!--PRICE-INQ-SALE-003: Verify that the item id, description and price are displayed correctly when scanning or entering a Restricted Item,  then select Yes on the message.-->	
+    <TestCase name="PRICE-INQ-SALE-003" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?ITEM_RESTRICTION_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="ITEM_PRICE_INQUIRY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"/>
+        <SequenceRef name="SELECT_ADD_ITEM" />
+		<Assertion promptKey="ITEM_MIN_AGE" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="CHECK_ITEM_IN_THE_TRANSACTION" values="!{itemid}"/>		
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+    </TestCase>
+	
+	<!--PRICE-INQ-SALE-004: Verify that the item id, description and price are displayed correctly when scanning or entering a Restricted Item, then select No on the message.-->	
+    <TestCase name="PRICE-INQ-SALE-004" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?ITEM_RESTRICTION_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="ITEM_PRICE_INQUIRY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"/>
+        <SequenceRef name="SELECT_ADD_ITEM" />
+		<Assertion promptKey="ITEM_MIN_AGE" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<!-- Need to check item is not added to transaction
+		<Assertion target="@getSaleLine(1).getItemId"" compareType="IS_NULL" invert="true" /> 		
+		-->	
+
+    </TestCase>
+
+	<!--PRICE-INQ-SALE-007: Verify that the item id, description and price are displayed correctly when scanning or entering an Attached Item for Price Inquiry.-->	
+    <TestCase name="PRICE-INQ-SALE-007" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?ITEM_ATTACHEDITEM_FILE.ItemId" />
+		<Parameter name="Attached" value="%?ITEM_ATTACHEDITEM_FILE.Attached" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="ITEM_PRICE_INQUIRY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"/>
+        <SequenceRef name="SELECT_ADD_ITEM" />
+		<SequenceRef name="CHECK_ITEM_IN_THE_TRANSACTION" values="!{itemid}"/>		
+		<SequenceRef name="CHECK_ITEM_IN_THE_TRANSACTION" values="!{Attached}"/>		
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+     </TestCase>
+	 
+	 
+	<!--PRICE-INQ-SALE-010: Verify that the item id, description and price are displayed correctly when scanning or entering KIT/Component Item. 	-->	
+    <TestCase name="PRICE-INQ-SALE-010" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?ITEM_KITITEM_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="ITEM_PRICE_INQUIRY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"/>
+        <SequenceRef name="SELECT_ADD_ITEM" />
+		<SequenceRef name="CHECK_ITEM_IN_THE_TRANSACTION" values="!{itemid}"/>	
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+     </TestCase>
+
+
+	<!--PRICE-INQ-SALE-013: Verify that item is added to transaction when adding item to transaction and entering valid serial number.-->	
+    <TestCase name="PRICE-INQ-SALE-013" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?SERIAL_NUMBER_FILE.ItemId" />
+		<Parameter name="nextTranNo" value="@getNextSequenceValue(Transaction)" />
+		<Parameter name="serialNo" value="!{rtlLocId}!{wkstnId}!{nextTranNo}" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="ITEM_PRICE_INQUIRY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"/>
+        <SequenceRef name="SELECT_ADD_ITEM" />
+		<SequenceRef name="ENTER_SERIAL_NUMBER" values="!{serialNo}"/>	
+		<SequenceRef name="CHECK_ITEM_IN_THE_TRANSACTION" values="!{itemid}"/>		
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+     </TestCase>
+
+	<!--PRICE-INQ-SALE-015: Verify that the message displays when entering invalid serial number  is shorter than the minimum length of 8.-->	
+    <TestCase name="PRICE-INQ-SALE-015" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?SERIAL_NUMBER_FILE.ItemId" />
+		<Parameter name="Serial" value="8888888" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="ITEM_PRICE_INQUIRY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"/>
+        <SequenceRef name="SELECT_ADD_ITEM" />
+		<SequenceRef name="ENTER_SERIAL_NUMBER" values="!{Serial}"/>	
+		<Assertion promptKey="ITEM_SERIAL_NEEDED" />
+		<SequenceRef name="SELECT_CANCEL" />
+		<SequenceRef name="CANCEL_SALE_TRANSACTION_WITHOUT_ITEM" />
+     </TestCase>
+	 
+	<!--PRICE-INQ-SALE-016: Verify that the item id, description and price are displayed correctly when scanning or entering a Non-Merchandise Item that does not allow for sale.-->	
+	<TestCase name="PRICE-INQ-SALE-016" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="569" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="ITEM_PRICE_INQUIRY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"/>
+        <SequenceRef name="SELECT_ADD_ITEM" />
+		<Assertion promptKey="VALIDATION_ERROR_MESSAGE" />
+        <SequenceRef name="SELECT_OK" />
+		<Assertion promptKey="PRICE_INQUIRY_ITEM_SCAN" />
+     </TestCase>
+	 
+	 <!--EXCHANGE TRANSACTION-->
+	 <!--PRICE-INQ-EXCH-001: Verify that the item id, description and price are displayed correctly when scanning or entering a merchandise item.-->	
+ 	 <TestCase name="PRICE-INQ-EXCH-001" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="ITEM_PRICE_INQUIRY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+        <SequenceRef name="SELECT_ADD_ITEM" />
+		<SequenceRef name="CHECK_ITEM_IN_THE_TRANSACTION" values="!{itemid}"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+    </TestCase>
+	<!--PRICE-INQ-EXCH-002: Verify that the item id, description and price are displayed correctly when scanning or entering a Non-Merchandise Item that allows for sale.-->
+    <TestCase name="PRICE-INQ-EXCH-002" applicationKey="REGISTER" >
+		<Parameter name="returnitemid" value="%?ITEMS_NONMERCH_FILE.ReturnItemId" />
+		<Parameter name="itemid" value="%?ITEMS_NONMERCH_FILE.ItemId" />
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{returnitemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="ITEM_PRICE_INQUIRY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+        <SequenceRef name="SELECT_ADD_ITEM" />
+		<SequenceRef name="CHECK_ITEM_IN_THE_TRANSACTION" values="!{itemid}"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+    </TestCase>
+	<!--PRICE-INQ-EXCH-003: Verify that the item id, description and price are displayed correctly when scanning or entering a Restricted Item,  then select Yes on the message.-->
+    <TestCase name="PRICE-INQ-EXCH-003" applicationKey="REGISTER" >
+		<Parameter name="returnitemid" value="%?ITEM_RESTRICTION_FILE.ReturnItemId" />
+		<Parameter name="itemid" value="%?ITEM_RESTRICTION_FILE.ItemId" />
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{returnitemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="ITEM_PRICE_INQUIRY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"/>
+        <SequenceRef name="SELECT_ADD_ITEM" />
+		<Assertion promptKey="ITEM_MIN_AGE" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="CHECK_ITEM_IN_THE_TRANSACTION" values="!{itemid}"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+    </TestCase>
+	<!--PRICE-INQ-EXCH-004: Verify that the item id, description and price are displayed correctly when scanning or entering a Restricted Item, then select No on the message.-->
+    <TestCase name="PRICE-INQ-EXCH-004" applicationKey="REGISTER" >
+		<Parameter name="returnitemid" value="%?ITEM_RESTRICTION_FILE.ReturnItemId" />
+		<Parameter name="itemid" value="%?ITEM_RESTRICTION_FILE.ItemId" />
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{returnitemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="ITEM_PRICE_INQUIRY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"/>
+        <SequenceRef name="SELECT_ADD_ITEM" />
+		<Assertion promptKey="ITEM_MIN_AGE" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<!-- Need to check item is not added to transaction
+		<Assertion target="@getSaleLine(1).getItemId"" compareType="IS_NULL" invert="true" /> 		
+		-->	
+
+    </TestCase>	
+		<!--PRICE-INQ-EXCH-007: Verify that the item id, description and price are displayed correctly when scanning or entering an Attached Item for Price Inquiry.-->	
+    <TestCase name="PRICE-INQ-EXCH-007" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="returnitemid" value="%?ITEM_ATTACHEDITEM_FILE.ReturnItemId" />
+		<Parameter name="itemid" value="%?ITEM_ATTACHEDITEM_FILE.ItemId" />
+		<Parameter name="Attached" value="%?ITEM_ATTACHEDITEM_FILE.Attached" />
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{returnitemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="ITEM_PRICE_INQUIRY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"/>
+        <SequenceRef name="SELECT_ADD_ITEM" />
+		<SequenceRef name="CHECK_ITEM_IN_THE_TRANSACTION" values="!{itemid}"/>		
+		<SequenceRef name="CHECK_ITEM_IN_THE_TRANSACTION" values="!{Attached}"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+     </TestCase>
+	 
+	<!--PRICE-INQ-EXCH-010: Verify that the item id, description and price are displayed correctly when scanning or entering KIT/Component Item. 	-->	
+    <TestCase name="PRICE-INQ-EXCH-010" applicationKey="REGISTER" >
+		<Parameter name="returnitemid" value="%?ITEM_KITITEM_FILE.ReturnItemId" />
+		<Parameter name="itemid" value="%?ITEM_KITITEM_FILE.ItemId" />
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{returnitemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="ITEM_PRICE_INQUIRY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"/>
+        <SequenceRef name="SELECT_ADD_ITEM" />
+		<SequenceRef name="CHECK_ITEM_IN_THE_TRANSACTION" values="!{itemid}"/>
+		<SequenceRef name="CHANGE_PRICE" values="!{itemid},10,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+     </TestCase>
+	<!--PRICE-INQ-EXCH-013: Verify that item is added to transaction when adding item to transaction and entering valid serial number.-->	
+    <TestCase name="PRICE-INQ-EXCH-013" applicationKey="REGISTER" >
+	    <Parameter name="returnitemid" value="%?SERIAL_NUMBER_FILE.ReturnItemId" />
+		<Parameter name="itemid" value="%?SERIAL_NUMBER_FILE.ItemId" />
+		<Parameter name="Serial" value="%?SERIAL_NUMBER_FILE.Serial" />
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{returnitemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="ITEM_PRICE_INQUIRY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"/>
+        <SequenceRef name="SELECT_ADD_ITEM" />
+		<SequenceRef name="ENTER_SERIAL_NUMBER" values="!{Serial}"/>	
+		<SequenceRef name="CHECK_ITEM_IN_THE_TRANSACTION" values="!{itemid}"/>
+		<SequenceRef name="SELECT_REFUND" />		
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+     </TestCase>
+	 
+	 
+	<!--PRICE-INQ-SALE-015: Verify that the message displays when entering invalid serial number  is shorter than the minimum length of 8.-->	
+    <TestCase name="PRICE-INQ-EXCH-015" applicationKey="REGISTER" >
+	    <Parameter name="returnitemid" value="%?SERIAL_NUMBER_FILE.ReturnItemId" />
+		<Parameter name="itemid" value="%?SERIAL_NUMBER_FILE.ItemId" />
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="Serial" value="8888888" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{returnitemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="1"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="ITEM_PRICE_INQUIRY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"/>
+        <SequenceRef name="SELECT_ADD_ITEM" />
+		<SequenceRef name="ENTER_SERIAL_NUMBER" values="!{Serial}"/>	
+		<Assertion promptKey="ITEM_SERIAL_NEEDED" />
+		<SequenceRef name="SELECT_CANCEL" />
+		<SequenceRef name="CANCEL_SALE_TRANSACTION_WITHOUT_ITEM" />
+     </TestCase>
+	 
+	<!--PRICE-INQ-EXCH-016: Verify that the item id, description and price are displayed correctly when scanning or entering a Non-Merchandise Item that does not allow for sale.-->	
+	<TestCase name="PRICE-INQ-EXCH-016" applicationKey="REGISTER" >
+		<Parameter name="returnitemid" value="%?NO_SALE_ITEM_FILE.ReturnItemId" />
+		<Parameter name="itemid" value="%?NO_SALE_ITEM_FILE.ItemId" />
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{returnitemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>	
+		<SequenceRef name="ITEM_PRICE_INQUIRY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"/>
+        <SequenceRef name="SELECT_ADD_ITEM" />
+		<Assertion promptKey="VALIDATION_ERROR_MESSAGE" />
+        <SequenceRef name="SELECT_OK" />
+		<Assertion promptKey="PRICE_INQUIRY_ITEM_SCAN" />
+     </TestCase>
+	 
+	
+</XunitConfig>

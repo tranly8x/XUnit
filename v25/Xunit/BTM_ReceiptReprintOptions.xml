@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<TestCase name="REPRINT-EJ-001"  applicationKey="REGISTER">
+	<!--	Verify that user can reprint receipt on Electronic Journal for sale transaction	"*Pre-condition:
+	- Completed sale transaction before
+
+	Steps:
+	1. Login into Xstore
+	2. Back to BO > Choose Electronic Journal
+	3. Enter transaction barcode
+	4. Choose receipt reprint options
+	5. Complete reprint receipt"
+	-->
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="associateID" value="100" />
+		<Parameter name="startDate" value="@getCurrentBusinessDate"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value="1"/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="RETAIL_SALE"/> 
+		<Parameter name="tender" value=""/>
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC"/>
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},@getLastTransaction.getTransactionSequence,@getLastTransaction.getTransactionSequence,!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_REPRINT_RECEIPT" />
+		<SequenceRef name="SELECT_RECEIPT_TO_REPRINT" values="Customer,No"/>
+		
+	</TestCase>
+	<TestCase name="REPRINT-EJ-002"  applicationKey="REGISTER">
+	<!--	Verify that user can reprint receipt on Electronic Journal for return transaction	"*Pre-condition:
+	- Completed return transaction before
+
+	Steps:
+	1. Login into Xstore
+	2. Back to BO > Choose Electronic Journal
+	3. Enter transaction barcode
+	4. Choose receipt reprint options
+	5. Complete reprint receipt"
+	-->
+		<Parameter name="startDate" value="@getCurrentBusinessDate"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value="1"/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="RETAIL_SALE"/> 
+		<Parameter name="tender" value=""/>
+		<Parameter name="itemId" value="%?ITEMS_DB.ItemId"/>
+		
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />		
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC"/>
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},@getLastTransaction.getTransactionSequence,@getLastTransaction.getTransactionSequence,!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_REPRINT_RECEIPT" />
+		<SequenceRef name="SELECT_RECEIPT_TO_REPRINT" values="No,Store"/>
+		<!--<SequenceRef name="SELECT_RECEIPT_TO_REPRINT" values="Customer,Store"/>-->
+	</TestCase>
+	<TestCase name="REPRINT-LAST-001"  applicationKey="REGISTER">
+	<!--	Verify that item information display correct in receipt when reprint last receipt of sale transaction	"*Pre-condition:
+	- Sale transaction completed with item
+
+	Steps:
+	1. Login into Xstore
+	2. Choose Receipt reprint options in menu
+	3. Press Reprint last receipt
+	4. Choose type of receipt copy
+	5. Complete receipt reprint"
+	-->
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT" />
+		<SequenceRef name="SELECT_RECEIPT_TO_REPRINT" values="Customer,No"/>
+	</TestCase>
+	<TestCase name="REPRINT-LAST-015"  applicationKey="REGISTER">
+	<!--	Verify that item information display correct in receipt when reprint last receipt of Send Sale transaction	"*Pre-condition:
+	- Send Sale transaction completed with item
+
+	Steps:
+	1. Login into Xstore
+	2. Choose Receipt reprint options in menu
+	3. Press Reprint last receipt
+	4. Choose type of receipt copy
+	5. Complete receipt reprint"
+	-->
+		<Parameter name="phone" value="1711200301" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />		
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT" />
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="Customer"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT" />
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="SendSaleMerchandise"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT" />
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="SendSaleStore"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT" />
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="SendSaleCustomer"/>
+	</TestCase>
+	<TestCase name="REPRINT-LAST-029"  applicationKey="REGISTER">
+	<!--	Verify that send sale information display correct in receipt when reprint last receipt of Send Sale transaction	"*Pre-condition:
+	- Send Sale transaction completed
+	Steps:
+	1. Login into Xstore
+	2. Choose Receipt reprint options in menu
+	3. Press Reprint last receipt
+	4. Choose type of receipt copy
+	5. Complete receipt reprint"
+	-->
+		<Parameter name="phone" value="1711200301" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />		
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT" />
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="Customer"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT" />
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="SendSaleMerchandise"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT" />
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="SendSaleStore"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT" />
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="SendSaleCustomer"/>
+	</TestCase>
+	<TestCase name="REPRINT-LAST-030"  applicationKey="REGISTER">
+	<!--	Verify that item information display correct in receipt when reprint last receipt of layaway transaction	"*Pre-condition:
+	- Layaway transaction completed with item
+
+	Steps:
+	1. Login into Xstore
+	2. Choose Receipt reprint options in menu
+	3. Press Reprint last receipt
+	4. Choose type of receipt copy
+	5. Complete receipt reprint"
+	-->
+		<Parameter name="GroupDiscountOpPer" value="GRP_PCT" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="teleNumber" value="090122260223" />
+		<Parameter name="lastName" value="Xunit" />		
+		<Parameter name="paymentPeriods" value="4" />		
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />			
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="1"/>
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" iterations="1"/>
+		<SequenceRef name="APPLY_LAYAWAY_GROUP_DISCOUNT" values="!{GroupDiscountOpPer},%?DISCOUNT_REASONS.ReasonCode,!{item1},!{item2}"/>
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(LAYAWAY).getAccountBalance.divide(10)"/>
+		<SequenceRef name="ENTER_LAYAWAY_PAYMENT_PERIODS" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="Customer"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="LayawayCustomer"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="LayawayMerchandise"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="LayawayStore"/>
+	</TestCase>
+	<TestCase name="REPRINT-LAST-044"  applicationKey="REGISTER">
+	<!--	Verify that layaway information display correct in receipt when reprint last receipt of Layaway transaction	"*Pre-condition:
+	- Layaway transaction completed with Rain deal 
+
+	Steps:
+	1. Login into Xstore
+	2. Choose Receipt reprint options in menu
+	3. Press Reprint last receipt
+	4. Choose type of receipt copy
+	5. Complete receipt reprint"
+	-->
+		<Parameter name="GroupDiscountOpPer" value="GRP_PCT" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="teleNumber" value="090122260223" />
+		<Parameter name="lastName" value="Xunit" />		
+		<Parameter name="paymentPeriods" value="4" />		
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />			
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="1"/>
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" iterations="1"/>
+		<SequenceRef name="APPLY_LAYAWAY_GROUP_DISCOUNT" values="!{GroupDiscountOpPer},%?DISCOUNT_REASONS.ReasonCode,!{item1},!{item2}"/>
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(LAYAWAY).getAccountBalance.divide(10)"/>
+		<SequenceRef name="ENTER_LAYAWAY_PAYMENT_PERIODS" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="Customer"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="LayawayCustomer"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="LayawayMerchandise"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="LayawayStore"/>
+	</TestCase>
+	<TestCase name="REPRINT-LAST-045"  applicationKey="REGISTER">
+	<!--	Verify that item information display correct in receipt when reprint last receipt of Layaway payment transaction	"*Pre-condition:
+	- Layaway payment transaction completed with item
+
+	Steps:
+	1. Login into Xstore
+	2. Choose Receipt reprint options in menu
+	3. Press Reprint last receipt
+	4. Choose type of receipt copy
+	5. Complete receipt reprint"
+	-->
+	</TestCase>
+	<TestCase name="REPRINT-LAST-056"  applicationKey="REGISTER">
+	<!--	Verify that Special Order information display correct in receipt when reprint last receipt of SO payment transaction	"*Pre-condition:
+	- SO payment transaction completed with Special Order Payment
+
+	Steps:
+	1. Login into Xstore
+	2. Choose Receipt reprint options in menu
+	3. Press Reprint last receipt
+	4. Choose type of receipt copy
+	5. Complete receipt reprint"
+	--></TestCase>
+	<TestCase name="REPRINT-LAST-057"  applicationKey="REGISTER">
+	<!--	Verify that item information display correct in receipt when reprint last receipt of special order transaction	"*Pre-condition:
+	- Special order transaction completed with item
+
+	Steps:
+	1. Login into Xstore
+	2. Choose Receipt reprint options in menu
+	3. Press Reprint last receipt
+	4. Choose type of receipt copy
+	5. Complete receipt reprint"
+	-->
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="item1" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="item2" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<!-- <Parameter name="depositAmt" value="0.01" /> -->
+		<Parameter name="documentId" value="" />
+		<Parameter name="custAcctId" value="" />
+		<Parameter name="documentSubtypeCode" value="SPECIAL_ORDER" />
+		<Parameter name="statusCode" value="" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_BTN_SHIP_TO_STORE" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(SPECIAL_ORDER).getAccountBalance.divide(10)" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="Customer"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="SpecialOrderMerchandise"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="SpecialOrderStore"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="SpecialOrderCustomer"/>
+	</TestCase>
+	<TestCase name="REPRINT-LAST-072"  applicationKey="REGISTER">
+	<!--	Verify that item information display correct in receipt when reprint last receipt of special order payment	"*Pre-condition:
+	- Special order payment completed with item
+
+	Steps:
+	1. Login into Xstore
+	2. Choose Receipt reprint options in menu
+	3. Press Reprint last receipt
+	4. Choose type of receipt copy
+	5. Complete receipt reprint"
+	--></TestCase>
+	<TestCase name="REPRINT-LAST-084"  applicationKey="REGISTER">
+	<!--	Verify that item information display correct in receipt when reprint last receipt of Blind return transaction	"*Pre-condition:
+	- Blind return transaction completed with item
+
+	Steps:
+	1. Login into Xstore
+	2. Choose Receipt reprint options in menu
+	3. Press Reprint last receipt
+	4. Choose type of receipt copy
+	5. Complete receipt reprint"
+	-->
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TO_REPRINT" values="Customer,Store"/>
+	</TestCase>
+	<TestCase name="REPRINT-LAST-096"  applicationKey="REGISTER">
+	<!--	Verify that blind return information display correct in receipt when reprint last receipt of Blind return transaction	"*Pre-condition:
+	- Blind return transaction completed
+
+	Steps:
+	1. Login into Xstore
+	2. Choose Receipt reprint options in menu
+	3. Press Reprint last receipt
+	4. Choose type of receipt copy
+	5. Complete receipt reprint"
+	-->
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TO_REPRINT" values="Customer,No"/>
+	</TestCase>
+	<TestCase name="REPRINT-LAST-097"  applicationKey="REGISTER">
+	<!--	Verify that item information display correct in receipt when reprint last receipt of Un-Verified return transaction	"*Pre-condition:
+	- Un-Verified return transaction completed with item
+
+	Steps:
+	1. Login into Xstore
+	2. Choose Receipt reprint options in menu
+	3. Press Reprint last receipt
+	4. Choose type of receipt copy
+	5. Complete receipt reprint"
+	-->
+		<Parameter name="itemId" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="FILL_ORIGINAL_TRANSACTION_INFO" values="123,@getCurrentBusinessDate,!{origLocationId},!{origWorkStationId}"/>		
+		<SequenceRef name="SELECT_BTN_YES"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TO_REPRINT" values="Customer,Store"/>
+	</TestCase>
+	<TestCase name="REPRINT-LAST-109"  applicationKey="REGISTER">
+	<!--	Verify that Un-Verified return information display correct in receipt when reprint last receipt of Un-Verified return transaction	"*Pre-condition:
+	- Un-Verified return transaction completed
+
+	Steps:
+	1. Login into Xstore
+	2. Choose Receipt reprint options in menu
+	3. Press Reprint last receipt
+	4. Choose type of receipt copy
+	5. Complete receipt reprint"
+	-->
+		<Parameter name="itemId" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="FILL_ORIGINAL_TRANSACTION_INFO" values="123,@getCurrentBusinessDate,!{origLocationId},!{origWorkStationId}"/>		
+		<SequenceRef name="SELECT_BTN_YES"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TO_REPRINT" values="Customer,Store"/>
+	</TestCase>
+	<TestCase name="REPRINT-LAST-110"  applicationKey="REGISTER">
+	<!--	Verify that item information display correct in receipt when reprint last receipt of Verified return transaction	"*Pre-condition:
+	- Verified return transaction completed with item
+
+	Steps:
+	1. Login into Xstore
+	2. Choose Receipt reprint options in menu
+	3. Press Reprint last receipt
+	4. Choose type of receipt copy
+	5. Complete receipt reprint"
+	-->
+		<Parameter name="itemId" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="FILL_ORIGINAL_TRANSACTION_INFO" values="123,@getCurrentBusinessDate,!{origLocationId},!{origWorkStationId}"/>		
+		<SequenceRef name="SELECT_BTN_YES"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TO_REPRINT" values="No,Store"/>
+	</TestCase>
+	<TestCase name="REPRINT-LAST-122"  applicationKey="REGISTER">
+	<!--	Verify that Verified return information display correct in receipt when reprint last receipt of Verified return transaction	"*Pre-condition:
+	- Verified return transaction completed
+
+	Steps:
+	1. Login into Xstore
+	2. Choose Receipt reprint options in menu
+	3. Press Reprint last receipt
+	4. Choose type of receipt copy
+	5. Complete receipt reprint"
+	-->
+		<Parameter name="itemId" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<!--verified return-->
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TO_REPRINT" values="No,Store"/>
+	</TestCase>
+	<TestCase name="REPRINT-LAST-VOID-001"  applicationKey="REGISTER">
+	<!--	Verify that user can reprint receipt of post void transaction	"*Pre-condition:
+	- Post void transaction completed
+
+	Steps:
+	1. Login into Xstore
+	2. Choose Receipt reprint options in menu
+	3. Press Reprint last receipt
+	4. Choose type of receipt copy
+	5. Complete receipt reprint"
+	-->
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="%?ITEMS_DB.ItemId"/>
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="SELECT_POST_VOID" />
+		<SequenceRef name="FILL_POST_VOID_TRAN_BARCODE" values="@getBarcode(@getLastTransactionId)"/>
+		<SequenceRef name="POST_VOID_STEPS" values="%?POST_VOID_REASONS.ReasonCode"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<SequenceRef name="SELECT_RECEIPT_TYPE_TO_REPRINT" values="Customer"/>
+	</TestCase>
+	<TestCase name="REPRINT-LAST-SUSPEND-001"  applicationKey="REGISTER">
+	<!--	Verify that user can reprint receipt of suspend transaction	"*Pre-condition:
+	- Suspend transaction completed
+
+	Steps:
+	1. Login into Xstore
+	2. Choose Receipt reprint options in menu
+	3. Press Reprint last receipt
+	4. Choose type of receipt copy
+	5. Complete receipt reprint"
+	-->
+		<Parameter name="newReturnPrice" value="0" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newReturnPrice}" /> 	
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<Assertion promptKey="VALIDATION_ERROR_MESSAGE" />
+	</TestCase>
+	<TestCase name="REPRINT--LAST-CANCEL-001"  applicationKey="REGISTER">
+	<!--	Verify that user can reprint receipt of cancel sale transaction	"*Pre-condition:
+	- Cancel Sale transaction completed
+
+	Steps:
+	1. Login into Xstore
+	2. Choose Receipt reprint options in menu
+	3. Press Reprint last receipt
+	4. Choose type of receipt copy
+	5. Complete receipt reprint"
+	-->
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="6" />
+		<SequenceRef name="CANCEL_TRANSACTION_HAS_ITEM"/>
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC"/>
+		<SequenceRef name="REPRINT_LAST_RECEIPT"/>
+		<Assertion promptKey="VALIDATION_ERROR_MESSAGE" />
+	</TestCase>
+</XunitConfig>

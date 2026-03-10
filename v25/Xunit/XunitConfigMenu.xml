@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<TestSequence name="INVENTORY_RECEIVING">
+		<TestStep action="RECEIVING" description="RECEIVING (PromptOp)"/>
+	</TestSequence>
+	<!--Setup new layaway-->
+	<TestSequence name="LAYAWAY_SETUP" >
+		<TestStep action="PRE_LAYAWAY_CHAIN" description="Select Layaway"  />
+		<TestStep action="NEW" description="NEW (LayawayRegisterSearchOp)"/>
+	</TestSequence>
+	<!-- Setup new Special Order -->
+	<TestSequence name="SO_SHIP_STORE_SETUP" >
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+        <TestStep action="NEW" description="NEW (SpecOrderRegisterSearchOp)"/>
+        <TestStep action="SHIP_STORE" description="SHIP_STORE (PromptShippingDestOp)"/>
+	</TestSequence>
+	<!--Select Item Lookup before login to Xstore -->
+	<TestSequence name="DASHBOARD">
+		<Assertion promptKey="HOME_SCREEN_LOGGED_IN" />
+        <TestStep action="SHOW_DASHBOARD" description="Dashboard [SHOW_DASHBOARD]"/>
+	</TestSequence>
+	<!--Select Item Lookup before login to Xstore -->
+	<TestSequence name="ITEM_LOOKUP_BEFORE_LOGIN">
+		<Assertion promptKey="PROMPT_TO_LOGIN" />
+        <TestStep action="GENERIC_ITEM_LOOKUP" description="GENERIC_ITEM_LOOKUP (PromptOp)"/>
+	</TestSequence>
+	<!--Select Transaction Tax Amount-->
+	<TestSequence name="SELECT_TRANSACTION_TAX_AMT">
+		<TestStep description="Select transaction tax amount" action="TAX_TRAN_CHANGE_AMOUNT" />
+	</TestSequence>
+	<!--Select Transaction Tax Percent-->
+	<TestSequence name="SELECT_TRANSACTION_TAX_PER">
+		<TestStep description="Select transaction tax amount" action="TAX_TRAN_CHANGE_PERCENT" />
+	</TestSequence>
+	<!--Select View Customer in Sale Transaction-->
+	<TestSequence name="SELECT_CUSTOMER_IN_SALE">
+		<TestStep description="Select view customer in sale" action="CUSTOMER_SALE_OVERVIEW" />
+	</TestSequence>
+	<!--Select Transaction Tax Exempt-->
+	<TestSequence name="SELECT_TRANSACTION_TAX_EXEMPT">
+		<TestStep description="Select transaction tax exempt" action="TAX_TRAN_EXEMPT" />
+	</TestSequence>
+	<!--Select Login at Home Screen-->
+	<TestSequence name="LOGIN" parameters="userid, password">
+		<SequenceRef name="ACT_ACCEPT" />
+		<TestStep action="ACCEPT" description="ACCEPT (PromptIdPasswordFormOp)">
+            <Form name="UID_PASSWORD">
+                <Field name="employeeId" value="!{userid}"/>
+                <Field name="password" value="!{password}"/>
+                <Field name="icon" value="classpath:graphics/Key_Password.gif"/>
+                <Field name="privilegeDescription" value="Start Sale"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<!--Select Logout at Home Screen-->
+	<TestSequence name="LOGOUT" >
+		<Assertion promptKey="HOME_SCREEN_LOGGED_IN" />
+		<TestStep action="CANCEL" description="CANCEL (PromptOp)"/>
+	</TestSequence>
+	<!--Select Start Sale at Home Screen-->
+	<TestSequence name="START_SALE_BEFORE_LOGIN" parameters="userid, password">
+		<TestStep action="MOBILE_START_SALE_LOGIN" description="MOBILE_START_SALE_LOGIN (PromptOp)"/>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptIdPasswordFormOp)">
+            <Form name="UID_PASSWORD">
+                <Field name="employeeId" value="!{userid}"/>
+                <Field name="password" value="!{password}"/>
+                <Field name="icon" value="classpath:graphics/Key_Password.gif"/>
+                <Field name="privilegeDescription" value="Start Sale"/>
+            </Form>
+        </TestStep>
+	</TestSequence>	
+	<!--Select Till > Open/Close Option > Store Open at BO-->	
+	<TestSequence name="STORE_OPEN_MN">
+		<TestStep description="Open Store" action="RETAIL_LOCATION_OPEN" />
+		<TestStep description="Verify Open Store" action="YES" />
+	</TestSequence>
+	<!--Select Till > Open/Close Option > Store Close at BO-->	
+	<TestSequence name="STORE_CLOSE_MN">
+		<TestStep description="Close Store" action="RETAIL_LOCATION_CLOSE" />
+		<TestStep description="Confirm close store" action="YES" />
+	</TestSequence>
+	<!--Select Till > Open/Close Option > Register Open at BO-->	
+	<TestSequence name="REGISTER_OPEN_MN">
+		<TestStep description="Open Register" action="WORKSTATION_OPEN" />
+		<TestStep description="Verify Open Register" action="YES" />
+	</TestSequence>
+	<!--Select Till > Open/Close Option > Register Close at BO-->	
+	<TestSequence name="REGISTER_CLOSE_MN">
+		<TestStep description="Close Register" action="WORKSTATION_CLOSE" />
+		<TestStep description="Confirm close register" action="YES" />
+	</TestSequence>
+	<!--Select Till > Open/Close Option > FORCE Close at BO-->	
+	<TestSequence name="FORCE_CLOSE_MN">
+		<TestStep description="Select Force Close" action="FORCE_CLOSE_WORKSTATION" />
+		<TestStep action="ACCEPT" description="ACCEPT (PromptForceCloseWorkstationOp)" condition="@promptEquals(WORKSTATIONS_STATUS_LIST)">
+      <ListSelect index="1"/>
+    </TestStep>
+    <TestStep action="ACCEPT" description="ACCEPT (PromptOp) (SendIpcCloseRemoteWorkstationMessageOp)" condition="@promptEquals(ERROR_SENDING_IPC)"/>
+    <TestStep action="ACCEPT" description="ACCEPT (PromptOp)" condition="@promptEquals(NO_LIST_OPEN_WORKSTATIONS)"/>
+	</TestSequence>
+	
+<!--Menu Option -->
+	<!--Select Item Lookup -->
+	<TestSequence name="ITEM_LOOKUP">
+		<TestStep description="Select Item Lookup " action="GENERIC_ITEM_LOOKUP" />
+	</TestSequence>
+	<!--Select Customer -->
+	<TestSequence name="CUSTOMER" parameters="userid, password">
+		<TestStep description="Select Customer " action="CUSTOMER_CENTRIC_SALE" />
+		<TestStep action="ACCEPT" description="ACCEPT (PromptIdPasswordFormOp)">
+      <Form name="UID_PASSWORD">
+        <Field name="employeeId" value="!{userid}"/>
+        <Field name="password" value="!{password}"/>
+      </Form>
+		</TestStep>
+	</TestSequence>
+	<!--Select Engagement Activity -->
+	<TestSequence name="ENGAGEMENT" parameters="userid, password">
+		<TestStep description="Select Engagement Activity " action="ENGAGEMENT_ACTIVITY_" />
+		<TestStep action="ACCEPT" description="ACCEPT (PromptIdPasswordFormOp)">
+      <Form name="UID_PASSWORD">
+        <Field name="employeeId" value="!{userid}"/>
+        <Field name="password" value="!{password}"/>
+        <Field name="icon" value="classpath:graphics/Key_Password.gif"/>
+        <Field name="privilegeDescription" value="Start Sale"/>
+      </Form>
+		</TestStep>
+	</TestSequence>
+	<!--Select Gift Card Balance -->
+	<TestSequence name="GIFT_CARD_BALANCE">
+		<TestStep description="Select Gift Card Balance " action="XPAY_BALANCE_INQUIRY" />
+	</TestSequence>
+	<!--Select Gift Certificate Balance -->
+	<TestSequence name="GIFT_CERTIFICATE_BALANCE">
+		<TestStep description="Select Gift Certificate Balance " action="VOUCHER_BALANCE_INQUIRY" />
+	</TestSequence>
+	<!--Select Gift Receipt Inquiry -->
+	<TestSequence name="GIFT_RECEIPT_INQUIRY">
+		<TestStep description="Select Gift Receipt Inquiry " action="GIFT_RECEIPT_PRICE_LOOKUP" />
+	</TestSequence>
+	<!--Select Store Credit Balance -->
+	<TestSequence name="STORE_CREDIT_BALANCE">
+		<TestStep description="Select Store Credit Balance " action="VOUCHER_CREDIT_BALANCE_INQUIRY" />
+	</TestSequence>
+	<!--Select Flash Sale -->
+	<TestSequence name="FLASH_SALE">
+		<TestStep description="Select Flash Sale " action="FLASH_SALES_REPORT_VER2" />
+	</TestSequence>
+	<!--Select Rebate Receipt -->
+	<TestSequence name="REBATE_RECEIPT">
+		<TestStep description="Select Rebate Receipt " action="PRINT_REBATE_RECEIPT" />
+	</TestSequence>
+	<!--Select Reissue Gift Receipt -->
+	<TestSequence name="REISSUE_GIFT_RECEIPT">
+		<TestStep description="Select Reissue Gift Receipt " action="GIFT_RECEIPT_REISSUE_SELECTION" />
+	</TestSequence>
+	<!--Select Reprint Document -->
+	<TestSequence name="REPRINT_DOCUMENT">
+		<TestStep description="Select Reprint Document " action="GENERIC_REPRINT_DOCUMENT" />
+	</TestSequence>
+	<!--Select Reprint Last Receipt -->
+	<TestSequence name="REPRINT_LAST_RECEIPT">
+		<TestStep description="Select Reprint Last Receipt " action="REPRINT_LAST_RECEIPT" />
+	</TestSequence>
+	<!--Select Enter Training Mode -->
+	<TestSequence name="TRAINING_MODE">
+		<TestStep description="Select enter Training Mode " action="TRAINING_MODE_ENTER" />
+		<TestStep action="YES" description="YES (PROMPT_WISH_TO_ENTER_TRAINING_MODE)"/>
+	</TestSequence>
+
+<!--Menu Option After -->
+	<!--Select Start Sale Logged In-->	
+	<TestSequence name="START_SALE_LOGGED_IN">		
+		<TestStep description="Select Start Sale Logged In" action="MOBILE_START_SALE" />
+	</TestSequence>
+	<!--Select Item Lookup Logged In-->	
+	<TestSequence name="ITEM_LOKUP_LOGGED_IN">		
+		<TestStep description="Select Item Lookup Logged In" action="GENERIC_ITEM_LOOKUP" />
+	</TestSequence>
+	<!--Select Price Inquiry Logged In-->	
+	<TestSequence name="ITEM_PRICE_INQUIRY">
+		<TestStep description="Select Price Inquiry " action="GENERIC_PRICE_INQUIRY" />
+	</TestSequence>
+	<!--Select Gift Card Balance Logged In-->	
+	<TestSequence name="GCARD_BALANCE_LOGGED_IN">		
+		<TestStep description="Select Gift Card balance Logged In" action="EFTLINK_BALANCE_INQUIRY" />
+	</TestSequence>
+	<!--Select Gift Certificate Balance Logged In-->	
+	<TestSequence name="GCERTIFICATE_BALANCE_LOGGED_IN">		
+		<TestStep description="Select Gift Card balance Logged In" action="VOUCHER_BALANCE_INQUIRY" />
+	</TestSequence>
+	<!--Select Clock In/Out Logged In-->	
+	<TestSequence name="CLOCK_IN_OUT_LOGGED_IN">		
+		<TestStep description="Select Clock In/Out Logged In" action="CLOCK_IN_OUT_AFTER_" />
+	</TestSequence>
+	<!--Select Change Password Logged In-->	
+	<TestSequence name="CHANGE_PASSWORD_LOGGED_IN">
+		
+		<TestStep description="Select Change Password Logged In" action="CHANGE_CURRENT_EMPLOYEE_PASSWORD" />
+	</TestSequence>
+	<!--Select Layaway Maintenance Home Screen Logged In-->	
+	<TestSequence name="LAYAWAY_MAINT_LOGGED_IN">		
+		<TestStep description="Select Layaway Maintenance Logged In" action="PRE_LAYAWAY_MAINT_DETAIL" />
+	</TestSequence>
+	<!--Select Local Order Maintenance Home Screen Logged In-->	
+	<TestSequence name="LOCAL_ORDER_MAINT_LOGGED_IN">		
+		<TestStep description="Select Local Order Maintenance Logged In" action="PRE_LOCALORDER_ACCT_MAINT" />
+	</TestSequence>
+	<!--Select Send Sale Shipping Home Screen Logged In-->	
+	<TestSequence name="SEND_SALE_SHIPPING_LOGGED_IN">		
+		<TestStep description="Select Send Sale Shipping Logged In" action="SEND_SALE_SHIPPING" />
+	</TestSequence>
+	<!--Select Special Order Maintenance Home Screen Logged In-->	
+	<TestSequence name="SPECIAL_ORDER_MAINT_LOGGED_IN">		
+		<TestStep description="Select Special Order Maintenance Logged In" action="SPECIAL_ORDER_ACCT_MAINT" />
+	</TestSequence>
+	<!--Select Loyalty Balance Logged In-->	
+	<TestSequence name="LOYALTY_BALANCE_INQUIRY_LOGGED_IN">		
+		<TestStep description="Select Loyalty Balance at Home Screen" action="LOYALTY_BALANCE_INQUIRY" />
+	</TestSequence>
+	<!--Select Associate Dashboard Logged In-->	
+	<TestSequence name="EMPLOYEE_MAINTENANCE_LOGGED_IN">		
+		<TestStep description="Select Engagement Activity at Home Screen" action="EMPLOYEE_MAINTENANCE" />
+	</TestSequence>
+	<!--Select Borrow Associate Logged In-->	
+	<TestSequence name="EMPLOYEE_BORROWE_LOGGED_IN">		
+		<TestStep description="Select Borrow Associate at Home Screen" action="EMPLOYEE_BORROW" />
+	</TestSequence>
+	<!--Select Customer Maintenance Logged In-->	
+	<TestSequence name="CUSTOMER_MAINTENANCE_LOGGED_IN">		
+		<TestStep description="Select Customer Maintenance at Home Screen" action="CUSTOMER_MAINTENANCE" />
+	</TestSequence>
+	<!--Select Reprint Inventory Adjustment Logged In-->
+	<TestSequence name="INVENTORY_ADJUSTMENT_SETUP_LOGGED_IN">		
+		<TestStep description="Select Inventory Adjustment at Home Screen" action="INVENTORY_ADJUSTMENT_SETUP" />
+	</TestSequence>
+
+<!--Menu Option After Start Sale-->
+	<!--Select Cancel Tramsaction at Sale Screen-->
+	<TestSequence name="CANCEL_TRANSACTION_SALE">
+		<TestStep description="Select Cancel Transaction at Sale Screen" action="ROLLBACK_TRANS_PROMPT" />
+	</TestSequence>
+	<!--Select Return Tramsaction at Sale Screen-->
+	<TestSequence name="RETURN_TRANSACTION_SALE">		
+		<TestStep description="Select Return Transaction at Sale Screen" action="NEW_RETURN" />
+	</TestSequence>
+	<!--Select Redeem Rain Check at Sale Screen-->
+	<TestSequence name="REDEEM_RAIN_CHECK_SALE">
+		<TestStep description="Select Redeem rain check at Sale Screen" action="REDEEM_RAIN_CHECK" />
+	</TestSequence>
+	<!--Select Reissue Gift Receipt at Sale Screen-->
+	<TestSequence name="REISSUE_GIFT_SALE">
+		<TestStep description="Select Reissue Gift Receipt at Sale Screen" action="GIFT_RECEIPT_REISSUE_SELECTION" />
+	</TestSequence>
+	<!--Select Layaway Transaction at Sale Screen-->
+	<TestSequence name="LAYAWAY">
+		<TestStep description="Select Layaway Transaction at Sale Screen" action="PRE_LAYAWAY_CHAIN" />
+	</TestSequence>
+	<!--Select Special Order Transaction at Sale Screen-->
+	<TestSequence name="SPECIAL_ORDER_TRANS">
+		<TestStep description="Select Special Order Transaction at Sale Screen" action="PRE_SPECIAL_ORDER_CHAIN" />
+	</TestSequence>
+	<!--Select Work Order Transaction at Sale Screen-->
+	<TestSequence name="WORK_ORDER_TRANS">		
+		<TestStep description="Select Work Order Transaction at Sale Screen" action="PRE_WORK_ORDER_CHAIN" />
+	</TestSequence>
+	<!--Select Pre-Sale Transaction at Sale Screen-->
+	<TestSequence name="PRE_SALE_TRANS">		
+		<TestStep description="Select Pre Sale Transaction at Sale Screen" action="PRE_PRESALE_CHAIN" />
+	</TestSequence>
+	<!--Select Hold Transaction at Sale Screen-->
+	<TestSequence name="HOLD_TRANS">		
+		<TestStep description="Select Hold Transaction at Sale Screen" action="PRE_ONHOLD_CHAIN" />
+	</TestSequence>
+	<!--Select Local Order Transaction at Sale Screen-->
+	<TestSequence name="LOCAL_ORDER_TRANS">		
+		<TestStep description="Select Local Order Transaction at Sale Screen" action="PRE_LOCALORDER_CHAIN" />
+	</TestSequence>
+	<!--Add warranty at Sale Screen-->
+	<TestSequence name="ADD_WARRANTY_SALE">		
+		<TestStep description="Add Warranty at Sale Screen" action="PRE_SALE_WARRANTY" />
+	</TestSequence>
+	<!--Select House Account Payment at Sale Screen-->
+	<TestSequence name="HOUSE_ACCOUNT_PAYMENT">		
+		<TestStep description="Select House Account payment at Sale Screen" action="HOUSE_ACCOUNT_PAYMENT" />
+	</TestSequence>
+	<!--Select Inventory Locator at Sale Screen-->
+	<TestSequence name="INVENTORY_LOCATOR_SALE">		
+		<TestStep description="Select Inventory Locator at Sale Screen" action="GENERIC_INVENTORY_LOCATOR" />
+	</TestSequence>
+	
+	<!--Select Till Options > Paid Out Menu-->
+	<TestSequence name="SELECT_PAID_OUT">
+		<TestStep description="Select Paid Out" action="PAID_OUT" />
+	</TestSequence>
+	<!--Select Till Options > Paid In Menu-->
+	<TestSequence name="SELECT_PAID_IN">
+		<TestStep description="Select Paid in" action="PAID_IN" />
+	</TestSequence>
+	<!--Select Till Options > Change Float Menu-->
+	<TestSequence name="SELECT_CHANGE_FLOAT">
+		<TestStep description="Select Change Float" action="CHANGE_TILL_FLOAT_SETUP" />
+	</TestSequence>
+	<!--Select Till Options > Post Void Menu-->
+	<TestSequence name="SELECT_POST_VOID">
+		<TestStep description="Select Post Void" action="POST_VOID" />
+	</TestSequence>
+	<!--Select Till Options > Post Void Menu-->
+	<TestSequence name="SELECT_TENDER_EXCHANGE">
+		<TestStep description="Select Tender Exchange" action="TENDER_EXCHANGE_MAINT" />
+	</TestSequence>
+</XunitConfig>

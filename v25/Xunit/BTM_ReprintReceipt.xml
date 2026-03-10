@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<!-- TEST CASES -->
+	<!--Receipt Reprint Options-->	
+    <TestCase name="REPRINT-EJ-001" applicationKey="REGISTER" >
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>
+		<SequenceRef name="SELECT_REPRINT_LAST_RECEIPT" />
+		<TestStep action="ACCEPT" description="ACCEPT (ReprintRcptsListSelectionOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+    </TestCase>
+
+</XunitConfig>

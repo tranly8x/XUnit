@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	
+	<!-- PARAMETERS -->
+
+	<!-- Login parameters -->
+	<Parameter name="userid" value="100" />
+	<Parameter name="password" value="1" />
+	<!-- Location parameters -->
+	<Parameter name="orgId" value="${dtv.location.organizationId}" />
+	<Parameter name="rtlLocId" value="${dtv.location.storeNumber}" />
+	<Parameter name="wkstnId" value="${dtv.location.terminalNumber}" />
+	<!-- Currency parameters -->
+	<Parameter name="currencyId" value="@invokeConfigMgr(getLocalCurrencyId)" />
+	<Parameter name="localCurrency" value="!{currencyId}_CURRENCY" />	
+	<!-- Tender exchange parameters -->
+	<Parameter name="incomingExchangeTender" value="MALL_CERTIFICATE" />
+	<Parameter name="outgoingExchangeTender" value="!{localCurrency}" />
+	<!-- Inventory receiving/shipping new doc valid subtypes -->
+	<Parameter name="receivingValidSubTypeNew" value="ASN" />
+	<Parameter name="shippingValidSubTypeNew" value="DEFECTIVE_RETURN" />
+	
+	<!-- DATA POOLS -->
+	<DataPool name="GET_LAYAWAYS_DB" queryKey="XUNIT_CUSTOMER_ACCOUNT" maxRows="10">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argCustAcctCode" value="LAYAWAY" />
+	</DataPool>
+	
+	<DataPool name="OPEN_LAYAWAYS_DB" queryKey="XUNIT_CUSTOMER_ACCOUNT" maxRows="10">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argCustAcctCode" value="LAYAWAY" />
+		<Parameter name="argMinimumBalance" value="1.00" />
+		<Parameter name="argCustAcctLineStatCode" value="OPEN" />
+	</DataPool>
+	<DataPool name="SPECIAL_ORDER_ACCOUNT_DB" queryKey="XUNIT_CUSTOMER_ACCOUNT" maxRows="10">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argCustAcctCode" value="SPECIAL_ORDER" />
+	</DataPool>
+	
+	<DataPool name="NON_MERCH_ITEMS_DB" queryKey="XUNIT_NON_MERCH_ITEMS" maxRows="10">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+        <Parameter name="argNonPhysItemTypcode" value="GIFT_WRAP" />
+        <Parameter name="argPromptForDescription" value="0" />
+        <Parameter name="argPromptForPrice" value="0" />
+        <Parameter name="argPromptForQuantity" value="0" />
+        <Parameter name="argMeasurementRequired" value="0" />
+	</DataPool>
+	
+	<DataPool name="ITEMS_ALLOW_SPECIAL_ORDER_DB" queryKey="XUNIT_ITEMS" maxRows="200">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+        <Parameter name="argPromptForQuantityFlag" value="0" />
+        <Parameter name="argPromptForPriceFlag" value="0" />
+        <Parameter name="argMeasurementRequiredFlag" value="0" />
+        <Parameter name="argPromptForDescriptionFlag" value="0" />
+        <Parameter name="argWarrantyFlag" value="0" />
+        <Parameter name="argAttachedItemsFlag" value="0" />
+        <Parameter name="argSerializedItemFlag" value="0" />
+        <Parameter name="argDisallowDiscountsFlag" value="0" />
+		<Parameter name="argLevelCode" value="ITEM" />
+		<Parameter name="argNoMinAge" value="1" />
+		<Parameter name="argItemTypecode" value="STANDARD" />
+		<Parameter name="argDisallowSpecialOrder" value="0" />
+		<Parameter name="argMaxSale" value="1" />
+	</DataPool>
+	
+	<DataPool name="ITEM_FEE_DB" queryKey="XUNIT_NON_MERCH_ITEMS" maxRows="10">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+        <Parameter name="argNonPhysItemTypcode" value="FEE" />
+        <Parameter name="argNonPhysItemSubType" value="FEE" />
+        <Parameter name="argPromptForDescription" value="0" />
+        <Parameter name="argPromptForPrice" value="0" />
+        <Parameter name="argPromptForQuantity" value="0" />
+        <Parameter name="argMeasurementRequired" value="0" />
+		<Parameter name="argMaxSale" value="1" />
+	</DataPool>
+	
+	<DataPool name="WARRANTY_DB" queryKey="XUNIT_WARRANTY" maxRows="200">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+        <Parameter name="argType" value="OPEN" />
+	</DataPool>
+	
+	<DataPool name="ITEMS_RESTOCKING_FEE_DB" queryKey="XUNIT_NON_MERCH_ITEMS" maxRows="10">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+        <Parameter name="argNonPhysItemTypcode" value="RESTOCKING_FEE" />
+        <Parameter name="argNonPhysItemSubType" value="FEE" />
+        <Parameter name="argPromptForDescription" value="0" />
+        <Parameter name="argPromptForPrice" value="0" />
+        <Parameter name="argPromptForQuantity" value="0" />
+        <Parameter name="argMeasurementRequired" value="0" />
+	</DataPool>
+	
+	<DataPool name="ITEMS_DISALLOW_SEND_SALE_DB" queryKey="XUNIT_ITEMS" maxRows="200">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+        <Parameter name="argPromptForQuantityFlag" value="0" />
+        <Parameter name="argPromptForPriceFlag" value="0" />
+        <Parameter name="argMeasurementRequiredFlag" value="0" />
+        <Parameter name="argPromptForDescriptionFlag" value="0" />
+        <Parameter name="argWarrantyFlag" value="0" />
+        <Parameter name="argAttachedItemsFlag" value="0" />
+        <Parameter name="argSerializedItemFlag" value="0" />
+        <Parameter name="argDisallowDiscountsFlag" value="0" />
+        <Parameter name="argDisallowLayaway" value="1" />
+		<Parameter name="argLevelCode" value="ITEM" />
+		<Parameter name="argNoMinAge" value="1" />
+		<Parameter name="argItemTypecode" value="STANDARD" />
+		<Parameter name="argMaxSale" value="1" />
+	</DataPool>
+	
+	<DataPool name="STYLE_ITEM_DB" queryKey="XUNIT_ITEMS" maxRows="10">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+        <Parameter name="argPromptForQuantityFlag" value="0" />
+        <Parameter name="argPromptForPriceFlag" value="0" />
+        <Parameter name="argMeasurementRequiredFlag" value="0" />
+        <Parameter name="argPromptForDescriptionFlag" value="0" />
+        <Parameter name="argWarrantyFlag" value="0" />
+        <Parameter name="argAttachedItemsFlag" value="0" />
+        <Parameter name="argSerializedItemFlag" value="0" />
+        <Parameter name="argDisallowDiscountsFlag" value="0" />
+		<Parameter name="argLevelCode" value="STYLE" />
+		<Parameter name="argNoMinAge" value="1" />
+		<Parameter name="argItemTypecode" value="STANDARD" />
+		<Parameter name="argMaxSale" value="1" />
+	</DataPool>
+	
+	<DataPool name="ITEMS_DISALLOW_DEAL_DB" queryKey="XUNIT_ITEMS" maxRows="200">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+        <Parameter name="argPromptForQuantityFlag" value="0" />
+        <Parameter name="argPromptForPriceFlag" value="0" />
+        <Parameter name="argMeasurementRequiredFlag" value="0" />
+        <Parameter name="argPromptForDescriptionFlag" value="0" />
+        <Parameter name="argWarrantyFlag" value="0" />
+        <Parameter name="argAttachedItemsFlag" value="0" />
+        <Parameter name="argSerializedItemFlag" value="0" />
+        <Parameter name="argDisallowDiscountsFlag" value="0" />
+        <Parameter name="argDisallowDealsFlag" value="1" />
+		<Parameter name="argLevelCode" value="ITEM" />
+		<Parameter name="argNoMinAge" value="1" />
+		<Parameter name="argItemTypecode" value="STANDARD" />
+		<Parameter name="argMaxSale" value="1" />
+	</DataPool>
+	
+	<DataPool name="ITEMS_DISALLOW_DISC_DB" queryKey="XUNIT_ITEMS" maxRows="200">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+        <Parameter name="argPromptForQuantityFlag" value="0" />
+        <Parameter name="argPromptForPriceFlag" value="0" />
+        <Parameter name="argMeasurementRequiredFlag" value="0" />
+        <Parameter name="argPromptForDescriptionFlag" value="0" />
+        <Parameter name="argWarrantyFlag" value="0" />
+        <Parameter name="argAttachedItemsFlag" value="0" />
+        <Parameter name="argSerializedItemFlag" value="0" />
+        <Parameter name="argDisallowDiscountsFlag" value="1" />
+		<Parameter name="argLevelCode" value="ITEM" />
+		<Parameter name="argNoMinAge" value="1" />
+		<Parameter name="argItemTypecode" value="STANDARD" />
+		<Parameter name="argMaxSale" value="1" />
+	</DataPool>
+	
+	<DataPool name="ITEMS_PRICE_PROMPT_DB" queryKey="XUNIT_ITEMS" maxRows="200">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+        <Parameter name="argPromptForQuantityFlag" value="0" />
+        <Parameter name="argPromptForPriceFlag" value="0" />
+        <Parameter name="argMeasurementRequiredFlag" value="0" />
+        <Parameter name="argPromptForDescriptionFlag" value="0" />
+        <Parameter name="argWarrantyFlag" value="0" />
+        <Parameter name="argAttachedItemsFlag" value="0" />
+        <Parameter name="argSerializedItemFlag" value="0" />
+        <Parameter name="argDisallowDiscountsFlag" value="0" />
+		<Parameter name="argLevelCode" value="ITEM" />
+		<Parameter name="argNoMinAge" value="1" />
+		<Parameter name="argItemTypecode" value="STANDARD" />
+		<Parameter name="argMaxSale" value="1" />
+	</DataPool>
+	
+	<DataPool name="ITEMS_QTY_PROMPT_DB" queryKey="XUNIT_ITEMS" maxRows="200">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+        <Parameter name="argPromptForQuantityFlag" value="1" />
+        <Parameter name="argPromptForPriceFlag" value="0" />
+        <Parameter name="argMeasurementRequiredFlag" value="0" />
+        <Parameter name="argPromptForDescriptionFlag" value="0" />
+        <Parameter name="argWarrantyFlag" value="0" />
+        <Parameter name="argAttachedItemsFlag" value="0" />
+        <Parameter name="argSerializedItemFlag" value="0" />
+        <Parameter name="argDisallowDiscountsFlag" value="0" />
+		<Parameter name="argLevelCode" value="ITEM" />
+		<Parameter name="argNoMinAge" value="1" />
+		<Parameter name="argItemTypecode" value="STANDARD" />
+		<Parameter name="argMaxSale" value="1" />
+	</DataPool>
+	
+	<DataPool name="ITEMS_ATTACHED_DB" queryKey="XUNIT_ITEMS" maxRows="200">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+        <Parameter name="argPromptForQuantityFlag" value="0" />
+        <Parameter name="argPromptForPriceFlag" value="0" />
+        <Parameter name="argMeasurementRequiredFlag" value="0" />
+        <Parameter name="argPromptForDescriptionFlag" value="0" />
+        <Parameter name="argWarrantyFlag" value="0" />
+        <Parameter name="argAttachedItemsFlag" value="1" />
+        <Parameter name="argSerializedItemFlag" value="0" />
+        <Parameter name="argDisallowDiscountsFlag" value="0" />
+		<Parameter name="argLevelCode" value="ITEM" />
+		<Parameter name="argNoMinAge" value="1" />
+		<Parameter name="argItemTypecode" value="STANDARD" />
+		<Parameter name="argMaxSale" value="1" />
+	</DataPool>
+	
+	<DataPool name="ITEMS_SERIAL_DB" queryKey="XUNIT_ITEMS" maxRows="200">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+        <Parameter name="argPromptForQuantityFlag" value="0" />
+        <Parameter name="argPromptForPriceFlag" value="0" />
+        <Parameter name="argMeasurementRequiredFlag" value="0" />
+        <Parameter name="argPromptForDescriptionFlag" value="0" />
+        <Parameter name="argWarrantyFlag" value="0" />
+        <Parameter name="argAttachedItemsFlag" value="0" />
+        <Parameter name="argSerializedItemFlag" value="1" />
+        <Parameter name="argDisallowDiscountsFlag" value="0" />
+		<Parameter name="argLevelCode" value="ITEM" />
+		<Parameter name="argNoMinAge" value="1" />
+		<Parameter name="argItemTypecode" value="STANDARD" />
+		<Parameter name="argNoRestockingFee" value="1" />
+		<Parameter name="argMaxSale" value="1" />
+	</DataPool>
+	
+	<DataPool name="ITEMS_DB" queryKey="XUNIT_ITEMS" maxRows="200">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+        <Parameter name="argPromptForQuantityFlag" value="0" />
+        <Parameter name="argPromptForPriceFlag" value="0" />
+        <Parameter name="argMeasurementRequiredFlag" value="0" />
+        <Parameter name="argPromptForDescriptionFlag" value="0" />
+        <Parameter name="argWarrantyFlag" value="0" />
+        <Parameter name="argAttachedItemsFlag" value="0" />
+        <Parameter name="argSerializedItemFlag" value="0" />
+        <Parameter name="argDisallowDiscountsFlag" value="0" />
+		<Parameter name="argLevelCode" value="ITEM" />
+		<Parameter name="argNoMinAge" value="1" />
+		<Parameter name="argItemTypecode" value="STANDARD" />
+		<Parameter name="argNoRestockingFee" value="1" />
+		<Parameter name="argDisallowPriceChangeFlag" value="0" />
+		<Parameter name="argDisallowDealsFlag" value="0" />
+		<!--<Parameter name="argMinimumQty" value="1" />-->
+		<Parameter name="argMaxSale" value="1" />
+	</DataPool>
+
+	<DataPool name="ITEMS_TAX_DB" queryKey="XUNIT_ITEMS" maxRows="200">
+        <Parameter name="argOrganizationId" value="!{orgId}" />
+        <Parameter name="argPromptForQuantityFlag" value="0" />
+        <Parameter name="argPromptForPriceFlag" value="0" />
+        <Parameter name="argMeasurementRequiredFlag" value="0" />
+        <Parameter name="argPromptForDescriptionFlag" value="0" />
+        <Parameter name="argWarrantyFlag" value="0" />
+        <Parameter name="argAttachedItemsFlag" value="0" />
+        <Parameter name="argSerializedItemFlag" value="0" />
+        <Parameter name="argDisallowDiscountsFlag" value="0" />
+        <Parameter name="argLevelCode" value="ITEM" />
+        <Parameter name="argNoMinAge" value="1" />
+        <Parameter name="argTaxable" value="0" />
+        <Parameter name="argItemTypecode" value="STANDARD" />
+		<Parameter name="argMaxSale" value="1" />
+    </DataPool>
+	
+	<!-- Customer data pools -->
+	<DataPool name="CUSTOMERS_DB" queryKey="XUNIT_CUSTOMERS" maxRows="50">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+	</DataPool>
+	<!-- All completed retail sale transaction -->
+	<DataPool name="COMPLETED_SALE_TRANS_DB" queryKey="XUNIT_TRANSACTIONS">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argRtlLoc" value="!{rtlLocId}" />
+		<Parameter name="argWkstnId" value="!{wkstnId}" />
+		<Parameter name="argBusinessDate" value="@getCurrentBusinessDate" />
+		<Parameter name="argTransTypeCode" value="RETAIL_SALE" />
+		<Parameter name="argTransStatCode" value="COMPLETE" />
+		<Parameter name="argPostVoidFlag" value="0" />
+	</DataPool>
+	<!-- All completed tender control transaction -->
+	<DataPool name="COMPLETED_TENDER_CONTROL_TRANS_DB" queryKey="XUNIT_TRANSACTIONS">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argRtlLoc" value="!{rtlLocId}" />
+		<Parameter name="argWkstnId" value="!{wkstnId}" />
+		<Parameter name="argBusinessDate" value="@getCurrentBusinessDate" />
+		<Parameter name="argTransTypeCode" value="TENDER_CONTROL" />
+		<Parameter name="argTransStatCode" value="COMPLETE" />
+		<Parameter name="argPostVoidFlag" value="0" />
+	</DataPool>
+	<!-- All completed sale transaction -->
+	<DataPool name="COMPLETED_SALE_TRANS_DB" queryKey="XUNIT_TRANSACTIONS">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argRtlLoc" value="!{rtlLocId}" />
+		<Parameter name="argWkstnId" value="!{wkstnId}" />
+		<Parameter name="argBusinessDate" value="@getCurrentBusinessDate" />
+		<Parameter name="argTransTypeCode" value="RETAIL_SALE" />
+		<Parameter name="argTransStatCode" value="COMPLETE" />
+		<Parameter name="argPostVoidFlag" value="0" />
+	</DataPool>
+	<!-- Reason code data pools -->
+	<DataPool name="CHANGE_FLOAT_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="CHANGE_FLOAT" />
+	</DataPool>
+	<DataPool name="CHANGE_ITEM_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="CHANGE_ITEM" />
+	</DataPool>
+	<DataPool name="DISCOUNT_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="DISCOUNT" />
+	</DataPool>
+	<DataPool name="EXCHANGE_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="EXCHANGE" />
+	</DataPool>
+	<DataPool name="INVENTORY_ADJUSTMENT_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="INVENTORY_ADJUSTMENT" />
+	</DataPool>
+	<DataPool name="ITEM_TRANSFER_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="ITEM_TRANSFER" />
+	</DataPool>
+	<DataPool name="NO_SALE_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="NO_SALE" />
+	</DataPool>
+	<DataPool name="ORDER_CANCEL_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="ORDER_CANCEL" />
+	</DataPool>
+	<DataPool name="ORDER_REJECT_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="ORDER_REJECT" />
+	</DataPool>
+	<DataPool name="PAID_IN_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="PAID_IN" />
+	</DataPool>
+	<DataPool name="PAID_OUT_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="PAID_OUT" />
+	</DataPool>
+	<DataPool name="PAYMENT_REVERSAL_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="PAYMENT_REVERSAL" />
+	</DataPool>
+	<DataPool name="POST_VOID_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="POST_VOID" />
+	</DataPool>
+	<DataPool name="PRICE_CHANGE_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="PRICE_CHANGE" />
+	</DataPool>
+	<DataPool name="RETURN_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="RETURN" />
+	</DataPool>
+	<DataPool name="TAX_CHANGE_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="TAX_CHANGE" />
+	</DataPool>
+	<DataPool name="TAX_EXEMPT_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="TAX_EXEMPT" />
+	</DataPool>
+	<DataPool name="TILL_COUNT_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="TILL_COUNT_DISCREPANCY" />
+	</DataPool>
+	<DataPool name="TIME_OFF_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="TIME_OFF_REAS_CODE" />
+	</DataPool>
+	<DataPool name="TRANS_CANCEL_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="TRANSACTION_CANCEL" />
+	</DataPool>
+	<DataPool name="VOID_LINE_REASONS" queryKey="XUNIT_REASON_CODES">
+		<Parameter name="argOrganizationId" value="!{orgId}" />
+		<Parameter name="argReasonTypeCode" value="VOID_LINE_ITEM" />
+	</DataPool>
+	<!--Get data from files -->
+	<DataPool name="ENTER_CUSTOMER_FILE" filePath="version1\xunit\datapool\pool_customer.txt" />
+	<DataPool name="GIFTCARD_NUMBER_FILE" filePath="version1\xunit\datapool\pool_giftcard.txt" />
+	<DataPool name="REGULAR_ITEMS_FILE" filePath="version1\\xunit\\datapool\\pool_regularitem.txt"/>
+	<DataPool name="WARRANTY_ITEMS_FILE" filePath="version1\xunit\datapool\pool_warrantyitem.txt"/>
+	<DataPool name="ITEMS_NO_TAX_FILE" filePath="version1\\xunit\\datapool\\pool_itemnotax.txt"/>
+	<DataPool name="TRAN_DISC_OPT_FILE" filePath="version1\\xunit\\datapool\\pool_tran_discount_options.txt"/>
+	<DataPool name="ITEMS_NONMERCH_FILE" filePath="version1\\xunit\\datapool\\pool_nonmerchitem.txt"/>
+	<DataPool name="ITEM_RESTRICTION_FILE" filePath="version1\xunit\datapool\pool_restrictionitem.txt"/>
+	<DataPool name="ITEM_ATTACHEDITEM_FILE" filePath="version1\xunit\datapool\pool_attacheditem.txt"/>
+	<DataPool name="ITEM_KITITEM_FILE" filePath="version1\xunit\datapool\pool_kititem.txt"/>
+	<DataPool name="SERIAL_NUMBER_FILE" filePath="version1\xunit\datapool\pool_serial_number.txt"/>
+	<DataPool name="NO_SALE_ITEM_FILE" filePath="version1\xunit\datapool\pool_nosaleitem.txt"/>
+	<DataPool name="SHIPPING_METHOD_FILE" filePath="version1\xunit\datapool\pool_shippingmethod.txt"/>
+</XunitConfig>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<!-- TEST CASES -->
+	<!--Check Features disabled-->	
+    <TestCase name="ASSERT_DISABLED_MENU_ITEM" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="ASSERT_DISABLED_MENU_ITEM" values="WORKSTATION_OPEN" /><!-- Disabled Register Open button-->
+		<SequenceRef name="ASSERT_DISABLED_MENU_ITEM" values="WORKSTATION_CLOSE" /><!-- Disabled Register Close button-->
+		<SequenceRef name="ASSERT_DISABLED_MENU_ITEM" values="RETAIL_LOCATION_CLOSE" /><!-- Disabled Store Close button-->
+		<SequenceRef name="ASSERT_DISABLED_MENU_ITEM" values="RETAIL_LOCATION_OPEN" /><!-- Disabled Store Open button-->
+    </TestCase>
+
+</XunitConfig>

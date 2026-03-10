@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<!-- TEST CASES -->
+	<!--Open Register-->	
+    <TestCase name="STOREOP-OPEN-REG-001" priority="-991" applicationKey="REGISTER" >
+		<Parameter name="countAMT" value="20000" />
+		<Assertion target="@getWorkstationState" compareType="EQUALS" compareVal="CLOSED" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="REGISTER_OPEN_MN" />		
+		<SequenceRef name="REGISTER_OPEN_COUNT_DENOMINATION"  values="!{countAMT}"/>  		
+        <SequenceRef name="REGISTER_OPEN_STEPS" />
+		<Assertion target="@getWorkstationState" compareType="EQUALS" compareVal="OPEN" />
+    </TestCase>
+	<!--Close Register and count type as DENOMINATION-->
+	<TestCase name="STOREOP-CLOSE-REG-001" priority="990" applicationKey="REGISTER" >
+		<Assertion target="@getWorkstationState" compareType="EQUALS" compareVal="OPEN" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="REGISTER_CLOSE_MN" />		
+		<SequenceRef name="COUNT_USD_CURRENCY_DENOMINATION"  />
+		<SequenceRef name="COUNT_CHECK_DENOMINATION" />
+		<SequenceRef name="COUNT_TRAVEL_CHECK" />
+		<SequenceRef name="COUNT_GIFT_CARD" />
+		<SequenceRef name="COUNT_COUPON" />
+		<SequenceRef name="REGISTER_CLOSE_STEPS" />      
+		<Assertion target="@getWorkstationState" compareType="EQUALS" compareVal="CLOSED" />
+    </TestCase>
+	<!--Open Store-->
+	<TestCase name="STOREOP-OPEN-STORE-001" priority="-1000" applicationKey="REGISTER" >
+		<Assertion target="@getRetailLocationState" compareType="EQUALS" compareVal="CLOSED" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="STORE_OPEN_MN" />		
+		<SequenceRef name="ENTER_BUSINESS_DATE" />   		
+        <SequenceRef name="STORE_OPEN_STEPS" />
+    </TestCase>
+	<!--Close store and count type as DENOMINATION-->
+	<TestCase name="STOREOP-CLOSE-STORE-001" priority="1000"  applicationKey="REGISTER" >
+		<Assertion target="@getRetailLocationState" compareType="EQUALS" compareVal="OPEN" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="FORCE_CLOSE_REGISTER" />
+		<SequenceRef name="STORE_CLOSE_MN" />
+		<SequenceRef name="STORE_CLOSE_SUSPEND_TRANSACTION" />
+		<SequenceRef name="STORE_CLOSE_MESSAGE" />
+		<SequenceRef name="SYSTEM_CYCLE_QUESTIONS" />              
+		<SequenceRef name="SB_COUNT_USD_CURRENCY_DENOMINATION"  />		
+		<SequenceRef name="SB_COUNT_CHECK_DENOMINATION"  />
+		<SequenceRef name="SB_COUNT_TRAVEL_CHECK"  />
+		<SequenceRef name="STORE_CLOSE_STEPS" />
+		<Assertion target="@getRetailLocationState" compareType="EQUALS" compareVal="CLOSED" />
+    </TestCase>
+	<!--Register Open Count-->
+	<TestSequence name="REGISTER_OPEN_COUNT_DENOMINATION" parameters="defaultFloat">
+		<TestStep action="COUNT_SELECTED" description="COUNT_SELECTED (PromptRegisterStartTillCountOp)">
+            <ListSelect  method="getName" modelKey="TILL_COUNT" value="USD_CURRENCY"/>
+        </TestStep>		
+        <TestStep action="ACCEPT" data="!{defaultFloat}" description="Enter !{defaultFloat} (MobileTenderDenominationCountOp)"/>
+        <TestStep action="ABORT_CHANGES" description="ABORT_CHANGES (MobileTenderDenominationCountOp)"/>
+	</TestSequence>
+	<!--Register Open Count Total Short-->
+	<TestSequence name="REGISTER_OPEN_COUNT_TOTAL_SHORT" parameters="defaultFloat">
+		<TestStep action="COUNT_SELECTED" description="COUNT_SELECTED (PromptRegisterStartTillCountOp)">
+            <ListSelect  method="getName" modelKey="TILL_COUNT" value="USD_CURRENCY"/>
+        </TestStep>
+		<TestStep action="ACCEPT" data="1" description="Enter 1 (TenderUnitCountOp)" condition="@and(@promptEquals(TILL_ENTER_SERIAL_PROMPT),@isPositive(@getCurrentTillCountItem.getTotalSystemAmount))" />		
+        <TestStep action="ACCEPT" data="!{defaultFloat}" description="Enter !{defaultFloat} (MobileTenderDenominationCountOp)"/>
+        <TestStep action="ABORT_CHANGES" description="ABORT_CHANGES (MobileTenderDenominationCountOp)"/>
+	</TestSequence>
+	<!--Register Close Count-->
+	<TestSequence name="REGISTER_CLOSE_COUNT">
+		<SequenceRef name="TILL_COUNTS" />
+	</TestSequence>
+	<!--Store Close Count-->
+	<!--Till Count-->
+	<TestSequence name="TILL_COUNTS">
+		<SequenceRef name="COUNT_USD_CURRENCY"  />
+		<SequenceRef name="COUNT_CREDIT_CARD" />
+		<SequenceRef name="COUNT_TRAVEL_CHECK" />
+		<SequenceRef name="COUNT_CHECK" />
+		<SequenceRef name="COUNT_COUPON" />
+	</TestSequence>
+	<!--Count Gift Card-->
+	<TestSequence name="COUNT_GIFT_CARD" >
+		<TestStep action="COUNT_SELECTED" description="Count GIFT CARD">
+            <ListSelect  method="getName" modelKey="TILL_COUNT" value="XPAY_GIFT_CARD"/> 
+        </TestStep>
+		<TestStep action="ACCEPT" data="1" description="Enter 1 (TenderTotalNormalCountOp)" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)"/>	
+        <TestStep action="ACCEPT" data="@getCurrentTillCountItem.getTotalSystemAmount" description="Enter Gift Card Counted (MobileTenderDenominationCountOp)" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)"/>
+        <TestStep action="ABORT_CHANGES" description="ABORT_CHANGES (MobileTenderDenominationCountOp)"/>
+	</TestSequence>
+	<!--Count TRAVEL CHECK-->
+	<TestSequence name="COUNT_TRAVEL_CHECK" >
+		<TestStep action="COUNT_SELECTED" description="Count Travel Check">
+            <ListSelect  method="getName" modelKey="TILL_COUNT" value="USD_TRAVELERS_CHECK"/> 
+        </TestStep>
+        <TestStep action="ACCEPT" data="@getCurrentTillCountItem.getTotalSystemAmount.divide(100).intValue()" description="Enter Travel Check Counted (MobileTenderDenominationCountOp)" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)"/>
+        <TestStep action="ABORT_CHANGES" description="ABORT_CHANGES (MobileTenderDenominationCountOp)"/>
+	</TestSequence>
+	<!--Count CASH-->
+	<TestSequence name="COUNT_USD_CURRENCY_DENOMINATION" >
+		<TestStep action="COUNT_SELECTED" description="Count Cash USD Currency">
+			<ListSelect  method="getName" modelKey="TILL_COUNT" value="USD_CURRENCY"/> 
+        </TestStep>	
+        <TestStep action="ACCEPT" data="@getCurrentTillCountItem.getTotalSystemAmount.multiply(100).intValue()" description="Enter Cash Counted" condition="@promptEquals(TENDER_DENOMINATION_ENTER_COUNT)"/>
+        <TestStep action="ABORT_CHANGES" description="ABORT_CHANGES (MobileTenderDenominationCountOp)"/>
+	</TestSequence>
+	
+	<TestSequence name="COUNT_USD_CURRENCY_TOTAL_SHORT" >
+		<TestStep action="COUNT_SELECTED" description="Count Cash USD Currency">
+			<ListSelect  method="getName" modelKey="TILL_COUNT" value="USD_CURRENCY"/> 
+        </TestStep>
+        <!--Count NOT DENOMINATION -->
+		<TestStep action="ACCEPT" data="1" description="Enter 1 (TenderTotalNormalCountOp)" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)"/>		
+		<TestStep action="ACCEPT" data="@getCurrentTillCountItem.getTotalSystemAmount" description="Enter 1 (TILL_ENTER_COUNTS_PROMPT)" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)"/>		
+        <TestStep action="ABORT_CHANGES" description="ABORT_CHANGES (MobileTenderDenominationCountOp)"/>
+	</TestSequence>
+	<!--Count CREDIT CARD-->
+	<TestSequence name="COUNT_CREDIT_CARD" >
+		<TestStep action="COUNT_SELECTED" description="Count Credit">
+			<ListSelect  method="getName" modelKey="TILL_COUNT" value="CREDIT_CARD"/> 
+        </TestStep>
+		<TestStep action="ACCEPT" data="1" description="Enter 1 (TenderTotalNormalCountOp)" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)"/>
+        <TestStep action="ACCEPT" data="@getCurrentTillCountItem.getTotalSystemAmount" description="Enter Credit Card Counted (TenderTotalNormalAmountOp)" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)"/>
+        <TestStep action="ABORT_CHANGES" description="ABORT_CHANGES (TenderTotalNormalCountOp)"/>
+	</TestSequence>
+	<!--Count COUPON-->
+	<TestSequence name="COUNT_COUPON" >
+		<TestStep action="COUNT_SELECTED" description="Count Coupon">
+            <ListSelect  method="getName" modelKey="TILL_COUNT" value="COUPON"/> 
+        </TestStep>
+		<TestStep action="ACCEPT" data="1" description="Enter 1 (TenderTotalNormalCountOp)" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)"/>
+        <TestStep action="ACCEPT" data="@getCurrentTillCountItem.getTotalSystemAmount" description="Enter Coupon (TenderTotalNormalAmountOp)" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)"/>
+        <TestStep action="ABORT_CHANGES" description="ABORT_CHANGES (TenderTotalNormalCountOp)"/>
+	</TestSequence>
+	<!--Enter Business Date-->
+	<TestSequence name="ENTER_BUSINESS_DATE">
+		<TestStep description="Enter Business Date to Open Store" action="ACCEPT" data="@clearTime(@getSystemTime)" />
+		<Assertion promptKey="NOTIFY_BUSINESS_DATE" />
+	</TestSequence>
+	<!--Open Store steps-->
+	<TestSequence name="STORE_OPEN_STEPS">
+		<TestStep description="Accept new business date" action="ACCEPT" />
+		<TestStep description="Accept closing comment" action="ACCEPT" condition="@isClosingMessageAvailable" />
+		<TestStep action="ACCEPT" description="ACCEPT (SendIpcMessageOp)" condition="@promptEquals(ERROR_SENDING_IPC)"/>
+		<TestStep description="Do not open the register at this time" action="NO" />
+		<Assertion target="@getRetailLocationState" compareType="EQUALS" compareVal="OPEN" />
+	</TestSequence>
+		<!--Open Store steps-->
+	<TestSequence name="STORE_CLOSE_STEPS">
+		<TestStep description="Select Done Counting" action="DONE" />
+		<TestStep description="Accept bank deposit amounts" action="YES" condition="@promptEquals(CONFIRM_BANK_DEPOSIT)" />
+		<TestStep description="Press enter to begin nightly close process" action="ACCEPT" />
+	</TestSequence>
+	
+	<TestSequence name="STORE_CLOSE_SUSPEND_TRANSACTION">
+		<TestStep description="Select Continue on Suspened Transaction Prompt" action="ACCEPT" condition="@promptEquals(SUSPENDED_TRANSACTIONS_TO_CANCEL)" />
+	</TestSequence>
+	
+	<TestSequence name="STORE_CLOSE_MESSAGE">
+		<TestStep description="Enter the closing message" action="ACCEPT" data="BTM"  />
+	</TestSequence>
+	<!--Count Gift Card when store is closing-->
+	<TestSequence name="SB_COUNT_GIFT_CARD" >
+		<TestStep action="COUNT_SELECTED" description="Count GIFT CARD">
+            <ListSelect  method="getName" modelKey="TILL_COUNT" value="XPAY_GIFT_CARD"/> 
+        </TestStep>
+		<TestStep action="ACCEPT" data="1" description="Enter 1 (TenderTotalNormalCountOp)" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)"/>	
+        <TestStep action="ACCEPT" data="@getCurrentTillCountItem.getTotalSystemAmount" description="Enter Gift Card Counted (MobileTenderDenominationCountOp)" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)"/>
+        <TestStep action="ABORT_CHANGES" description="ABORT_CHANGES (MobileTenderDenominationCountOp)"/>
+	</TestSequence>
+	<!--Count CHECK by count type as DENOMINATION-->
+	<TestSequence name="SB_COUNT_CHECK_DENOMINATION" >
+		<TestStep action="COUNT_SELECTED" description="Count Check">
+            <ListSelect  method="getName" modelKey="TILL_COUNT" value="CHECK"/> 
+        </TestStep>
+		<TestStep action="ACCEPT" data="1" description="Enter 1 (TenderUnitCountOp)" condition="@and(@promptEquals(TILL_ENTER_SERIAL_PROMPT),@isPositive(@getCurrentTillCountItem.getTotalSystemAmount))" />	
+        <TestStep action="ACCEPT" data="@getCurrentTillCountItem.getTotalSystemAmount" description="Enter Check Counted (MobileTenderDenominationCountOp)" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)"/>
+        <TestStep action="CANCEL" description="CANCEL (MobileTenderDenominationCountOp)"/>
+	</TestSequence>
+	<!--Count CHECK-->
+	<TestSequence name="SB_COUNT_CHECK_TOTAL_SHORT" >
+		<TestStep action="COUNT_SELECTED" description="Count Check">
+            <ListSelect  method="getName" modelKey="TILL_COUNT" value="CHECK"/> 
+        </TestStep>
+		<TestStep action="ACCEPT" data="1" description="Enter 1 (TenderUnitCountOp)" condition="@and(@promptEquals(TILL_ENTER_SERIAL_PROMPT),@isPositive(@getCurrentTillCountItem.getTotalSystemAmount))" />		
+        <TestStep action="ACCEPT" data="@getCurrentTillCountItem.getTotalSystemAmount" description="Enter Check Counted (MobileTenderDenominationCountOp)" condition="@and(@promptEquals(TILL_ENTER_AMOUNT_PROMPT),@isPositive(@getCurrentTillCountItem.getTotalSystemAmount))"/>
+        <TestStep action="CANCEL" description="CANCEL (MobileTenderDenominationCountOp)"/>
+	</TestSequence>
+	
+	<TestSequence name="SB_COUNT_TRAVEL_CHECK">
+		<TestStep action="COUNT_SELECTED" description="COUNT_SELECTED (PromptTillCountOp)">
+            <ListSelect  method="getName" modelKey="TILL_COUNT" value="USD_TRAVELERS_CHECK"/> 
+        </TestStep>
+        <TestStep action="ACCEPT" data="@getCurrentTillCountItem.getTotalSystemAmount.divide(100).intValue()" description="Enter Travel Check Counted (MobileTenderDenominationCountOp)" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)"/>
+        <TestStep action="ABORT_CHANGES" description="ABORT_CHANGES (MobileTenderDenominationCountOp)"/>
+	</TestSequence>
+	<TestSequence name="SB_COUNT_USD_CURRENCY_TOTAL_SHORT">
+		<TestStep action="COUNT_SELECTED" description="COUNT_SELECTED (PromptTillCountOp)">
+            <ListSelect  method="getName" modelKey="TILL_COUNT" value="USD_CURRENCY"/>
+        </TestStep>
+		<TestStep action="ACCEPT" data="1" description="Enter 1 (TenderTotalNormalCountOp)" condition="@promptEquals(TILL_ENTER_COUNTS_PROMPT)"/>		
+		<TestStep action="ACCEPT" data="@getCurrentTillCountItem.getTotalSystemAmount" description="Enter 1 (TILL_ENTER_COUNTS_PROMPT)" condition="@promptEquals(TILL_TOTAL_NORMAL_AMOUNT)"/>		
+        <TestStep action="ABORT_CHANGES" description="ABORT_CHANGES (MobileTenderDenominationCountOp)"/>
+	</TestSequence>
+	
+	<TestSequence name="SB_COUNT_USD_CURRENCY_DENOMINATION">
+		<TestStep action="COUNT_SELECTED" description="COUNT_SELECTED (PromptTillCountOp)">
+            <ListSelect  method="getName" modelKey="TILL_COUNT" value="USD_CURRENCY"/>
+        </TestStep>
+        <TestStep action="ACCEPT" data="@getCurrentTillCountItem.getTotalSystemAmount.multiply(100).intValue()" description="Enter Cash Counted" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)"/>
+        <TestStep action="ABORT_CHANGES" description="ABORT_CHANGES (MobileTenderDenominationCountOp)"/>
+	</TestSequence>
+	<!--Open Register steps-->
+	<TestSequence name="REGISTER_OPEN_STEPS">
+		<TestStep action="DONE" description="DONE (PromptRegisterStartTillCountOp)"/>
+		<TestStep description="Accept starting cash amount" action="YES" />
+		<TestStep description="Select reason code " action="ACCEPT" condition="@promptEquals(REASON_CODE_LIST)">
+			<ListSelect index="1" />
+		</TestStep>
+		<TestStep description="Enter reason code comment " action="ACCEPT" data="Open Count Diffirence" condition="@promptEquals(TILL_COUNT_DISCREPANCY_COMMENT)"/>
+	</TestSequence>
+	<!--Close Register steps-->
+	<TestSequence name="REGISTER_CLOSE_STEPS">
+		<TestStep description="click on Counting Complete button" action="DONE" />
+		<TestStep description="Acknowledge till in BALANCED_TILL screen" action="ACCEPT" condition="@promptEquals(BALANCED_TILL)" /> 
+		<TestStep description="Acknowledge till in OUT_OF_BALANCE_TILL screen" action="YES" condition="@promptEquals(OUT_OF_BALANCE_TILL)"/>
+		<TestStep description="Select reason code " action="ACCEPT" condition="@promptEquals(REASON_CODE_LIST)">
+			<ListSelect method="getReasonCode" value="TCD1" />
+		</TestStep>
+		<TestStep description="Enter reason code comment " action="ACCEPT" data="Open Count Diffirence" condition="@promptEquals(TILL_COUNT_DISCREPANCY_COMMENT)"/>
+		<TestStep description="Accept default deposit amount" action="YES" condition="@promptEquals(CONFIRM_DEPOSIT_AMOUNT)" />
+	</TestSequence>
+	<!--Count CHECK-->
+	<TestSequence name="COUNT_CHECK_TOTAL_SHORT" >
+		<TestStep action="COUNT_SELECTED" description="Count Check">
+            <ListSelect  method="getName" modelKey="TILL_COUNT" value="CHECK"/> 
+        </TestStep>
+		<TestStep action="ACCEPT" data="1" description="Enter 1 (TenderUnitCountOp)" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)" />		
+        <TestStep action="ACCEPT" data="@getCurrentTillCountItem.getTotalSystemAmount.divide(100).intValue()" description="Enter Check Counted (MobileTenderDenominationCountOp)" condition="@and(@promptEquals(TILL_ENTER_AMOUNT_PROMPT),@isPositive(@getCurrentTillCountItem.getTotalSystemAmount))"/>
+        <TestStep action="CANCEL" description="CANCEL (MobileTenderDenominationCountOp)"/>
+	</TestSequence>
+	<!--Count CHECK DENOMINATION-->
+	<TestSequence name="COUNT_CHECK_DENOMINATION" >
+		<TestStep action="COUNT_SELECTED" description="Count Check">
+            <ListSelect  method="getName" modelKey="TILL_COUNT" value="CHECK"/> 
+        </TestStep>
+		<TestStep action="ACCEPT" data="1" description="Enter 1 (TenderUnitCountOp)" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)" />	
+        <TestStep action="ACCEPT" data="@getCurrentTillCountItem.getTotalSystemAmount" description="Enter Check Counted (MobileTenderDenominationCountOp)" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)"/>
+        <TestStep action="CANCEL" description="CANCEL (MobileTenderDenominationCountOp)"/>
+	</TestSequence>
+	<!--Count CHECK DENOMINATION-->
+	<TestSequence name="COUNT_CHECK_TOTAL_SHORT" >
+		<TestStep action="COUNT_SELECTED" description="Count Check">
+            <ListSelect  method="getName" modelKey="TILL_COUNT" value="CHECK"/> 
+        </TestStep>
+		<TestStep action="ACCEPT" data="1" description="Enter 1 (TenderUnitCountOp)" condition="@and(@promptEquals(TILL_ENTER_SERIAL_PROMPT),@isPositive(@getCurrentTillCountItem.getTotalSystemAmount))" />		
+        <TestStep action="ACCEPT" data="@getCurrentTillCountItem.getTotalSystemAmount" description="Enter Check Counted (MobileTenderDenominationCountOp)" condition="@and(@promptEquals(TILL_ENTER_AMOUNT_PROMPT),@isPositive(@getCurrentTillCountItem.getTotalSystemAmount))"/>
+        <TestStep action="CANCEL" description="CANCEL (MobileTenderDenominationCountOp)"/>
+	</TestSequence>
+	<!--Force Close-->
+	<TestSequence name="FORCE_CLOSE_REGISTER" >
+		<TestStep action="FORCE_CLOSE_WORKSTATION" description="FORCE_CLOSE_WORKSTATION (PromptOp)"/>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptForceCloseWorkstationOp)" condition="@promptEquals(WORKSTATIONS_STATUS_LIST)">
+            <ListSelect index="1"/>
+        </TestStep>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptOp) (SendIpcCloseRemoteWorkstationMessageOp)" condition="@promptEquals(ERROR_SENDING_IPC)"/>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptOp)" condition="@promptEquals(NO_LIST_OPEN_WORKSTATIONS)"/>
+	</TestSequence>
+</XunitConfig>
