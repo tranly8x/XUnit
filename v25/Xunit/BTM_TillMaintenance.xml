@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<!-- TEST CASES -->
+	<!--Till Maintenance TILLMAIN-CASHPICK-001 -enter pickup AMT < System Cash AMT-->	
+    <TestCase name="TILLMAIN-CASHPICK-001" applicationKey="REGISTER" >
+		<Parameter name="pickupCashAMT" value="20" /> <!--Enter CashAMT need to backup-->
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_CASH_PICKUP" />
+		<SequenceRef name="ENTER_CASH_AMT" values="!{pickupCashAMT}" />	
+		<SequenceRef name="SELECT_DONE" />		
+    </TestCase>
+	<!--Till Maintenance TILLMAIN-CASHPICK-001 -enter pickup AMT > System Cash AMT-->	
+	<TestCase name="TILLMAIN-CASHPICK-002" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_CASH_PICKUP" />
+		<SequenceRef name="ENTER_CASH_AMT" values="@getSessionTenderAmount(USD_CURRENCY).multiply(100).intValue()" />
+		<SequenceRef name="SELECT_DONE" />
+		<Assertion promptKey="VALIDATION_ERROR_MESSAGE" />
+    </TestCase>
+	<!--Till Maintenance TILLMAIN-CASHPICK-001 -enter transfer AMT < System Cash AMT-->
+	<TestCase name="TILLMAIN-CASHTSF-001" applicationKey="REGISTER" >
+		<Parameter name="transferAmount" value="1" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_CASH_TRANSFER" />
+		<SequenceRef name="ENTER_CASH_AMT"  values="!{transferAmount}"/>
+		<SequenceRef name="SELECT_DONE" />
+    </TestCase>
+	<!--Till Maintenance TILLMAIN-CASHPICK-001 -enter transfer AMT > System Cash AMT-->
+	<TestCase name="TILLMAIN-CASHTSF-002" applicationKey="REGISTER" >	
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_CASH_TRANSFER" />
+		<!--<SequenceRef name="ENTER_CASH_AMT"  values="@getSessionTenderAmount(USD_CURRENCY).multiply(100).intValue()"/>-->
+		<SequenceRef name="ENTER_CASH_AMT"  values="100"/>
+		<SequenceRef name="SELECT_DONE" />
+    </TestCase>
+	<!--Till Maintenance Deposit OverShot=$0 -->
+	<TestCase name="TILLMAIN-MIDDEPOSIT-007" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="MIDDAY_DEPOSIT_STEPS" />
+		<SequenceRef name="SELECT_DONE" /><!--Select Count Complete-->
+	</TestCase>
+	<!--Till Maintenance Deposit OverShot>$0 -->
+	<TestCase name="TILLMAIN-MIDDEPOSIT-008" applicationKey="REGISTER" >
+		<Parameter name="depositAmount" value="20" /> <!--Enter deposit amount-->	
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="MIDDAY_DEPOSIT_GREATER" values="!{depositAmount}"/>
+		<SequenceRef name="SELECT_DONE" /><!--Select Count Complete-->
+		<Assertion promptKey="MIDDAY_DEPOSIT_CASH_AMOUNT_INVALID" />
+	</TestCase>
+	<!--Till Maintenance Audit OverShot=$0 -->
+	<TestCase name="TILLMAIN-TILLAUDIT-007" applicationKey="REGISTER" >
+		<Parameter name="cashAMT" value="100000" /> <!--Enter cash amount for audit-->
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_TILL_AUDIT" values="!{cashAMT}"/>
+		<SequenceRef name="SELECT_DONE" /><!--Select Count Complete-->
+	</TestCase>
+</XunitConfig>

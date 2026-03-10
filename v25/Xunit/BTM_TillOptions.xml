@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+	<Parameter name="itemId" value="%?ITEMS_DB.ItemId" />
+	<Parameter name="origTransSeq" value="99999" />
+	<Parameter name="origTransBusinessDate" value="@getCurrentBusinessDate" />
+	<Parameter name="origLocationId" value="357" />
+	<Parameter name="origWorkStationId" value="30" />
+	<Parameter name="newPrice" value="100" />
+	<Parameter name="associateID" value="100" />
+	<!-- TEST CASES -->
+	<!--Complete a sale transaction-->
+	<TestCase name="SALE_COMPLETE_TENDER_BY_CASH" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+    </TestCase>
+	<!--Complete a verified transaction-->
+	<TestCase name="VERIFIED_RETURN_REFUND_TO_CASH" applicationKey="REGISTER" >
+		<Parameter name="saleItem" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{saleItem}"/>
+		<SequenceRef name="CHANGE_PRICE" values="!{saleItem},69.99,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<Parameter name="returnComment" value="Test verified return" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Complete a verified return transaction-->
+	<TestCase name="UNVERIFIED_RETURN_REFUND_TO_CASH" applicationKey="REGISTER" >
+		<Parameter name="returnComment" value="Test verified return" />
+		<Parameter name="merchCardNumber" value="@generateCardNumber(MERCH_CC)" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,!{returnComment},0" iterations="3"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TO_ISSUE_MERCH_CREDIT_CARD" values="@getTransaction.getTotal.abs,!{merchCardNumber}" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Complete a blind return transaction-->
+	<TestCase name="BLIND_RETURN_REFUND_TO_CASH" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?ITEMS_DB.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,59.99" />
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="SELECT_REFUND"/>
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+		<!-- Complete an exchange with total = 0
+	<TestCase name="EVEN_EXCHANGE" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />		
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},!{newPrice},%?PRICE_CHANGE_REASONS.ReasonCode"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},!{newPrice},%?PRICE_CHANGE_REASONS.ReasonCode"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase> -->
+	<!--Complete an exchange with total > 0-->
+	<TestCase name="SALE_EXCHANGE" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId.ItemId" iterations="5" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,9.99" />
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+    </TestCase>
+	<!--Complete an exchange with total < 0-->
+	<TestCase name="RETURN_EXCHANGE" applicationKey="REGISTER" >
+		<Parameter name="saleItem" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{saleItem}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{saleItem},9.99,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>		
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},!{returnRC},!{returnComment},19.99" iterations="3"  />
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="SELECT_REFUND"/>
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--BTM Till Options test cases-->	
+    <TestCase name="TILLOP-CHGFLOAT-001" applicationKey="REGISTER" >
+		<Parameter name="newFloat" value="250" />
+		<Parameter name="tID" value="TILL3" />
+		<Parameter name="changeFloatReasonCode" value="CF1" />
+		<SequenceRef name="LOGIN" values="!{userid},!{password}" />
+		<SequenceRef name="SELECT_CHANGE_FLOAT" />
+		<SequenceRef name="CHANGE_TILL_FLOAT_STEPS" values="!{changeFloatReasonCode},!{tID},!{newFloat}"/> 
+    </TestCase>
+	<!--Paid In without Paid Out-->
+	<TestCase name="TILLOP-PAIDIN-001" applicationKey="REGISTER" >
+		<Parameter name="paidInAMT" value="250" />
+		<Parameter name="paidInRC" value="PI1" />
+		<Parameter name="paidInComment" value="BTM Xunit Testing" />
+		<SequenceRef name="LOGIN" values="!{userid},!{password}" />
+		<SequenceRef name="SELECT_PAID_IN" />
+		<SequenceRef name="PAID_IN_STEPS" values="!{paidInRC},!{paidInComment},!{paidInAMT}"/>
+	</TestCase>
+	<!--Paid In with Paid Out
+	<TestCase name="TILLOP-PAIDIN-002" applicationKey="REGISTER" >	
+		<Parameter name="paidInAMT" value="5" />
+		<Parameter name="paidInRC" value="PI1" />
+		<Parameter name="paidInComment" value="BTM Xunit Testing" />
+		<Parameter name="paidOutAMT" value="5" />
+		<Parameter name="paidOutRC" value="PO4" />
+		<Parameter name="paidOutComment" value="BTM Xunit Testing Paid Out" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_PAID_OUT" />
+		<SequenceRef name="PAID_OUT_STEPS" values="!{paidOutRC},!{paidOutComment},!{paidOutAMT}"/>-->
+		<!--<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="TENDER_CONTROL" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>
+		<SequenceRef name="SELECT_PAID_IN" />
+		<SequenceRef name="ENTER_PAID_OUT_CODE" values="T3HHETF11311AGA4C1IFJ"/>
+		<SequenceRef name="PAID_IN_STEPS" values="!{paidInRC},!{paidInComment},!{paidInAMT}"/>
+	</TestCase>-->
+
+	<TestCase name="TILLOP-PAIDOUT-001" applicationKey="REGISTER" >
+		<Parameter name="paidOutAMT" value="5" />
+		<Parameter name="paidOutRC" value="PO4" />
+		<Parameter name="paidOutComment" value="BTM Xunit Testing Paid Out" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_PAID_OUT" />
+		<SequenceRef name="PAID_OUT_STEPS" values="!{paidOutRC},!{paidOutComment},!{paidOutAMT}"/>
+	</TestCase>
+	<!--Post void a sale transaction that tendered by Cash-->
+	<TestCase name="TILLOP-POSTVOID-TRN-SALE-001" applicationKey="REGISTER" >
+		<!--<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>
+		<Parameter name="postvoidRC" value="PV1" />
+		<Parameter name="tranSeq" value="%^COMPLETED_SALE_TRANS_DB.TransSeq!" />
+		<Parameter name="tranBusinessDate" value="%^COMPLETED_SALE_TRANS_DB.BusinessDate" />
+		<Parameter name="tranLocId" value="%^COMPLETED_SALE_TRANS_DB.RtlLocId" />
+		<Parameter name="tranRegId" value="%^COMPLETED_SALE_TRANS_DB.WkstnId" />
+		<Parameter name="tranAMT" value="%^COMPLETED_SALE_TRANS_DB.Total" />-->
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="SELECT_POST_VOID" />
+		<SequenceRef name="FILL_POST_VOID_ORIG_TRANS" values="%^COMPLETED_SALE_TRANS_DB.TransSeq!,%^COMPLETED_SALE_TRANS_DB.BusinessDate,%^COMPLETED_SALE_TRANS_DB.RtlLocId,%^COMPLETED_SALE_TRANS_DB.WkstnId,%^COMPLETED_SALE_TRANS_DB.Total"/>
+		<SequenceRef name="POST_VOID_STEPS" values="%?POST_VOID_REASONS.ReasonCode"/>
+	</TestCase>
+	<!--Post void a verified return that refund to cash-->
+	<TestCase name="TILLOP-POSTVOID-TRN-RETURN-001" applicationKey="REGISTER" >
+		<!--Sale-->
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<!--Verified return-->
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="SELECT_POST_VOID" />
+		<SequenceRef name="FILL_POST_VOID_ORIG_TRANS" values="%^COMPLETED_SALE_TRANS_DB.TransSeq!,%^COMPLETED_SALE_TRANS_DB.BusinessDate,%^COMPLETED_SALE_TRANS_DB.RtlLocId,%^COMPLETED_SALE_TRANS_DB.WkstnId,%^COMPLETED_SALE_TRANS_DB.Total"/>
+		<SequenceRef name="POST_VOID_STEPS" values="%?POST_VOID_REASONS.ReasonCode"/>
+	</TestCase>
+	<!--Post void an un-verified return that refund to cash
+	<TestCase name="TILLOP-POSTVOID-TRN-RETURN-022" applicationKey="REGISTER" >	
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>
+		<Parameter name="tranSeq" value="%^COMPLETED_SALE_TRANS_DB.TransSeq!" />
+		<Parameter name="tranBusinessDate" value="%^COMPLETED_SALE_TRANS_DB.BusinessDate" />
+		<Parameter name="tranLocId" value="%^COMPLETED_SALE_TRANS_DB.RtlLocId" />
+		<Parameter name="tranRegId" value="%^COMPLETED_SALE_TRANS_DB.WkstnId" />
+		<Parameter name="tranAMT" value="%^COMPLETED_SALE_TRANS_DB.Total" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_POST_VOID" />
+		<SequenceRef name="FILL_POST_VOID_ORIG_TRANS" values="!{tranSeq},!{tranBusinessDate},!{tranLocId},!{tranRegId},!{tranAMT}"/>
+		<SequenceRef name="POST_VOID_STEPS" values="%?POST_VOID_REASONS.ReasonCode"/>
+	</TestCase>-->
+	<!--Post void a blind return that refund to cash-->
+	<TestCase name="TILLOP-POSTVOID-TRN-RETURN-043" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?ITEMS_DB.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,19.99" />
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="SELECT_REFUND"/>
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<!--Post Void-->
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="SELECT_POST_VOID" />
+		<SequenceRef name="FILL_POST_VOID_ORIG_TRANS" values="%^COMPLETED_SALE_TRANS_DB.TransSeq!,%^COMPLETED_SALE_TRANS_DB.BusinessDate,%^COMPLETED_SALE_TRANS_DB.RtlLocId,%^COMPLETED_SALE_TRANS_DB.WkstnId,%^COMPLETED_SALE_TRANS_DB.Total"/>
+		<SequenceRef name="POST_VOID_STEPS" values="%?POST_VOID_REASONS.ReasonCode"/>
+	</TestCase>
+	<!--Post void an even exchange transaction
+	<TestCase name="TILLOP-POSTVOID-TRN-EXCHANGE-001" applicationKey="REGISTER" >
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>
+		<Parameter name="tranSeq" value="%^COMPLETED_SALE_TRANS_DB.TransSeq!" />
+		<Parameter name="tranBusinessDate" value="%^COMPLETED_SALE_TRANS_DB.BusinessDate" />
+		<Parameter name="tranLocId" value="%^COMPLETED_SALE_TRANS_DB.RtlLocId" />
+		<Parameter name="tranRegId" value="%^COMPLETED_SALE_TRANS_DB.WkstnId" />
+		<Parameter name="tranAMT" value="%^COMPLETED_SALE_TRANS_DB.Total" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_POST_VOID" />
+		<SequenceRef name="FILL_POST_VOID_ORIG_TRANS" values="!{tranSeq},!{tranBusinessDate},!{tranLocId},!{tranRegId},!{tranAMT}"/>
+		<SequenceRef name="POST_VOID_STEPS" values="%?POST_VOID_REASONS.ReasonCode"/>
+	</TestCase>-->
+	<!--Post void a sale exchange transaction-->
+	<TestCase name="TILLOP-POSTVOID-TRN-EXCHANGE-002" applicationKey="REGISTER" >		
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="5" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,9.99" />
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="SELECT_POST_VOID" />
+		<SequenceRef name="FILL_POST_VOID_ORIG_TRANS" values="%^COMPLETED_SALE_TRANS_DB.TransSeq!,%^COMPLETED_SALE_TRANS_DB.BusinessDate,%^COMPLETED_SALE_TRANS_DB.RtlLocId,%^COMPLETED_SALE_TRANS_DB.WkstnId,%^COMPLETED_SALE_TRANS_DB.Total"/>
+		<SequenceRef name="POST_VOID_STEPS" values="%?POST_VOID_REASONS.ReasonCode"/>
+	</TestCase>
+	<!--Post void a return exchange transaction-->
+	<TestCase name="TILLOP-POSTVOID-TRN-EXCHANGE-035" applicationKey="REGISTER" >
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>
+		<Parameter name="tranSeq" value="%^COMPLETED_SALE_TRANS_DB.TransSeq!" />
+		<Parameter name="tranBusinessDate" value="%^COMPLETED_SALE_TRANS_DB.BusinessDate" />
+		<Parameter name="tranLocId" value="%^COMPLETED_SALE_TRANS_DB.RtlLocId" />
+		<Parameter name="tranRegId" value="%^COMPLETED_SALE_TRANS_DB.WkstnId" />
+		<Parameter name="tranAMT" value="%^COMPLETED_SALE_TRANS_DB.Total" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_POST_VOID" />
+		<SequenceRef name="FILL_POST_VOID_ORIG_TRANS" values="!{tranSeq},!{tranBusinessDate},!{tranLocId},!{tranRegId},!{tranAMT}"/>
+		<SequenceRef name="POST_VOID_STEPS" values="%?POST_VOID_REASONS.ReasonCode"/>
+	</TestCase>
+	<!-- Tender exchange from Check to CASH
+	<TestCase name="TILLOP-TNDREXCHG-001" applicationKey="REGISTER" >
+		<Parameter name="exAMT" value="50.00" />
+		<Parameter name="checkSerial" value="1234567123456789126" />
+		<Parameter name="checkNo" value="123" />
+		<Parameter name="stateCode" value="TX" />
+		<Parameter name="IDNo" value="11112222" />
+		<Parameter name="birthDate" value="12/15/1954" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_TENDER_EXCHANGE" />
+		<SequenceRef name="TENDER_EXCHANGE_INCOMMING_CHECK" values="!{checkSerial},!{checkNo},!{stateCode},!{IDNo},!{birthDate},!{exAMT}"/>
+		<SequenceRef name="TENDER_EXCHANGE_OUTCOMMING_CASH" values="!{exAMT}"/>
+	</TestCase> -->
+	<!--Tender exchange from Mall Certificate to CASH
+	<TestCase name="TILLOP-TNDREXCHG-002" applicationKey="REGISTER" >
+		<Parameter name="exAMT" value="50.00" />
+		<Parameter name="checkSerial" value="1234567123456789126" />
+		<Parameter name="checkNo" value="123" />
+		<Parameter name="stateCode" value="TX" />
+		<Parameter name="IDNo" value="11112222" />
+		<Parameter name="birthDate" value="12/15/1954" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_TENDER_EXCHANGE" />
+		<SequenceRef name="TENDER_EXCHANGE_INCOMMING_CHECK" values="checkSerial,checkNo,stateCode,IDNo,birthDate,exAMT"/>
+		<SequenceRef name="TENDER_EXCHANGE_OUTCOMMING_CASH" values="exAMT"/>
+	</TestCase>-->
+
+</XunitConfig>

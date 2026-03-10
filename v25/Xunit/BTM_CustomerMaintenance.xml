@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<!-- TEST CASES -->
+	<!--Customer Mainteance - CustMain-Lookup-001-->	
+    <TestCase name="CustMain-Lookup-001" applicationKey="REGISTER" >
+		<SequenceRef name="SELECT_CUSTOMER_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<TestStep action="SEARCH" description="SEARCH (CustomerSearchOp)">
+            <Form name="CUSTOMER_SEARCH">
+				<!--<Field name="lastName" value="BTM" />-->
+			</Form>
+        </TestStep>
+		<!--New Customer button ISN'T display. It means that there is no customer found-->
+		<SequenceRef name="BUTTON_IS_DISABLED" values="NEW" />
+    </TestCase>
+
+</XunitConfig>

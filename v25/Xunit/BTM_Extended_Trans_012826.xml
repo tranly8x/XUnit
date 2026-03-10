@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<!-- EXTENDTRN-SO-PICKUP-003: Verify that a special order transaction can be successfully completed by partially picking up items. -->
+	<TestCase name="EXTENDTRN-SO-PICKUP-003" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="item1" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="item2" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<!-- <Parameter name="depositAmt" value="0.01"/> -->
+		<Parameter name="documentId" value="" />
+		<Parameter name="custAcctId" value="" />
+		<Parameter name="documentSubtypeCode" value="SPECIAL_ORDER" />
+		<Parameter name="statusCode" value="" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_BTN_SHIP_TO_STORE" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(SPECIAL_ORDER).getAccountBalance.divide(10)" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="INVENTORY_RECEIVING" />
+		<SequenceRef name="SKIP_OLD_INVENTORY_DOCUMENT" />
+		<SequenceRef name="SEARCH_RECEIVING_DOCUMENT" values="!{documentId},%^SPECIAL_ORDER_ACCOUNT_DB.CustAcctId,!{documentSubtypeCode},!{statusCode}" />
+		<SequenceRef name="SELECT_CARTON" />
+		<SequenceRef name="RECEIVE_ENTIRE_CARTON_CHAIN" />
+		<SequenceRef name="CLOSE_AND_EXIT_RECEIVING" />
+		<SequenceRef name="CANCEL_OLD_INVENTORY_DOCUMENT" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_PICKUP_ITEM" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		
+	</TestCase>
+	
+</XunitConfig>

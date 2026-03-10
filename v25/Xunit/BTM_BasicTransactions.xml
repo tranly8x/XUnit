@@ -1,0 +1,3245 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<!-- Common Parameter -->
+	<Parameter name="newQty" value="4" />
+	<Parameter name="priceReasonCode" value="PC2" />
+	<Parameter name="transDiscountOpAMT" value="TRANS_AMT" />
+	<Parameter name="transDiscountOpPCT" value="TRANS_PCT" />
+	<Parameter name="discountOpAMT" value="ITEM_AMT" />
+	<Parameter name="discountOpPCT" value="ITEM_PCT" />
+	<Parameter name="discountReasonCode" value="DC2" />
+	<Parameter name="newPostalCode" value="60046" />
+	<Parameter name="newTaxAMT" value="0.5" />
+	<Parameter name="newTaxPCT" value="5" />
+	<Parameter name="discountAMT" value="10" />
+	<Parameter name="discountPCT" value="5" />
+	<Parameter name="certificateHolderName" value="Test Tax Exempt" />
+	<Parameter name="certificateNbr" value="123456" />
+	<Parameter name="taxExemptReasonCode" value="%?TAX_EXEMPT_REASONS.ReasonCode" />
+	<Parameter name="voidReasoncode" value="VL1" />
+	<Parameter name="transTaxReasonCode" value="%?TAX_CHANGE_REASONS.ReasonCode" />
+	<Parameter name="couponid" value="XUNITCOUPON" />
+	<Parameter name="priceChangereascode" values="PC2" />
+	<Parameter name="newprice" value="30" />
+	<Parameter name="custID" value="%?CUSTOMERS_DB.CustId"/>
+	<Parameter name="itemId" value="%?ITEMS_DB.ItemId"/>
+	<Parameter name="origTransSeq" value="99999" />
+	<Parameter name="origTransBusinessDate" value="@getCurrentBusinessDate" />
+	<Parameter name="origLocationId" value="357" />
+	<Parameter name="origWorkStationId" value="30" />
+	<Parameter name="associateID" value="100" />
+	<!-- TEST CASES -->
+	<!--BASICTRN-BR-IOP-003: Verify that the user can add an item discount for a returned item in the blind return.-->
+	<TestCase name="BASICTRN-BR-IOP-003" applicationKey="REGISTER">
+		<Parameter name="discountOp" value="ITEM_PCT" />
+		<Parameter name="percentAMT" value="5" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?ITEMS_DB.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOp}, !{percentAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="GO_SALE_SCREEN" />		
+		<SequenceRef name="SELECT_REFUND" />		
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>
+
+	<!--BASICTRN-BR-IOP-006: 
+Verify that the user can modify item discount for a returned item in the blind return.-->
+	<TestCase name="BASICTRN-BR-IOP-006" applicationKey="REGISTER">
+		<Parameter name="discountOp" value="ITEM_AMT" />
+		<Parameter name="discountCode" value="ITEM_PCT" />		
+		<Parameter name="percentAMT" value="5" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />		
+		<SequenceRef name="GO_SALE_SCREEN" />		
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountCode}, !{percentAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />		
+		<SequenceRef name="MODIFY_DISCOUNT" values="!{item2},!{discountCode},!{discountOp}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />	
+		<SequenceRef name="SELECT_REFUND" />		
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />	
+	</TestCase>		
+
+	<!--BASICTRN-BR-IOP-007: 
+Verify that the user can remove item discount from a returned item in the blind return.-->
+	<TestCase name="BASICTRN-BR-IOP-007" applicationKey="REGISTER">
+		<Parameter name="discountCode" value="ITEM_PCT" />		
+		<Parameter name="percentAMT" value="5" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />		
+		<SequenceRef name="GO_SALE_SCREEN" />		
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountCode}, !{percentAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />		
+		<SequenceRef name="REMOVE_DISCOUNT" values="!{item2},!{discountCode}" />	
+		<SequenceRef name="SELECT_REFUND" />		
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />	
+	</TestCase>	
+
+	<!--BASICTRN-BR-TOP-003: 
+Verify that the user can add a group discount for the blind return.-->
+	<TestCase name="BASICTRN-BR-TOP-003" applicationKey="REGISTER">
+		<Parameter name="discountCode" value="GRP_PCT" />	
+		<Parameter name="percentAMT" value="5" />
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />		
+		<SequenceRef name="GO_SALE_SCREEN" />			
+		<SequenceRef name="APPLY_GROUP_DISCOUNT" values="!{discountCode},%?DISCOUNT_REASONS.ReasonCode,!{item1},!{item2}" />	
+		<SequenceRef name="SELECT_REFUND" />		
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>
+	
+	<!-- <TestCase name="BASICTRN-ER-TOP-014" applicationKey="REGISTER" > -->
+	<!--Verify that an exchange return can be completed with a non-serialized coupon.-->	 
+		<!-- <Parameter name="itemid" value="1020" />
+		<Parameter name="couponid" value="XUNITCOUPON" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" /> -->
+		<!--If using discount code for the coupon, enable SequenceRef name="ADD_COUPON" and disable SequenceRef name="SELECT_BTN_COUPON"
+			If using deal for the coupon, enable SequenceRef name="SELECT_BTN_COUPON" and disable SequenceRef name="ADD_COUPON"		-->
+		<!-- <SequenceRef name="ADD_COUPON" values="!{couponid},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq" /> --> 
+		<!-- <SequenceRef name="SELECT_BTN_COUPON" values="!{couponid}" /> 
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />		
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>	 -->
+	<!--Complete a Verified return items are added before sale items-->
+	<TestCase name="BASICTRN-ER-TRN-001" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="!{item1}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+        <SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},0.5,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_REFUND" />		
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	
+	<!--Complete a Sale items are added before the verified return items-->
+	<TestCase name="BASICTRN-ER-TRN-002" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="!{item1}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},0.5,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>		
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />		
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	
+	<!--Complete a Unverified return items are added before sale items-->
+	<TestCase name="BASICTRN-ER-TRN-003" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0"/>
+		<SequenceRef name="CHANGE_PRICE" values="!{item1},19.99,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>	
+		<SequenceRef name="GO_SALE_SCREEN" />
+        <SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},29.99,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE" />		
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	
+	<!--Complete a Sale items are added before the unverified return items-->
+	<TestCase name="BASICTRN-ER-TRN-004" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item1},29.99,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0"/>
+		<SequenceRef name="CHANGE_PRICE" values="!{item1},39.99,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />		
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	
+	<!--Complete a Blind return items are added before then sale items-->
+	<TestCase name="BASICTRN-ER-TRN-005" applicationKey="REGISTER" >
+		<!--Parameter name="lastName" values="BTM" /-->
+		<!--Parameter name="itemid" values="%?REGULAR_ITEMS_FILE.ItemId" /-->
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0"/>
+		<SequenceRef name="CHANGE_PRICE" values="!{item1},60,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+        <SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},10,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_REFUND" />		
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	
+	<!--Complete a Sale items are added before the blind return items-->
+	<TestCase name="BASICTRN-ER-TRN-006" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item1},10,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0"/>
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},60,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />		
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	
+	<!--Complete a Transaction includes items are added from verified return, unverified return, blind return, and sales-->
+	<TestCase name="BASICTRN-ER-TRN-007" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="!{item1}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+        <SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},0.5,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Exchange sale with the verified return items are added before the sale items-->
+	<TestCase name="BASICTRN-ES-TRN-001" applicationKey="REGISTER">
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}"/>
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},300,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	
+	<!--Exchange sale with the verified return items are added before the sale items-->
+	<TestCase name="BASICTRN-ES-TRN-002" applicationKey="REGISTER">
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+		<Parameter name="returnRC" value="%?RETURN_REASONS.ReasonCode" />
+		<Parameter name="reqComment" value="" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},500,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+
+	<!--Exchange sale with the unverified return items are added before the sale items-->
+	<TestCase name="BASICTRN-ES-TRN-003" applicationKey="REGISTER">
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item1},10,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>	
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},80,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />	
+	</TestCase>
+
+	<!--Exchange sale with the sale items are added before the unverified return items-->
+	<TestCase name="BASICTRN-ES-TRN-004" applicationKey="REGISTER">
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item1},80,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},10,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />	
+	</TestCase>
+	
+	<!--Exchange sale with the blind return items are added before the sale items-->
+	<TestCase name="BASICTRN-ES-TRN-005" applicationKey="REGISTER">
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item1},10,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>	
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},80,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />	
+	</TestCase>
+
+	<!--Exchange sale with the sale items are added before the blind return items-->
+	<TestCase name="BASICTRN-ES-TRN-006" applicationKey="REGISTER">
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item1},70,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},10,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />	
+	</TestCase>
+	
+	<!--Exchange sale with the include verified return, unverified return, blind return items-->
+	<TestCase name="BASICTRN-ES-TRN-007" applicationKey="REGISTER">
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item3" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item4" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item1},10,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},@getCurrentBusinessDate,!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},10,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item3},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item3},10,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{item4}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item4},80,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>	
+
+	<!--Exchange sale with transaction discount-->
+	<TestCase name="BASICTRN-ES-TOP-001" applicationKey="REGISTER">
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="discountOpTRANSAMT" value="TRANS_AMT" />															 
+		<Parameter name="discountAMT" value="10" />
+		<Parameter name="reascode" value="%?DISCOUNT_REASONS.ReasonCode" />
+		<Parameter name="newReturnPrice" value="0" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />     
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},200,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpTRANSAMT},!{discountAMT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />  
+	</TestCase>
+ 
+ 	<!--Exchange sale with group discount-->
+	<TestCase name="BASICTRN-ES-TOP-003" applicationKey="REGISTER">
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item3" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="discountOpTRANSAMT" value="TRANS_AMT" />	
+		<Parameter name="reascode" value="%?DISCOUNT_REASONS.ReasonCode" />
+		<Parameter name="newReturnPrice" value="0" />
+		<Parameter name="GroupDiscountOpPer" value="GRP_PCT" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item3},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newReturnPrice}" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="APPLY_GROUP_DISCOUNT" values="!{GroupDiscountOpPer},%?DISCOUNT_REASONS.ReasonCode,!{item1},!{item2}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />  
+	</TestCase>
+	
+	<!--Exchange sale with change transaction tax amount-->
+	<TestCase name="BASICTRN-ES-TOP-008" applicationKey="REGISTER">
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="newTransTaxAmt" value="6" />
+		<Parameter name="reascode" value="%?TAX_CHANGE_REASONS.ReasonCode" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newReturnPrice}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item1},10,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>   
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},200,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/> 
+		<SequenceRef name="SELECT_TRANSACTION_TAX_AMT" />
+		<SequenceRef name="ADD_TRANSACTION_TAX_AMT" values="!{newTransTaxAmt},!{reascode}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />  
+	</TestCase>
+
+	<!--Exchange sale with change transaction tax percent-->
+	<TestCase name="BASICTRN-ES-TOP-009" applicationKey="REGISTER">
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+		<Parameter name="newTransTaxPer" value="8" />
+		<Parameter name="reascode" value="%?TAX_CHANGE_REASONS.ReasonCode" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item1},10,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>  
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},150,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_TRANSACTION_TAX_PER" />
+		<SequenceRef name="ADD_TRANSACTION_TAX_PER" values="!{newTransTaxPer},!{reascode}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />  
+	</TestCase>
+
+	<!--Exchange sale with Exempt Transaction Tax-->
+	<TestCase name="BASICTRN-ES-TOP-010" applicationKey="REGISTER">
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="certificateHolderName" value="TESTNENHA" />
+		<Parameter name="certificateNbr" value="123456" />		
+		<Parameter name="reasCode" value="%?TAX_EXEMPT_REASONS.ReasonCode" />	
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item1},10,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>      
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="SELECT_TRANSACTION_TAX_EXEMPT" />
+		<SequenceRef name="ADD_TRANS_TAX_EXEMPT" values ="!{certificateHolderName},!{certificateNbr},!{reasCode}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />  
+	</TestCase>
+	
+ 	<!--Suspend Exchange sale transaction-->
+	<TestCase name="BASICTRN-ES-TOP-011" applicationKey="REGISTER">
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item1},10,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>	
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},150,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+	</TestCase>		
+
+ 	<!--Resume Exchange sale transaction-->
+	<TestCase name="BASICTRN-ES-TOP-012" applicationKey="REGISTER">
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SUSPEND_SALE" values="!{item1}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransaction.getTransactionSequence" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>		
+
+ 	<!--Cancel Exchange sale transaction-->
+	<TestCase name="BASICTRN-ES-TOP-013" applicationKey="REGISTER">
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+		<Parameter name="newReturnPrice" value="0" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item1},10,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},150,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CANCEL_TRANSACTION_HAS_ITEM" />
+	</TestCase>	
+		
+ 	<!-- Exchange sale transaction with Non-Serialized Coupon		
+	<TestCase name="BASICTRN-ES-TOP-014" applicationKey="REGISTER">
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+		<Parameter name="itemid" value="1020" />
+		<Parameter name="couponid" value="XUNITCOUPON" />
+		<Parameter name="newReturnPrice" value="0" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newReturnPrice}" />      
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="4" /> -->
+		<!--If using discount code for the coupon, enable SequenceRef name="ADD_COUPON" and disable SequenceRef name="SELECT_BTN_COUPON"
+			If using deal for the coupon, enable SequenceRef name="SELECT_BTN_COUPON" and disable SequenceRef name="ADD_COUPON"		-->
+		<!-- <SequenceRef name="ADD_COUPON" values="!{couponid},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq" /> --> 
+		<!-- <SequenceRef name="SELECT_BTN_COUPON" values="!{couponid}" /> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />  
+	</TestCase> -->
+
+ 	<!--Exchange sale transaction with Serialized Coupon-->		
+	<!-- <TestCase name="BASICTRN-ES-TOP-015" applicationKey="REGISTER">
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" /> -->
+		<!-- <Parameter name="serializedCoupon" value="SRL2002002100001G6" /> Replace by a valid serialized coupon number everytime running script -->
+		<!-- <Parameter name="newReturnPrice" value="0" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newReturnPrice}" />      
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="4" />
+		<SequenceRef name="SELECT_BTN_COUPON" values="!{serializedCoupon}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />  
+	</TestCase> -->
+
+ 	<!--Exchange return transaction with Non-Merchandise Item-->		
+	<TestCase name="BASICTRN-ER-ITM-002" applicationKey="REGISTER">
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+		<Parameter name="newReturnPrice" value="0" />
+		<Parameter name="returnItemId" value="%?ITEM_FEE_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{returnItemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newReturnPrice}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{returnItemId},70,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>	
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>	
+
+ 	<!--Exchange return transaction with Serialized Item-->		
+	<TestCase name="BASICTRN-ER-ITM-007" applicationKey="REGISTER">
+ 		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+		<Parameter name="newReturnPrice" value="0" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_SERIAL_ITEM" values="%?SERIAL_NUMBER_FILE.ItemId,@getNextSequenceValue(Transaction),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newReturnPrice}" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM_SERIAL" values="%?SERIAL_NUMBER_FILE.ItemId,@getNextSequenceValue(Transaction)" iterations="1" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>	
+
+ 	<!--Exchange return transaction with Multiple Item Types-->		
+	<!-- <TestCase name="BASICTRN-ER-ITM-008" applicationKey="REGISTER">
+		<Parameter name="newReturnPrice" value="0" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_SERIAL_ITEM" values="%?ITEMS_SERIAL_DB.ItemId,10000016,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newReturnPrice}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?ITEM_FEE_DB.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newReturnPrice}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newReturnPrice}" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM_SERIAL" values="%?ITEMS_SERIAL_DB.ItemId,10000006" iterations="1" />	
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>	 -->
+
+ 	<!--Exchange return transaction with the same ID-->		
+	<TestCase name="BASICTRN-ER-ITM-009" applicationKey="REGISTER">
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="newReturnPrice" value="0" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newReturnPrice}" />	
+		<SequenceRef name="CHANGE_PRICE" values="!{item1},70,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},10,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>	
+
+ 	<!--Exchange return transaction with different IDs-->		
+	<TestCase name="BASICTRN-ER-ITM-010" applicationKey="REGISTER">
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="newReturnPrice" value="0" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newReturnPrice}"/>
+		<SequenceRef name="CHANGE_PRICE" values="!{item1},70,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" iterations="1" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},10,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>	
+
+ 	<!--Exchange return transaction with Change Quantity for sale items-->		
+	<TestCase name="BASICTRN-ER-IOP-001" applicationKey="REGISTER">
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+		<Parameter name="newQty" value="2" />
+		<Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,5" iterations="3"/>	
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="1" />
+		<SequenceRef name="CHANGE_ITEM_QTY" values="!{itemId},!{newQty}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>	
+
+ 	<!--Exchange return transaction with Change Price for sale items-->		
+	<TestCase name="BASICTRN-ER-IOP-002" applicationKey="REGISTER">
+ 		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+		<Parameter name="newPrice" value="1.99" />
+		<Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3"/>	
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="1" />
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},!{newPrice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>	
+	
+ 	<!--Exchange return transaction with Add One Discount for a sale item-->		
+	<TestCase name="BASICTRN-ER-IOP-003" applicationKey="REGISTER">
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+		<Parameter name="discountOp" value="ITEM_AMT" />
+		<Parameter name="discountAMT" value="15" />
+		<Parameter name="reascode" value="%?DISCOUNT_REASONS.ReasonCode" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="2" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOp},!{discountAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newReturnPrice}" iterations="3" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" /> 
+	</TestCase>		
+	
+	<!--Exchange return with Modify discount for sale items-->
+	<TestCase name="BASICTRN-ER-IOP-006" applicationKey="REGISTER">
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+	    <Parameter name="discountOp" value="%?TRN_PCT_DISCOUNTS.DiscountCode" />
+		<Parameter name="discountOpTRANSAMT" value="TRANS_AMT" />	
+		<Parameter name="discountCode" value="TRANS_AMT" />
+		<Parameter name="discountAMT" value="10" />
+		<Parameter name="reascode" value="%?DISCOUNT_REASONS.ReasonCode" />
+		<Parameter name="item" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="2" />
+	    <SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpTRANSAMT},!{discountAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="MODIFY_DISCOUNT" values="@getSaleLine(1).getItemId,!{discountCode},!{discountOpTRANSAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newReturnPrice}" iterations="3" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>	
+	
+	<!--Exchange return with Remove discount for sale items-->
+	<TestCase name="BASICTRN-ER-IOP-007" applicationKey="REGISTER">
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+	    <Parameter name="discountOpAMT" value="ITEM_AMT" />
+	    <Parameter name="discountCode" value="ITEM_AMT" />
+	    <Parameter name="item" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="newReturnPrice" value="2.99" />
+		<Parameter name="reascode" value="%?DISCOUNT_REASONS.ReasonCode" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item}" iterations="1" />
+	    <SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountCode},!{discountAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />
+	    <SequenceRef name="REMOVE_DISCOUNT" values="!{item},!{discountCode}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newReturnPrice}" iterations="3" />
+		<SequenceRef name="GO_SALE_SCREEN" />		
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>	
+	
+ 	<!--Exchange return with Change Item Tax Amount for sale items-->
+	<TestCase name="BASICTRN-ER-IOP-009" applicationKey="REGISTER">
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+		<Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="returnItemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{returnItemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3"/>	
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="1" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{itemId},@getActualPrice(!{itemId}).divide(10)"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>	
+
+	<!--Exchange return with Change Item Tax Percent for sale items-->
+	<TestCase name="BASICTRN-ER-IOP-010" applicationKey="REGISTER">
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+		<Parameter name="TaxPER" value="5" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3"/>	
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="1" />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{TaxPER}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>	
+
+	<!--Exchange return with Exempt Item Tax for sale items-->
+	<TestCase name="BASICTRN-ER-IOP-011" applicationKey="REGISTER">
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+		<Parameter name="certificateHolderName" value="TESTNENHA" />
+		<Parameter name="certificateHolderName" value="1234567890" />
+		<Parameter name="reasonCode" value="%?TAX_EXEMPT_REASONS.ReasonCode" />
+		<Parameter name="sellItem" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3"/>	
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{sellItem}" iterations="1" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{sellItem},!{certificateHolderName},!{certificateNbr},!{reasonCode}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>	
+
+	<!--Exchange return with Void a return item-->
+	<TestCase name="BASICTRN-ER-IOP-012" applicationKey="REGISTER">
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="1" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,2" iterations="3"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="VOID_ITEM_NO_COMMENT" values ="!{item1},%?VOID_LINE_REASONS.ReasonCode"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>	
+
+	<!--Exchange return with Void a sale item-->
+	<TestCase name="BASICTRN-ER-IOP-013" applicationKey="REGISTER">
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="2" />
+		<SequenceRef name="VOID_ITEM_NO_COMMENT" values ="!{item1},%?VOID_LINE_REASONS.ReasonCode"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>	
+	
+	<TestCase name="BASICTRN-ES-IOP-001" applicationKey="REGISTER" >	
+	<!-- Verify that the user can change quantity for a returned item in the exchange sale transaction.
+    Preconditions:
+        - Item, price, tax are available in Xstore.
+        - Item is returnable.
+        - Item is not forced quantity of one.
+        - The returned item is not a serialized item.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add any item(s) 
+        4. Select the line item
+        5. Change quantity
+        6. Go with the return transaction
+        7. Add item
+        8. Complete transaction
+    -->
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="newQty" value="3" />		
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="CHANGE_ITEM_QTY" values="!{itemId}, !{newQty}" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>	
+   <TestCase name="BASICTRN-ES-IOP-002" applicationKey="REGISTER" >	
+	<!-- Verify that the user can change quantity for a returned item in the exchange sale transaction.
+    Preconditions:
+        - Item, price, tax are available in Xstore.
+        - Item is returnable.
+        - Item is not forced quantity of one.
+        - The returned item is not a serialized item.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add any item(s) 
+        4. Select the line item
+        5. Change quantity
+        6. Go with the return transaction
+        7. Add item
+        8. Complete transaction
+    -->
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="newPrice" value="99.99" />		
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},!{newPrice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>	
+   <TestCase name="BASICTRN-ES-IOP-003" applicationKey="REGISTER" >	
+	<!-- Verify that the user can add an item discount for a sale item.
+    Preconditions:
+       - Item, price, tax are available in Xstore.
+       - Item is returnable.
+       - Item is allowed discounts.    
+    Steps:
+       1. Log in to Xstore
+       2. Start transaction
+       3. Add any item(s) 
+       4. Select the line item
+       5. Add item discount
+       6. Go with the return transaction
+       7. Add item
+       8. Complete transaction
+    -->
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+		<Parameter name="discountOp" value="ITEM_AMT" />
+		<Parameter name="percentAMT" value="10" />
+		<Parameter name="reascode" value="DC1" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}"  iterations="2" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOp}, !{percentAMT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />		
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>	
+   <TestCase name="BASICTRN-ES-IOP-006" applicationKey="REGISTER" >	
+	<!-- Verify that the user can modify item discount in the exchange sale transaction.
+    Preconditions:
+       - Item, price, tax are available in Xstore.
+       - Item is returnable.
+       - Item is allowed discounts.
+    
+    Steps:
+       1. Log in to Xstore
+       2. Start transaction
+       3. Add any item(s) 
+       4. Select the line item
+       5. Add an item discount
+       6. Modify discount
+       7. Go with the return transaction
+       8. Add item
+       9. Complete transaction
+    -->
+		<Parameter name="itemid1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="itemid2" value="%?ITEMS_DB.ItemId" />		
+		<Parameter name="discountOpPCT" value="ITEM_PCT" />
+		<Parameter name="disPCT" value="5" />
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<Parameter name="discountReasonCode" value="DC2" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />		
+        <SequenceRef name="SCAN_ITEM" values="!{itemid1}" />
+		<SequenceRef name="SCAN_ITEM" values ="!{itemid2}" />		
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpPCT},!{disPCT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq"/>
+		<SequenceRef name="MODIFY_DISCOUNT" values="!{itemid2},!{discountOpPCT},!{discountOpAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>		
+   <TestCase name="BASICTRN-ES-IOP-007" applicationKey="REGISTER" >	
+	<!-- Verify that the user can remove item discount in the exchange sale transaction.
+        Preconditions:
+           - Item, price, tax are available in Xstore.
+           - Item is returnable.
+           - Item is allowed discounts.      
+        Steps:
+           1. Log in to Xstore
+           2. Start transaction
+           3. Add any item(s) 
+           4. Select the line item
+           5. Add an item discount
+           6. Remove discount
+           7. Go with the return transaction
+           8. Add item
+           9. Complete transaction
+        -->
+		<Parameter name="itemid1" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+		<Parameter name="itemid2" value="1020" />	
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+	    <Parameter name="newTaxAMT" value="1.5" />
+	    <Parameter name="discountReasonCode" value="DC2" />		
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemid1}" />
+		<SequenceRef name="SCAN_ITEM" values ="!{itemid2}" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{newTaxAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq"/>
+		<SequenceRef name="REMOVE_DISCOUNT" values="!{itemid2},!{discountOpAMT}" />	
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>
+   <TestCase name="BASICTRN-ES-IOP-009" applicationKey="REGISTER" >	
+	<!-- Verify that the user can change item tax amount in the exchange sale transaction.
+    Preconditions:
+        - Item, price, tax are available in Xstore.
+        - Item is returnable.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add any item(s) 
+        4. Select the line item
+        5. Change item tax amount
+        6. Go with the return transaction
+        7. Add item
+        8. Complete transaction
+        -->
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="2"/>	
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{itemId},@getActualPrice(!{itemId}).divide(10)"/>		
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>
+   <TestCase name="BASICTRN-ES-IOP-010" applicationKey="REGISTER" >	
+	<!-- Verify that the user can change item tax percent in the exchange sale transaction.
+    Preconditions:
+        - Item, price, tax are available in Xstore.
+        - Item is returnable.    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add any item(s) 
+        4. Select the line item
+        5.  Change item tax %
+        6. Go with the return transaction
+        7. Add item
+        8. Complete transaction
+        -->
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="newTaxPCT" value="20" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="2"/>	
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPCT}"/>		
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>
+   <TestCase name="BASICTRN-ES-IOP-011" applicationKey="REGISTER" >	
+	<!-- Verify that the user can exempt item tax in the exchange sale transaction.
+    Preconditions:
+        - Item, price, tax are available in Xstore.
+        - Item is returnable.   
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add any item(s) 
+        4. Select the line item
+        5. Exempt tax transaction
+        6. Go with the return transaction
+        7. Add item
+        8. Complete transaction
+        -->
+		<Parameter name="itemid1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="itemid2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="certificateHolderName" value="Exempt item tax" />
+		<Parameter name="certificateNbr" value="33333333" />
+	    <Parameter name="taxExemptReasonCode" value="TE3" />		
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid1}" />	
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{itemid1}, !{certificateHolderName}, !{certificateNbr}, !{taxExemptReasonCode}"/>	
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>
+   <TestCase name="BASICTRN-ES-IOP-012" applicationKey="REGISTER" >	
+	<!-- Verify that the user can void a returned item from the exchange sale transaction.
+    Preconditions:
+        - Item, price, tax are available in Xstore.
+        - Item is returnable.    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add any item(s) 
+        4. Go with the return transaction
+        5. Add any item(s)
+        6. Select the line return item to void
+        7. Void item
+        8. Complete transaction
+        -->
+		<Parameter name="itemid1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="itemid2" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+	     <Parameter name="voidReasoncode" value="VL1"/>	
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid1}" iterations="2" />	
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+        <SequenceRef name="VOID_ITEM_NO_COMMENT" values ="!{itemid2},  %?VOID_LINE_REASONS.ReasonCode"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>
+   <TestCase name="BASICTRN-ES-IOP-013" applicationKey="REGISTER" >	
+	<!-- Verify that the user can void a sale item from the exchange sale transaction.
+    Preconditions:
+        - Item, price, tax are available in Xstore.
+        - Item is returnable.   
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add any item(s) 
+        4. Select the line sale item to void
+        5. Void item
+        6. Go with the return transaction
+        7. Add any item(s)
+        8. Complete transaction
+        -->
+		<Parameter name="itemid1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="itemid2" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+	     <Parameter name="voidReasoncode" value="VL2"/>	
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid1}" iterations="2" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid2}"/>
+        <SequenceRef name="VOID_ITEM_NO_COMMENT" values ="!{itemid2},  %?VOID_LINE_REASONS.ReasonCode"/>  		
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>	
+	
+	<TestCase name="BASICTRN-ER-ITM-001" applicationKey="REGISTER">
+	<!-- Verify that an exchange return transaction can be completed with merchandise items.
+	Preconditions:
+	   - Xstore is online and connected to Xcenter.
+	   - Item, price, tax are available in Xstore.
+	   - Item is returnable.
+
+    Steps:
+	   1. Log in to Xstore
+	   2. Start transaction
+	   3. Add the merchandise item
+	   4. Go with the return transaction
+	   5. Add the merchandise item 
+	   6. Complete transaction
+		-->
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="2" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />		
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SELECT_BTN_NO"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />			
+	</TestCase>
+	<TestCase name="BASICTRN-ES-ITM-002" applicationKey="REGISTER" >
+	<!--Verify that a exchange sale transaction can be completed with non-merchandise items.
+	Preconditions:
+		- Xstore is online and connected to Xcenter.
+		- Item, price, tax are available in Xstore.
+		- Item is returnable.
+
+	Steps:
+	    1. Log in to Xstore
+	    2. Start transaction
+	    3. Add the non-merchandise item
+	    4. Go with the return transaction
+	    5. Add the non-merchandise item 
+	    6. Complete transaction	
+		-->	 
+		<Parameter name="itemid" value="1023" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="2" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />		
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />			
+	</TestCase>	
+	<TestCase name="BASICTRN-ES-ITM-007" applicationKey="REGISTER" >
+	<!--Verify that a exchange sale transaction can be completed with Serialized Item.
+    Preconditions:
+        - Xstore is online and connected to Xcenter.
+        - Item, price, tax are available in Xstore.
+        - Item is returnable.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add the Serialized Item 
+        4. Go with the return transaction
+        5. Add Serialized Item
+        6. Complete transaction
+		-->	 
+		<Parameter name="itemid" value="1009" />
+		<Parameter name="Returnitemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="Serial" value="10000017" />		
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="ENTER_SERIAL_NUMBER" values="!{Serial}" />		
+		<SequenceRef name="SELECT_RETURN_ITEM" />		
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{Returnitemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />			
+	</TestCase>
+	<TestCase name="BASICTRN-ES-ITM-008" applicationKey="REGISTER" >
+	<!--Verify that a exchange sale transaction can be completed with Multiple Item Types.
+    Preconditions:
+       - Xstore is online and connected to Xcenter.
+       - Item, price, tax are available in Xstore.
+       - Item is returnable.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add multiple items with multiple item types 
+        4. Go with the return transaction
+        5. Add multiple items with multiple item types 
+        6. Complete transaction
+		-->	 
+		<Parameter name="itemid1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="itemid2" value="1023" />
+		<Parameter name="itemid3" value="1009" />
+		<Parameter name="Serial" value="10000018" />		
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemid1}" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid2}" />	
+		<SequenceRef name="SCAN_ITEM" values="!{itemid3}" />
+		<SequenceRef name="ENTER_SERIAL_NUMBER" values="!{Serial}" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>
+	<TestCase name="BASICTRN-ES-ITM-009" applicationKey="REGISTER" >
+	<!--Verify that a exchange sale transaction can be completed with Return item and sale item are the same ID.
+    Preconditions:
+        - Xstore is online and connected to Xcenter.
+        - Item, price, tax are available in Xstore.
+        - Item is returnable.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add any item(s) 
+        4. Go with the return transaction
+        5. Add a return item with the same item ID as the sale item
+        6. Complete transaction
+		-->	 
+		<Parameter name="itemid1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="itemid2" value="6022" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemid1}" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid2}" />	
+		<SequenceRef name="SELECT_RETURN_ITEM" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>	
+	<TestCase name="BASICTRN-ES-ITM-010" applicationKey="REGISTER" >
+	<!--Verify that a exchange sale transaction can be completed with Return item and sale item are different IDs.
+    Preconditions:
+        - Xstore is online and connected to Xcenter.
+        - Item, price, tax are available in Xstore.
+        - Item is returnable.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add any item(s) 
+        4. Go with the return transaction
+        5. Add a return item with the different item ID as the sale item
+        6. Complete transaction
+		-->	 
+		<Parameter name="itemid1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="itemid2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemid2}" iterations="2" />	
+		<SequenceRef name="SELECT_RETURN_ITEM" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>	
+
+<!--Customer Options-->	
+	<TestCase name="BASICTRN-ES-COP-001" applicationKey="REGISTER" >
+	<!--Verify that a exchange sale transaction can be completed with a new customer.
+    Preconditions:
+        - Xstore is online and connected to Xcenter.
+        - Item, price, tax are available in Xstore.
+        - Item is returnable.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Create a new customer and assign to transaction
+        4. Add any item(s) 
+        5. Go with the return transaction
+        6. Add any item(s)
+        7. Complete transaction
+		-->	 
+		<Parameter name="itemid1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="itemid2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="teleNumber" value="@getNextSequenceValue(Transaction)" />
+		<Parameter name="lastName" value="TTEST" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber}, !{lastName}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />	
+		<SequenceRef name="SCAN_ITEM" values="!{itemid2}" iterations="2" />
+		<SequenceRef name="SELECT_RETURN_ITEM"  />		
+		<SequenceRef name="SELECT_BTN_NO"  />		
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>	    
+	<TestCase name="BASICTRN-ES-COP-002" applicationKey="REGISTER" >
+	<!--Verify that a exchange sale transaction can be completed with an existing customer.
+    Preconditions:
+        - Xstore is online and connected to Xcenter.
+        - Item, price, tax are available in Xstore.
+        - Item is returnable.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Search for an existing customer and assign to transaction
+        4. Add any item(s) 
+        5. Go with the return transaction
+        6. Add any item(s)
+        7. Complete transaction
+		-->	 
+		<Parameter name="itemid1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="itemid2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemid2}" iterations="2" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>
+	
+<!--Promotions> -->
+    <TestCase name="BASICTRN-ES-PRM-001" applicationKey="REGISTER" >
+	<!-- Verify that an exchange sale can be completed with a store deal - line item discount for sale items.
+    Preconditions:
+        - Item, price, tax are available in Xstore.
+        - Item is allowed deals.
+        - A store deal - line item discount is correctly set up in Xstore.
+        - Deal is effective.
+        - Xstore is online and connected to Xcenter.
+        - Item is returnable.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add qualifying items
+        4. Go with the return transaction
+        5. Add any item(s)
+        6. Complete transaction
+    -->
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />			
+		<SequenceRef name="SCAN_ITEM" values= "!{itemId}"  iterations="3" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>	
+    <TestCase name="BASICTRN-ES-PRM-002" applicationKey="REGISTER" >	
+	<!-- Verify that an exchange sale can be completed with a store deal - transaction discount for sale items.
+    Preconditions:
+        - Item, price, tax are available in Xstore.
+        - Item is allowed deals.
+        - A store deal - transaction discount is correctly set up in Xstore.
+        - Deal is effective.
+        - Xstore is online and connected to Xcenter.
+        - Item is returnable.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add qualifying items
+        4. Go with the return transaction
+        5. Add any item(s)
+        6. Complete transaction
+    -->
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />			
+		<!--Transaction deal is set when amount >= $500 get $50 off  -->
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}"  iterations="9" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>	
+
+<!--Transaction Options-->
+	<TestCase name="BASICTRN-ER-TOP-001" applicationKey="REGISTER" >
+	<!--Verify that an exchange return can be completed with a transaction discount.
+    Preconditions:
+        - Item, price, tax are available in Xstore.
+        - Item is allowed discounts.
+        - Item is returnable.
+        - Xstore is online and connected to Xcenter.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add items
+        4. Add a transaction discount
+        5. Go with the return transaction
+        6. Add any item(s)
+        7. Complete transaction
+		-->	 
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="discountOp" value="TRANS_PCT" />
+		<Parameter name="discountAMT" value="8" />
+		<Parameter name="reascode" value="DC1" />		
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />	
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpPCT},!{discountPCT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />		 
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2" />		
+		<SequenceRef name="GO_SALE_SCREEN" /> 		
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>	   	
+	<TestCase name="BASICTRN-ER-TOP-003" applicationKey="REGISTER" >
+	<!--Verify that an exchange return can be completed with a group discount.
+    Preconditions:
+       - Item, price, tax are available in Xstore.
+       - Item is allowed discounts.
+       - Item is returnable.
+       - Xstore is online and connected to Xcenter.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add items
+        4. Add more than one discountable items
+        5. Add a group discount
+        6. Go with the return transaction
+        7. Add any item(s)
+        8. Complete transaction
+		-->	 
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="discountOp" value="GRP_PCT" />	
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />			
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="APPLY_GROUP_DISCOUNT" values="!{discountOp},!{reascode},!{item1},!{item2}" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />		
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3" /> 
+		<SequenceRef name="GO_SALE_SCREEN" /> 		
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />			
+	</TestCase>	 
+	<TestCase name="BASICTRN-ER-TOP-008" applicationKey="REGISTER" >
+	<!--Verify that an exchange return can be completed with a transaction tax amount change.
+    Preconditions:
+        - Item, price, tax are available in Xstore.
+        - Tax postal code mapping is set up.
+        - Item is returnable.
+        - Xstore is online and connected to Xcenter.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add items
+        4. Change transaction tax amount
+        5. Go with the return transaction
+        6. Add any item(s)
+        7. Complete transaction
+		-->	 
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="newTaxAMT" value="9.99" />		
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />		
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{itemId},@getActualPrice(!{itemId}).divide(10)"/>	
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />		
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"  />
+		<SequenceRef name="GO_SALE_SCREEN" /> 		
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>	  	
+	<TestCase name="BASICTRN-ER-TOP-009" applicationKey="REGISTER" >
+	<!--Verify that an exchange return can be completed with a transaction tax percent change.
+    Preconditions:
+        - Item, price, tax are available in Xstore.
+        - Tax postal code mapping is set up.
+        - Item is returnable.
+        - Xstore is online and connected to Xcenter.   
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add items
+        4. Change transaction tax percent
+        5. Go with the return transaction
+        6. Add any item(s)
+        7. Complete transaction
+		-->	 
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="TaxPER" value="10" />		
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />		
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="CHANGE_TAX_PER" values="!{TaxPER}" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />		
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"  />		
+		<SequenceRef name="GO_SALE_SCREEN" /> 		
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />			  		
+	</TestCase>	  	
+	<TestCase name="BASICTRN-ER-TOP-010" applicationKey="REGISTER" >
+	<!--Verify that an exchange return can be completed with transaction tax exempt.
+    Preconditions:
+        - Item, price, tax are available in Xstore.
+        - Tax postal code mapping is set up.
+        - Item is returnable.
+        - Xstore is online and connected to Xcenter.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add items
+        4. Exempt transaction tax
+        5. Go with the return transaction
+        6. Add any item(s)
+        7. Complete transaction
+		-->	 
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="newTaxAMT" value="9.99" />		
+	    <Parameter name="certificateHolderName" values="Test Tax Exempt" />
+	    <Parameter name="certificateNbr" values="111111" />
+	    <Parameter name="TaxExemptReasonCode" values="%?TAX_EXEMPT_REASONS.ReasonCode" />	
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />		
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{itemId}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>		
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />		
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" /> 		
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>	  			
+	<TestCase name="BASICTRN-ER-TOP-011" applicationKey="REGISTER" >
+	<!--Verify that an exchange return with an unverified/blind return item can be suspended.
+    Preconditions:
+        - Item, price, tax are available in Xstore.
+        - Item is returnable.
+        - Xstore is online and connected to Xcenter.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start an unverified return or a blind return transaction
+        3. Add return line item
+        4. Exit return
+        5. Add sale line item to have Amount Due < Refund Amount
+        6. Suspend transaction
+		-->	 
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SUSPEND_SALE" values="!{itemId}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransaction.getTransactionSequence" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />		
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="4" />
+        <SequenceRef name="SELECT_REFUND" />
+	    <SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>	 	
+	<TestCase name="BASICTRN-ER-TOP-012" applicationKey="REGISTER" >
+	<!--Verify that an exchange return that was suspended can be resumed.
+    Preconditions:
+        - Suspend transaction exists in the current store, register.
+        - Transaction suspend with Refund amount > the amount due
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Resume transaction
+        4. Scan/Select exchange return transaction
+        5. Complete transaction
+		-->	 
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SUSPEND_SALE" values="!{itemId}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransaction.getTransactionSequence" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />		
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="4" />
+        <SequenceRef name="SELECT_REFUND" />
+	    <SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />			
+	</TestCase>	
+	<TestCase name="BASICTRN-ER-TOP-013" applicationKey="REGISTER" >
+	<!--Verify that an exchange return can be canceled.
+    Preconditions:
+        - Item, price, tax are available in Xstore.
+        - Item is returnable.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add items
+        4. Go with the return transaction
+        5. Add any item(s)
+        6. Cancel transaction
+		-->	 
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />		
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+ 		<SequenceRef name="SELECT_CANCEL" />		
+	</TestCase>
+	<!--Verify that an exchange return can be completed with a serialized coupon.
+	<TestCase name="BASICTRN-ER-TOP-015" applicationKey="REGISTER" >	 
+		<Parameter name="itemid" value="1020" />
+		<Parameter name="serializedCoupon" value="SRL2002002100001H8" /> 
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_BTN_COUPON" values="!{serializedCoupon}" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />		
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>		-->	
+<!--Customer Options-->	
+	<TestCase name="BASICTRN-ER-COP-001" applicationKey="REGISTER" >
+	<!--Verify that an exchange return transaction can be completed with a new customer.
+    Preconditions:
+        - Xstore is online and connected to Xcenter.
+        - Item, price, tax are available in Xstore.
+        - Item is returnable.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Create a new customer and assign to transaction
+        4. Add any item(s) 
+        5. Go with the return transaction
+        6. Add any item(s)
+        7. Complete transaction
+		-->	 
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="teleNumber" value="@getNextSequenceValue(Transaction)" />
+		<Parameter name="lastName" value="TEST1" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber},!{lastName}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_RETURN_ITEM"  />		
+		<SequenceRef name="SELECT_BTN_NO"  />		
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2" /> 
+		<SequenceRef name="GO_SALE_SCREEN" /> 		
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>	    
+	<TestCase name="BASICTRN-ER-COP-002" applicationKey="REGISTER" >
+	<!--Verify that an exchange return transaction can be completed with an existing customer.
+    Preconditions:
+        - Xstore is online and connected to Xcenter.
+        - Item, price, tax are available in Xstore.
+        - Item is returnable.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Search for an existing customer and assign to transaction
+        4. Add any item(s) 
+        5. Go with the return transaction
+        6. Add any item(s)
+        7. Complete transaction
+		-->	 
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="GO_SALE_SCREEN" /> 		
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>
+	
+<!--Promotions> -->
+    <TestCase name="BASICTRN-ER-PRM-001" applicationKey="REGISTER" >
+	<!-- Verify that an exchange return can be completed with a store deal - line item discount for sale items.
+    Preconditions:
+        - Item, price, tax are available in Xstore.
+        - Item is allowed deals.
+        - A store deal - line item discount is correctly set up in Xstore.
+        - Deal is effective.
+        - Xstore is online and connected to Xcenter.
+        - Item is returnable.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add qualifying items
+        4. Go with the return transaction
+        5. Add any item(s)
+        6. Complete transaction
+    -->
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />		
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}"  iterations="2" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3" /> 
+		<SequenceRef name="GO_SALE_SCREEN" /> 		
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>	
+    <TestCase name="BASICTRN-ER-PRM-002" applicationKey="REGISTER" >	
+	<!-- Verify that an exchange return can be completed with a store deal - transaction discount for sale items.
+    Preconditions:
+        - Item, price, tax are available in Xstore.
+        - Item is allowed deals.
+        - A store deal - transaction discount is correctly set up in Xstore.
+        - Deal is effective.
+        - Xstore is online and connected to Xcenter.
+        - Item is returnable.
+    
+    Steps:
+        1. Log in to Xstore
+        2. Start transaction
+        3. Add qualifying items
+        4. Go with the return transaction
+        5. Add any item(s)
+        6. Complete transaction
+    -->
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />		
+		<!--Transaction deal is set when amount >= $500 get $50 off  -->
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}"  iterations="9" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="10" /> 
+		<SequenceRef name="GO_SALE_SCREEN" /> 		
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />				
+	</TestCase>	
+	<!--Sales-Item Types-Merchandise-Item-->	
+    <TestCase name="BASICTRN-S-ITM-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Sales-Item Types-NonMerchandise-Item-->
+	<TestCase name="BASICTRN-S-ITM-002" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?ITEM_FEE_DB.ItemId" /> 
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>   
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />		
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase> 
+	<!--Sales-Item Types-Serialized-Item-Item-->
+    <TestCase name="BASICTRN-S-ITM-006" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="101000018" />
+		<Parameter name="serialNo" value="10000019" /> 
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM_SERIAL" values="!{itemId}, !{serialNo}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase> 
+	<!--Verify that a sale transaction can be completed with the item has quantity change.-->	
+    <TestCase name="BASICTRN-S-IOP-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="CHANGE_ITEM_QTY" values="!{itemId},!{newQty}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed with the item has price change.-->
+	<TestCase name="BASICTRN-S-IOP-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},80,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed with the item has an item discount.-->
+	<TestCase name="BASICTRN-S-IOP-003" applicationKey="REGISTER" >
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<Parameter name="discountAMT" value="10" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{discountAMT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq"/>
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed with the item has multiple item discounts.-->
+	<TestCase name="BASICTRN-S-IOP-004" applicationKey="REGISTER" >
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<Parameter name="discountOpPCT" value="ITEM_PCT" />
+		<Parameter name="fItem" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="sItem" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{fItem}" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{newTaxAMT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq"/>
+		<SequenceRef name="SCAN_ITEM" values="!{sItem}" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpPCT},!{newTaxPCT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq"/>
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed with the item has a line item discount which is modified.-->
+	<TestCase name="BASICTRN-S-IOP-006" applicationKey="REGISTER" >
+		<Parameter name="discountOpPCT" value="ITEM_PCT" />
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpPCT},!{newTaxPCT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq"/>
+		<SequenceRef name="MODIFY_DISCOUNT" values="!{itemId},!{discountOpPCT},!{discountOpAMT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed with the item has line item discount which is removed.-->
+	<TestCase name="BASICTRN-S-IOP-007" applicationKey="REGISTER" >
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{newTaxAMT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq"/>
+		<SequenceRef name="REMOVE_DISCOUNT" values="!{itemId},!{discountOpAMT}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed with the item has the item tax amount change.-->
+	<TestCase name="BASICTRN-S-IOP-009" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{itemId},@getActualPrice(!{itemId}).divide(10)"/>	
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed with the item has the item tax percent change.-->
+	<TestCase name="BASICTRN-S-IOP-010" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="CHANGE_TAX_PER" values="!{newTaxPER}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed with the item has the tax exemption.-->
+	<TestCase name="BASICTRN-S-IOP-011" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />      
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values="!{itemId}, !{certificateHolderName},!{certificateNbr},!{taxExemptReasonCode}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed with voided item.-->
+	<TestCase name="BASICTRN-S-IOP-012" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}"/>
+		<SequenceRef name="VOID_ITEM_NO_COMMENT" values="!{itemId}, %?VOID_LINE_REASONS.ReasonCode"/>
+		 <SequenceRef name="SCAN_ITEM" values="!{itemId}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed with a transaction discount.-->
+	<TestCase name="BASICTRN-S-TOP-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpPCT},!{discountPCT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed with multiple transaction discounts.-->
+	<TestCase name="BASICTRN-S-TOP-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpPCT},!{discountPCT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq"/> <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed with a group discount.-->
+	<TestCase name="BASICTRN-S-TOP-003" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="GroupDiscountOpPer" value="GRP_PCT" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="APPLY_GROUP_DISCOUNT" values="!{GroupDiscountOpPer},%?DISCOUNT_REASONS.ReasonCode,!{item1},!{item2}" />
+		<SequenceRef name="SELECT_AMT_DUE" /> 
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed with a transaction tax amount change.-->
+	<TestCase name="BASICTRN-S-TOP-008" applicationKey="REGISTER" >
+		<Parameter name="newTransTaxAmt" value="5" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_TRANSACTION_TAX_AMT"/>
+		<SequenceRef name="ADD_TRANSACTION_TAX_AMT" values="!{newTransTaxAmt}, !{transTaxReasonCode}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed with a transaction tax percent change.-->
+	<TestCase name="BASICTRN-S-TOP-009" applicationKey="REGISTER" >
+		<Parameter name="newTransTaxPer" value="2" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_TRANSACTION_TAX_PER"/>
+		<SequenceRef name="ADD_TRANSACTION_TAX_PER" values="!{newTransTaxPer}, !{transTaxReasonCode}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed with transaction tax exempt.-->
+	<TestCase name="BASICTRN-S-TOP-010" applicationKey="REGISTER" >
+		<Parameter name="newTransTaxPer" value="2" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_TRANSACTION_TAX_EXEMPT"/>
+		<SequenceRef name="ADD_TRANS_TAX_EXEMPT" values="!{certificateHolderName},!{certificateNbr},!{taxExemptReasonCode}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be suspended.-->
+	<TestCase name="BASICTRN-S-TOP-011" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+    </TestCase>
+	<!--Verify that a sale transaction that was suspended can be resumed.-->
+	<TestCase name="BASICTRN-S-TOP-012" applicationKey="REGISTER" >
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SUSPEND_SALE" values="!{itemId}"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransaction.getTransactionSequence" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be canceled.-->
+	<TestCase name="BASICTRN-S-TOP-013" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="CANCEL_TRANSACTION_HAS_ITEM" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed with a serialized coupon.-->
+	<!-- <TestCase name="BASICTRN-S-TOP-015" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="1020" />
+		<Parameter name="serializedCoupon" value="SRL2002002100001FS" /> 
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="2" />
+		<SequenceRef name="SELECT_BTN_COUPON" values="!{serializedCoupon}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase> -->
+	<!--Verify that a sale transaction can be completed without customer.-->
+	<TestCase name="BASICTRN-S-COP-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed with a new customer.-->
+	<TestCase name="BASICTRN-S-COP-002" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="@getNextSequenceValue(Transaction)" />
+		<Parameter name="lastName" values="Test Auto" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber},!{lastName}" />     
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed with an existing customer.-->
+	<TestCase name="BASICTRN-S-COP-003" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />     
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be completed after removing a customer from the transaction.-->
+	<TestCase name="BASICTRN-S-COP-004" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />     
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SELECT_CUSTOMER_IN_SALE" />
+		<SequenceRef name="REMOVE_CUSTOMER_IN_SALE" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that a verified return can be completed for the original transaction that included items by keying the original receipt's 
+	information at the Return Information screen and selecting items from the original sale's item list.-->
+	<TestCase name="BASICTRN-VR-ORG-007" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="!{itemId}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that a sale transaction can be returned in Xstore.-->
+	<TestCase name="BASICTRN-VR-TRN-001" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="!{itemId}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that an sale exchange transaction can be returned in Xstore.-->
+	<TestCase name="BASICTRN-VR-TRN-003" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_EXCHANGE_TRANS" values="!{item1},!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that a verified return can be completed for the original transaction that included merchandise items.-->
+	<TestCase name="BASICTRN-VR-ITM-001" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="!{itemId}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that a verified return can be completed for the original transaction that included non-merchandise items.-->
+	<TestCase name="BASICTRN-VR-ITM-002" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="!{itemId}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>			
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that a verified return can be completed for the original transaction that included serialized items.-->
+	<!-- <TestCase name="BASICTRN-VR-ITM-007" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="itemid" value="101000018" /> 
+		<Parameter name="enterSerialNumber" value="10000019" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="COMPLETE_SALE_SERIAL_TENDER_CASH" values="!{itemId},!{enterSerialNumber}"/>
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />		
+		<SequenceRef name="VERIFIED_RETURN_TRANSACTION_WITH_SERIAL_ITM" values="@getBarcode(@getLastTransactionId),!{returnRC},!{returnComment},!{enterSerialNumber}" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase> -->
+
+	<!--Verify that a verified return can be completed for the original transaction that included multiple item types.-->
+	<!-- <TestCase name="BASICTRN-VR-ITM-008" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="3010" /> 
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_MULT_ITEM" values="!{item1}, !{item2}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase> -->
+
+	<!--Verify that the user can void a returned item from the verified return.-->
+	<TestCase name="BASICTRN-VR-IOP-001" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="!{itemId}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="VOID_ITEM_NO_COMMENT" values="!{itemId}, %?VOID_LINE_REASONS.ReasonCode" />
+    </TestCase>
+
+	<!--Verify that the user can cancel a verified return transaction.-->
+	<TestCase name="BASICTRN-VR-TOP-001" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="!{itemId}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="CANCEL_TRANSACTION_HAS_ITEM" />
+    </TestCase>
+
+	<!--Verify that a verified return can be completed with a new customer.-->
+	<!--<TestCase name="BASICTRN-VR-COP-001" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="teleNumber" value="011223344" />
+		<Parameter name="lastName" value="Test auto create verified return" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber},!{lastName}" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="!{itemId}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_PHONE" values="!{teleNumber}" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="CANCEL_TRANSACTION_HAS_ITEM" />
+    </TestCase>-->
+	<!--Verify that a verified return can be completed with an existing customer.-->
+	<TestCase name="BASICTRN-VR-COP-002" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="!{itemId}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="CANCEL_TRANSACTION_HAS_ITEM" />
+    </TestCase>
+
+	<!--Verify that an unverified return transaction can be completed if the original transaction cannot be found after keying the original transaction receipt.-->
+	<TestCase name="BASICTRN-UR-ITM-001" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},60,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that an unverified return can be completed with non-merchandise items.-->
+	<!-- <TestCase name="BASICTRN-UR-ITM-002" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="9100" />
+		<Parameter name="origTransSeq" value="120" />
+		<Parameter name="origTransBusinessDate" value="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origLocationId" value="1005" />
+		<Parameter name="origWorkStationId" value="1" />
+		<Parameter name="warrantyID" value="11223344556673432" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_WARRANTY_ITEM" values="!{itemId},!{returnRC},!{returnComment},!{warrantyID},0" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_HOUSE_ACOUNT" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase> -->
+
+	<!--Verify that the user can change quantity for a returned item in the unverified return.-->
+	<TestCase name="BASICTRN-UR-IOP-001" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="CHANGE_ITEM_QTY" values="!{itemId},!{newQty}" />
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},60,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the user can change price for a returned item in the unverified return.-->
+	<TestCase name="BASICTRN-UR-IOP-002" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},80,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the user can change item tax amount for a returned item in the unverified return.-->
+	<TestCase name="BASICTRN-UR-IOP-009" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{itemId},@getActualPrice(!{itemId}).divide(10)"/>	
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},80,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the user can change item tax percent for a returned item in the unverified return.-->
+	<TestCase name="BASICTRN-UR-IOP-010" applicationKey="REGISTER" >
+		<Parameter name="newTaxPER" value="5" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},80,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the user can exempt item tax for a returned item in the unverified return.-->
+	<TestCase name="BASICTRN-UR-IOP-011" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},80,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{itemId}, !{certificateHolderName}, !{certificateNbr}, !{taxExemptReasonCode}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the user can void a returned item from the unverified return.-->
+	<TestCase name="BASICTRN-UR-IOP-012" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item1},50,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{item2},30,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="VOID_ITEM_NO_COMMENT" values ="!{item2},%?VOID_LINE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the user can change a transaction tax amount for the unverified return.-->
+	<TestCase name="BASICTRN-UR-TOP-008" applicationKey="REGISTER" >
+		<Parameter name="newTransTaxAmt" value="2.5" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},60,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_TRANSACTION_TAX_AMT" />
+		<SequenceRef name="ADD_TRANSACTION_TAX_AMT" values ="!{newTransTaxAmt}, !{transTaxReasonCode}"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the user can change a transaction tax percent for the unverified return.-->
+	<TestCase name="BASICTRN-UR-TOP-009" applicationKey="REGISTER" >
+		<Parameter name="newTransTaxPer" value="7" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},60,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_TRANSACTION_TAX_PER" />
+		<SequenceRef name="ADD_TRANSACTION_TAX_PER" values ="!{newTransTaxPer}, !{transTaxReasonCode}"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the user can exempt transaction tax for the unverified return.-->
+	<TestCase name="BASICTRN-UR-TOP-010" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},60,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_TRANSACTION_TAX_EXEMPT" />
+		<SequenceRef name="ADD_TRANS_TAX_EXEMPT" values ="!{certificateHolderName}, !{certificateNbr}, !{taxExemptReasonCode}"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the user can suspend the unverified return.-->
+	<TestCase name="BASICTRN-UR-TOP-011" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" /> 
+		<Parameter name="origTransSeq" value="120" />
+		<Parameter name="origTransBusinessDate" value="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origLocationId" value="1005" />
+		<Parameter name="origWorkStationId" value="1" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},60,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+    </TestCase>
+
+	<!--Verify that the user can resume the unverified transaction that was suspended.-->
+	<TestCase name="BASICTRN-UR-TOP-012" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SUSPEND_UNVERIFIED_RETURN" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId},!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransaction.getTransactionSequence" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the user can cancel the unverified return.-->
+	<TestCase name="BASICTRN-UR-TOP-013" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="CANCEL_TRANSACTION_HAS_ITEM" />
+    </TestCase>
+
+	<!--Verify that an unverified return can be completed with a new customer.-->
+	<TestCase name="BASICTRN-UR-COP-001" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="@getNextSequenceValue(Transaction)" />
+		<Parameter name="lastName" value="Test auto 2" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber},!{lastName}" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},60,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that an unverified return can be completed with an existing customer.-->
+	<TestCase name="BASICTRN-UR-COP-002" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},60,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that a blind return can be completed with merchandise items.-->
+	<TestCase name="BASICTRN-BR-ITM-001" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that a blind return can be completed with non-merchandise items.-->
+	<!-- <TestCase name="BASICTRN-BR-ITM-002" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?ITEM_FEE_DB.ItemId" />
+		<Parameter name="warrantyID" value="1234333556677" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase> -->
+	<!--Verify that a blind return can be completed with serialized items.-->
+	<TestCase name="BASICTRN-BR-ITM-007" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?ITEMS_SERIAL_DB.ItemId" />
+		<Parameter name="nextTranNo" value="@getNextSequenceValue(Transaction)" /> 
+		<Parameter name="serialNo" value="!{rtlLocId}!{wkstnId}!{nextTranNo}" /> 
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_SERIAL_ITEM" values="!{itemId},!{serialNo},!{returnRC},!{returnComment},0" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase> 
+	<!--Verify that a blind return can be completed with multiple item types.-->
+	<!-- <TestCase name="BASICTRN-BR-ITM-008" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="9100" /> 
+		<Parameter name="warrantyID" value="%?WARRANTY_DB.Number" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},!{returnRC},!{returnComment},0" />
+		<SequenceRef name="SCAN_RETURN_WARRANTY_ITEM" values="!{item2},!{returnRC},!{returnComment},!{warrantyID},0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase> -->
+
+	<!--Verify that the user can change quantity for a returned item in the blind return.-->
+	<TestCase name="BASICTRN-BR-IOP-001" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="CHANGE_ITEM_QTY" values="!{itemId},!{newQty}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the user can change price for a returned item in the blind return.-->
+	<TestCase name="BASICTRN-BR-IOP-002" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},35,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the user can change item tax amount for a returned item in the blind return.-->
+	<TestCase name="BASICTRN-BR-IOP-009" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{itemId},@getActualPrice(!{itemId}).divide(10)"/>	
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	
+	<!--Verify that the user can change item tax percent for a returned item in the blind return.-->
+	<TestCase name="BASICTRN-BR-IOP-010" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPCT}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the user can exempt item tax for a returned item in the blind return.-->
+	<TestCase name="BASICTRN-BR-IOP-011" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values="!{itemId},!{certificateHolderName},!{certificateNbr},!{taxExemptReasonCode}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the user can void a returned item from the blind return.-->
+	<TestCase name="BASICTRN-BR-IOP-012" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="VOID_LINE" values="!{itemId},%?VOID_LINE_REASONS.ReasonCode"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the user can change a transaction tax amount for the blind return.-->
+	<TestCase name="BASICTRN-BR-TOP-008" applicationKey="REGISTER" >
+		<Parameter name="newTransTaxAmt" value="5.7" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_TRANSACTION_TAX_AMT" />
+		<SequenceRef name="ADD_TRANSACTION_TAX_AMT" values ="!{newTransTaxAmt}, !{transTaxReasonCode}"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the user can change a transaction tax percent for the blind return.-->
+	<TestCase name="BASICTRN-BR-TOP-009" applicationKey="REGISTER" >
+		<Parameter name="newTransTaxPer" value="5" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_TRANSACTION_TAX_PER"/>
+		<SequenceRef name="ADD_TRANSACTION_TAX_PER" values="!{newTransTaxPer}, !{transTaxReasonCode}" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the user can exempt transaction tax for the blind return.-->
+	<TestCase name="BASICTRN-BR-TOP-010" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_TRANSACTION_TAX_EXEMPT"/>
+		<SequenceRef name="ADD_TRANS_TAX_EXEMPT" values="!{certificateHolderName},!{certificateNbr},!{taxExemptReasonCode}" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that the user can suspend the blind return.-->
+	<TestCase name="BASICTRN-BR-TOP-011" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+    </TestCase>
+	<!--Verify that the user can resume the blind transaction that was suspended.-->
+	<TestCase name="BASICTRN-BR-TOP-012" applicationKey="REGISTER" >
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SUSPEND_BLIND_RETURN" values="!{itemId},!{returnRC},!{returnComment}"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransaction.getTransactionSequence" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="5" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that a sale transaction can be canceled.-->
+	<TestCase name="BASICTRN-BR-TOP-013" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" /> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="CANCEL_TRANSACTION_HAS_ITEM" />
+    </TestCase>
+
+	<!--Verify that a blind return can be completed with a new customer.-->
+	<TestCase name="BASICTRN-BR-COP-001" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="001122" />
+		<Parameter name="lastName" value="Test auto 2" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber},!{lastName}" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that a blind return can be completed with an existing customer.-->
+	<TestCase name="BASICTRN-BR-COP-002" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+</XunitConfig>

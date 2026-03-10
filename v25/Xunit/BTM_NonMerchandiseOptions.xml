@@ -1,0 +1,865 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+	<!-- TEST CASES -->
+	<TestCase name="NMERCH-WAR-001"	applicationKey="REGISTER"><!-- that user can add warranty into item in current sale transaction	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start sale transaction
+		3. Add item
+		4. Select Non-Merchandise Options
+		5. Select Warranty > Add Warranty
+		6. Select Current Transaction
+		7. Add warranty item
+		8. Select the warranty plan
+		9. Complete the transaction"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_WARRANTY_ITEM" values="!{witemId}"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />			
+	</TestCase>
+	<TestCase name="NMERCH-WAR-005"	applicationKey="REGISTER"><!-- that user can add warranty into item in current Blind Return transaction	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start blind return transaction
+		3. Add item
+		4. Select Non-Merchandise Options
+		5. Select Warranty > Add Warranty
+		6. Select Current Transaction
+		7. Add warranty item
+		8. Select the warranty plan
+		9. Complete the transaction"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{witemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />		
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_WARRANTY_PLAN" values="%+WARRANTY_DB.Number"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase>
+		
+	<TestCase name="NMERCH-WAR-006"	applicationKey="REGISTER"><!-- that user can add warranty into item in current Unverified Return transaction	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start unverified return transaction
+		3. Add item
+		4. Select Non-Merchandise Options
+		5. Select Warranty > Add Warranty
+		6. Select Current Transaction
+		7. Add warranty item
+		8. Select the warranty plan
+		9. Complete the transaction"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="FILL_ORIGINAL_TRANSACTION_INFO" values="123,@getCurrentBusinessDate,!{origLocationId},!{origWorkStationId}"/>		
+		<SequenceRef name="SELECT_BTN_YES"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{witemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />		
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_WARRANTY_PLAN" values="%+WARRANTY_DB.Number"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />	
+	</TestCase>
+	
+	<TestCase name="NMERCH-WAR-007"	applicationKey="REGISTER"><!-- that user can add warranty into item in current Verified Return transaction	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start verified return transaction
+		3. Add item
+		4. Select Non-Merchandise Options
+		5. Select Warranty > Add Warranty
+		6. Select Current Transaction
+		7. Add warranty item
+		8. Select the warranty plan
+		9. Complete the transaction"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_WARRANTY_ITEM" values="!{witemId}"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<!--verified return-->
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>	
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />		
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	
+	<!--<TestCase name="NMERCH-WAR-019"	applicationKey="REGISTER"> that user can add warranty into item in customer history of sale transaction	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start sale transaction
+		3. Add item
+		4. Select Non-Merchandise Options
+		5. Select Warranty > Add Warranty
+		6. Select Customer History
+		7. Add warranty item
+		8. Select the warranty plan
+		9. Complete the transaction"
+		
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_WARRANTY_ITEM" values="!{witemId}"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />	
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="ENTER_WARRANTY_ITEM_WITHOUT_WARRANTY_PLAN" values="!{witemId}"/>
+		<SequenceRef name="SELECT_ADD_WARRANTY" />
+		<SequenceRef name="ADD_WARRANTY_CUSTOMER_HIS" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>-->
+	
+	<!--<TestCase name="NMERCH-WAR-023"	applicationKey="REGISTER"> that user can add warranty into item in customer history of Blind Return transaction	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start blind return transaction
+		3. Add item
+		4. Select Non-Merchandise Options
+		5. Select Warranty > Add Warranty
+		6. Select Customer History
+		7. Add warranty item
+		8. Select the warranty plan
+		9. Complete the transaction"
+		
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="COMPLETE_SALE_WARRANTY_TENDER_CASH" values="!{witemId},BTM, Thoi"/>
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{witemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />		
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_WARRANTY_PLAN" values="%+WARRANTY_DB.Number"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_ADD_WARRANTY" />
+		<SequenceRef name="ADD_WARRANTY_CUSTOMER_HIS" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>-->
+	<!-- <TestCase name="NMERCH-WAR-024"	applicationKey="REGISTER">that user can add warranty into item in customer history of Unverified Return transaction	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start unverified return transaction
+		3. Add item
+		4. Select Non-Merchandise Options
+		5. Select Warranty > Add Warranty
+		6. Select Customer History
+		7. Add warranty item
+		8. Select the warranty plan
+		9. Complete the transaction"
+		
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="FILL_ORIGINAL_TRANSACTION_INFO" values="123,@getCurrentBusinessDate,!{origLocationId},!{origWorkStationId}"/>		
+		<SequenceRef name="SELECT_BTN_YES"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{witemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />		
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_WARRANTY_PLAN" values="%+WARRANTY_DB.Number"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_ADD_WARRANTY" />
+		<SequenceRef name="ADD_WARRANTY_CUSTOMER_HIS" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>-->
+	<!--<TestCase name="NMERCH-WAR-025"	applicationKey="REGISTER"> that user can add warranty into item in customer history of Verified Return transaction	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start verified return transaction
+		3. Add item
+		4. Select Non-Merchandise Options
+		5. Select Warranty > Add Warranty
+		6. Select Customer History
+		7. Add warranty item
+		8. Select the warranty plan
+		9. Complete the transaction"
+		
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="COMPLETE_SALE_WARRANTY_TENDER_CASH" values="!{witemId},BTM, Thoi"/>
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_ADD_WARRANTY" />
+		<SequenceRef name="ADD_WARRANTY_CUSTOMER_HIS" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>-->
+	<TestCase name="NMERCH-WAR-037"	applicationKey="REGISTER"><!-- that user can add warranty into item in previous sale transaction with receipt	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start sale transaction
+		3. Add item
+		4. Select Non-Merchandise Options
+		5. Select Warranty > Add Warranty
+		6. Select Previous Transaction w/Receipt
+		7. Scan/Enter the barcode from the original
+		receipt
+		8. Add warranty item
+		9. Select the warranty plan
+		10. Complete the transaction"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<!--Complete a sale with a warranty item without selecting warrant plan-->
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="ENTER_WARRANTY_ITEM_WITHOUT_WARRANTY_PLAN" values="!{witemId}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<!---->
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_ADD_WARRANTY" />
+		<SequenceRef name="ADD_WARRANTY_PRE_TRAN_RECEIPT" />		
+		<SequenceRef name="FILL_ORIGINAL_TRANSACTION_BARCODE" values="@getBarcode(@getLastTransactionId)"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	<TestCase name="NMERCH-WAR-041"	applicationKey="REGISTER"><!-- that user can add warranty into item in previous Blind Return transaction with receipt	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start Blind Return transaction
+		3. Add item
+		4. Select Non-Merchandise Options
+		5. Select Warranty > Add Warranty
+		6. Select Previous Transaction w/Receipt
+		7. Scan/Enter the barcode from the original
+		receipt
+		8. Add warranty item
+		9. Select the warranty plan
+		10. Complete the transaction"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="COMPLETE_SALE_WARRANTY_WO_PLAN_TENDER_CASH" values="!{witemId},BTM,Thoi"/>
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{witemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />		
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_WARRANTY_PLAN" values="%+WARRANTY_DB.Number"/>
+		<SequenceRef name="GO_SALE_SCREEN" />		
+		<SequenceRef name="SELECT_ADD_WARRANTY" />
+		<SequenceRef name="ADD_WARRANTY_PRE_TRAN_RECEIPT" />		
+		<SequenceRef name="FILL_ORIGINAL_TRANSACTION_BARCODE" values="@getBarcode(@getLastTransactionId)"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	<TestCase name="NMERCH-WAR-042"	applicationKey="REGISTER"><!-- that user can add warranty into item in previous Unverified Return transaction with receipt	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start Unverified Return transaction
+		3. Add item
+		4. Select Non-Merchandise Options
+		5. Select Warranty > Add Warranty
+		6. Select Previous Transaction w/Receipt
+		7. Scan/Enter the barcode from the original
+		receipt
+		8. Add warranty item
+		9. Select the warranty plan
+		10. Complete the transaction"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="COMPLETE_SALE_WARRANTY_WO_PLAN_TENDER_CASH" values="!{witemId},BTM,Thoi"/>
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="FILL_ORIGINAL_TRANSACTION_INFO" values="123,@getCurrentBusinessDate,!{origLocationId},!{origWorkStationId}"/>		
+		<SequenceRef name="SELECT_BTN_YES"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{witemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />		
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_WARRANTY_PLAN" values="%+WARRANTY_DB.Number"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_ADD_WARRANTY" />
+		<SequenceRef name="ADD_WARRANTY_PRE_TRAN_RECEIPT" />		
+		<SequenceRef name="FILL_ORIGINAL_TRANSACTION_BARCODE" values="@getBarcode(@getLastTransactionId)"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase>
+
+	<TestCase name="NMERCH-WAR-055"	applicationKey="REGISTER"><!-- that user can add warranty into item by manual in sale transaction	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start sale transaction
+		3. Add item
+		4. Select Non-Merchandise Options
+		5. Select Warranty > Add Warranty
+		6. Select Manual Entry
+		7. Scan/Enter Item ID
+		8. Add warranty item
+		9. Select the warranty plan
+		10. Complete the transaction"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="ENTER_WARRANTY_ITEM_WITHOUT_WARRANTY_PLAN" values="!{witemId}"/>
+		<SequenceRef name="SELECT_ADD_WARRANTY" />
+		<SequenceRef name="ADD_WARRANTY_MANUAL" />
+		<SequenceRef name="SCAN_WARRANTY_ITEM_PRICE" values="!{witemId},99.99"/>
+		<SequenceRef name="SELECT_BTN_YES" />		
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	
+	<TestCase name="NMERCH-WAR-059"	applicationKey="REGISTER"><!-- that user can add warranty into item by manual in Blind Return transaction	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start Blind Return transaction
+		3. Add item
+		4. Select Non-Merchandise Options
+		5. Select Warranty > Add Warranty
+		6. Select Manual Entry
+		7. Scan/Enter Item ID
+		8. Add warranty item
+		9. Select the warranty plan
+		10. Complete the transaction"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{witemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />		
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_WARRANTY_PLAN" values="%+WARRANTY_DB.Number"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_ADD_WARRANTY" />
+		<SequenceRef name="ADD_WARRANTY_MANUAL" />
+		<SequenceRef name="SCAN_WARRANTY_ITEM_PRICE" values="!{witemId},99.99"/>
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	
+	<TestCase name="NMERCH-WAR-060"	applicationKey="REGISTER"><!-- that user can add warranty into item by manual in Unverified Return transaction	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start Unverified Return transaction
+		3. Add item
+		4. Select Non-Merchandise Options
+		5. Select Warranty > Add Warranty
+		6. Select Manual Entry
+		7. Scan/Enter Item ID
+		8. Add warranty item
+		9. Select the warranty plan
+		10. Complete the transaction"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="COMPLETE_SALE_WARRANTY_WO_PLAN_TENDER_CASH" values="!{witemId},BTM,Thoi"/>
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="FILL_ORIGINAL_TRANSACTION_INFO" values="123,@getCurrentBusinessDate,!{origLocationId},!{origWorkStationId}"/>		
+		<SequenceRef name="SELECT_BTN_YES"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{witemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />		
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_WARRANTY_PLAN" values="%+WARRANTY_DB.Number"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_ADD_WARRANTY" />
+		<SequenceRef name="ADD_WARRANTY_MANUAL" />
+		<SequenceRef name="SCAN_WARRANTY_ITEM_PRICE" values="!{witemId},99.99"/>
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	
+	<TestCase name="NMERCH-WAR-061"	applicationKey="REGISTER"><!-- that user can add warranty into item by manual in Verified Return transaction	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start Verified Return transaction
+		3. Add item
+		4. Select Non-Merchandise Options
+		5. Select Warranty > Add Warranty
+		6. Select Manual Entry
+		7. Scan/Enter Item ID
+		8. Add warranty item
+		9. Select the warranty plan
+		10. Complete the transaction"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="COMPLETE_SALE_WARRANTY_TENDER_CASH" values="!{witemId},BTM, Thoi"/>
+		<!--verified return-->
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />		
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_ADD_WARRANTY" />
+		<SequenceRef name="ADD_WARRANTY_MANUAL" />
+		<SequenceRef name="SCAN_WARRANTY_ITEM_PRICE" values="!{witemId},99.99"/>
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	<TestCase name="NMERCH-WAR-073"	applicationKey="REGISTER">
+		<!-- that user can change warranty customer in sale transaction	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start sale transaction
+		3. Add item
+		4. Add warranty for item > Change customer warranty
+		5. Complete sale transaction with cash"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<Parameter name="custChange" value="%?CUSTOMERS_DB.CustId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_WARRANTY_ITEM" values="!{witemId}"/>
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_CHANGE_WARRANTY_CUSTOMER"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custChange}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	<TestCase name="NMERCH-WAR-077"	applicationKey="REGISTER">
+		<!-- that user can change warranty customer in Blind Return transaction	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start blind return transaction
+		3. Add item
+		4. Add warranty for item > Change customer warranty
+		5. Complete blind return transaction with cash"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<Parameter name="custChange" value="%?CUSTOMERS_DB.CustId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{witemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />		
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_WARRANTY_PLAN" values="%+WARRANTY_DB.Number"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_CHANGE_WARRANTY_CUSTOMER"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custChange}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	<TestCase name="NMERCH-WAR-078"	applicationKey="REGISTER">
+		<!-- that user can change warranty customer in Unverified Return transaction	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start unverified return transaction
+		3. Add item
+		4. Add warranty for item > Change customer warranty
+		5. Complete unverified return transaction with cash"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<Parameter name="custChange" value="%?CUSTOMERS_DB.CustId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="COMPLETE_SALE_WARRANTY_WO_PLAN_TENDER_CASH" values="!{witemId},BTM,Thoi"/>
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="FILL_ORIGINAL_TRANSACTION_INFO" values="123,@getCurrentBusinessDate,!{origLocationId},!{origWorkStationId}"/>		
+		<SequenceRef name="SELECT_BTN_YES"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{witemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />		
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_WARRANTY_PLAN" values="%+WARRANTY_DB.Number"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_CHANGE_WARRANTY_CUSTOMER"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custChange}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	<TestCase name="NMERCH-WAR-079"	applicationKey="REGISTER">
+		<!-- that user can change warranty customer in Verified Return transaction	"Pre-Conditions:
+		- Warranty loaded into DB
+
+		Steps to verify:
+		1. Login into Xstore
+		2. Start verified return transaction
+		3. Add item
+		4. Add warranty for item > Change customer warranty
+		5. Complete verified return transaction with cash"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<Parameter name="wPlanId" value="9000010" />
+		<Parameter name="custChange" value="%?CUSTOMERS_DB.CustId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="COMPLETE_SALE_WARRANTY_TENDER_CASH" values="!{witemId},BTM, Thoi"/>
+		<!--verified return-->
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>	
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />		
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_YES"/>
+		<SequenceRef name="FILL_ORIGINAL_TRANSACTION_BARCODE" values="@getBarcode(@getLastTransactionId)"/>		
+		<SequenceRef name="SELECT_TWO_ITEMS" values="!{witemId},!{wPlanId}"/>
+		<SequenceRef name="SELECT_REASON_CODE" values="%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq"/>		
+		<SequenceRef name="SELECT_WARRANTIES_FOR_RETURN"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="SELECT_CHANGE_WARRANTY_CUSTOMER"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custChange}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	<TestCase name="NMERCH-SELL-NM-FEE-001"	applicationKey="REGISTER">
+		<!-- that user can add shipping fee item to Sale transaction when doing sell Non-merchandise function in Non-Merchandise Options menu	"Pre-Conditions:
+		- Shipping fee loaded in Xstore DB
+
+		Steps to verify:
+		1. Start sale transaction
+		2. Select Non-Merchandise Options
+		3. Select sell non-merchandise function
+		4. Choose non-merchandise item
+		5. Complete sale transaction with any tender type"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_WARRANTY_ITEM" values="!{witemId}"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase>
+	<TestCase name="NMERCH-SELL-NM-FEE-005"	applicationKey="REGISTER">
+		<!-- that user can add shipping fee item to Blind Return transaction when doing sell Non-merchandise function in Non-Merchandise Options menu	"Pre-Conditions:
+		- Shipping fee loaded in Xstore DB
+		- Shipping fee is returnable
+
+		Steps to verify:
+		1. Start Blind Return transaction
+		2. Select Non-Merchandise Options
+		3. Select sell non-merchandise function
+		4. Choose non-merchandise item
+		5. Complete Blind Return transaction with any tender type"
+		-->
+		<Parameter name="witemId" value="%?ITEM_FEE_DB.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{witemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />		
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase>
+	<TestCase name="NMERCH-SELL-NM-FEE-006"	applicationKey="REGISTER">
+		<!-- that user can add shipping fee item to Unverified Return transaction when doing sell Non-merchandise function in Non-Merchandise Options menu	"Pre-Conditions:
+		- Shipping fee loaded in Xstore DB
+		- Shipping fee is returnable
+
+		Steps to verify:
+		1. Start Unverified Return transaction
+		2. Select Non-Merchandise Options
+		3. Select sell non-merchandise function
+		4. Choose non-merchandise item
+		5. Complete Unverified Return transaction with any tender type"
+		-->
+	</TestCase>
+	<TestCase name="NMERCH-SELL-NM-FEE-007"	applicationKey="REGISTER">
+		<!-- that user can add shipping fee item to Verified Return transaction when doing sell Non-merchandise function in Non-Merchandise Options menu	"Pre-Conditions:
+		- Shipping fee loaded in Xstore DB
+		- Shipping fee is returnable
+
+		Steps to verify:
+		1. Start Verified Return transaction
+		2. Select Non-Merchandise Options
+		3. Select sell non-merchandise function
+		4. Choose non-merchandise item
+		5. Complete Verified Return transaction with any tender type"
+		-->
+	</TestCase>
+	<TestCase name="NMERCH-SELL-NM-WARRANTY-001"	applicationKey="REGISTER">
+		<!-- that user can sell warranty item on Sale transaction when doing sell Non-merchandise function in Non-Merchandise Options menu	"Pre-Conditions:
+		- Warranty item loaded in Xstore DB
+
+		Steps to verify:
+		1. Start sale transaction
+		2. Select Non-Merchandise Options
+		3. Select sell non-merchandise function
+		4. Choose non-merchandise item
+		5. Complete sale transaction with any tender type"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_WARRANTY_ITEM" values="!{witemId}"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase>
+	<TestCase name="NMERCH-SELL-NM-WARRANTY-005"	applicationKey="REGISTER">
+		<!-- that user can sell warranty item on Blind Return transaction when doing sell Non-merchandise function in Non-Merchandise Options menu	"Pre-Conditions:
+		- Warranty item loaded in Xstore DB
+		- Warranty item is returnable
+
+		Steps to verify:
+		1. Start Blind Return transaction
+		2. Select Non-Merchandise Options
+		3. Select sell non-merchandise function
+		4. Choose non-merchandise item
+		5. Complete Blind Return transaction with any tender type"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{witemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />		
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase>
+	<TestCase name="NMERCH-SELL-NM-WARRANTY-006"	applicationKey="REGISTER">
+		<!-- that user can sell warranty item on Unverified Return transaction when doing sell Non-merchandise function in Non-Merchandise Options menu	"Pre-Conditions:
+		- Warranty item loaded in Xstore DB
+		- Warranty item is returnable
+
+		Steps to verify:
+		1. Start Unverified Return transaction
+		2. Select Non-Merchandise Options
+		3. Select sell non-merchandise function
+		4. Choose non-merchandise item
+		5. Complete Unverified Return transaction with any tender type"
+		-->
+	</TestCase>
+	<TestCase name="NMERCH-SELL-NM-WARRANTY-007"	applicationKey="REGISTER">
+		<!-- that user can sell warranty item on Verified Return transaction when doing sell Non-merchandise function in Non-Merchandise Options menu	"Pre-Conditions:
+		- Warranty item loaded in Xstore DB
+		- Warranty item is returnable
+
+		Steps to verify:
+		1. Start Verified Return transaction
+		2. Select Non-Merchandise Options
+		3. Select sell non-merchandise function
+		4. Choose non-merchandise item
+		5. Complete Verified Return transaction with any tender type"
+		-->
+	</TestCase>
+	<TestCase name="NMERCH-RESTR-001"	applicationKey="REGISTER">
+		<!-- that customer age verification prompt when doing sell item restrictions in sale transaction	"Pre-Conditions:
+		- Item age verification configured in Xstore DB
+
+		Steps to verify:
+		1. Start sale transaction
+		2. Add restricted item
+		3. Confirm the customer's age is eligible
+		4. Complete transaction"
+		-->
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_WARRANTY_ITEM" values="!{witemId}"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase>
+	<TestCase name="NMERCH-RESTR-005"	applicationKey="REGISTER">
+		<!-- that customer age verification prompt when doing sell item restrictions in Unverified Return transaction	"Pre-Conditions:
+		- Item age verification configured in Xstore DB
+
+		Steps to verify:
+		1. Start Unverified Return transaction
+		2. Add restricted item
+		3. Complete transaction"
+		-->
+	</TestCase>
+	<TestCase name="NMERCH-RESTR-006"	applicationKey="REGISTER">
+		<!-- that customer age verification prompt when doing sell item restrictions in Verified Return transaction	"Pre-Conditions:
+		- Item age verification configured in Xstore DB
+
+		Steps to verify:
+		1. Start Verified Return transaction
+		2. Add restricted item
+		3. Complete transaction"
+		-->
+	</TestCase>
+	<TestCase name="NMERCH-RESTR-007"	applicationKey="REGISTER">
+		<!-- that customer age verification prompt when doing sell item restrictions in Blind Return transaction	"Pre-Conditions:
+		- Item age verification configured in Xstore DB
+
+		Steps to verify:
+		1. Start Blind Return transaction
+		2. Add restricted item
+		3. Complete transaction"-->
+		<Parameter name="witemId" value="%?ITEM_FEE_DB.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{witemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />		
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase>
+</XunitConfig>

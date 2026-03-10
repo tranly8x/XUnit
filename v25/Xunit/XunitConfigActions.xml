@@ -1,0 +1,2237 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	
+	<!--Exchange Tender By Cash-->
+	<TestSequence name="EXCHANGE_TENDER_BY_CASH" parameters="total,cashAMTABS">
+		<TestStep action="REFUND_LOCAL_CURRENCY" description="REFUND_LOCAL_CURRENCY (MobilePromptTenderMenuOp)" condition="@and(@invert(@isPositive(!{total})),@invert(@equals(!{cashAMTABS},0.00)0)"/>
+		<TestStep action="TENDER_LOCAL_CURRENCY" description="TENDER_LOCAL_CURRENCY (MobilePromptTenderMenuOp)" condition="@and(@isPositive(!{total}),@invert(@equals(!{cashAMTABS},0.00)0)"/>
+		<TestStep action="ACCEPT" data="!{cashAMTABS}" description="Enter !{cashAMTABS} (CashSuggestionPromptTenderAmtOp)" condition="@invert(@equals(!{cashAMTABS},0.00)0)"/>
+  	</TestSequence>
+	
+	<TestSequence name="VOID_ITEM_NO_COMMENT" parameters="itemid,reasonCode"> <!--Void line does not require enter comment-->
+		<TestStep action="VOID_LINE" description="Void item (PromptItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemid}" modelKey="CURRENT_TRANSACTION" />
+        </TestStep>
+        <SequenceRef name="SELECT_REASON_CODE_NO_COMMENT" values="!{reasonCode}" />
+	</TestSequence>
+	<TestSequence name="LAYAWAY_MAKE_PAYMENT" parameters="acctId">
+		<TestStep description="Select Make Payment for Account: !{acctId}" action="LAYAWAY_PAYMENT" />
+	 
+		<SequenceRef name="ENTER_AMOUNT" values="@getCurrentCustomerAccount(LAYAWAY).getAccountBalance.multiply(0.25)" />
+	 
+		<TestStep description="Enter amount for layaway payment" action="ACCEPT" />
+	</TestSequence>
+	<!-- View Payment History -->	 
+	<TestSequence name="LAYAWAY_PAYMENT_ACTIVITY" >
+		<TestStep action="LAYAWAY_PAYMENT_ACTIVITY" description="View Payment History"/>
+        <TestStep action="DONE" description="Enter Done"/>
+	</TestSequence>
+	
+	<!-- View Activity History -->	 
+	<TestSequence name="LAYAWAY_ACTIVITY" >
+		<TestStep action="LAYAWAY_ACTIVITY" description="View Activity History"/>
+        <TestStep action="DONE" description="Enter Done"/>
+	</TestSequence>
+	
+	<!-- View Customer Dashboard -->	 
+	<TestSequence name="VIEW_CUSTOMER_IN_TRANSACTION" >
+		<TestStep action="VIEW_CUSTOMER_IN_TRANSACTION" description="View Customer Dashboard"/>
+		<TestStep action="EXIT" description="Back (CustomerDashboardOp)">
+            <Form name="CUSTOMER_MAINTENANCE"/>
+        </TestStep>
+	</TestSequence>
+	<!-- Select Layaway Detail-->	 
+	<TestSequence name="LAYAWAY_SCHEDULE" >
+		<TestStep action="LAYAWAY_SCHEDULE" description="View Payment Schedule"/>
+        <TestStep action="DONE" description="Enter Done"/>
+	</TestSequence>
+	<!--Create New Customer Does Not Exist when Start Sale-->
+	<TestSequence name="CREATE_NEW_CUSTOMER_BY_PHONE_AND_FULLTNAME" parameters="teleNumber,lastName,fistName">
+		<TestStep action="SEARCH" description="SEARCH (CustomerSearchOp)" condition="@promptEquals(CUSTOMER_SEARCH)">
+            <Form name="CUSTOMER_SEARCH">
+                <Field name="telephone" value="!{teleNumber}"/>
+                <Field name="lastName" value="!{lastName}"/>
+                <Field name="firstName" value="!{fistName}"/>
+            </Form>
+        </TestStep>
+		<TestStep action="NEW" description="NEW (CustomerSearchOp)" />
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerEditOp)">
+            <Form name="CUSTOMER_EDIT">
+                <Field name="lastName" value="!{lastName}"/>
+                <Field name="firstName" value="!{fistName}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<!--Create a customer by Phone and LastName-->
+	<TestSequence name="UPDATE_SEND_SALE_FIRST_LAST_NAME" parameters="updatedFirstName, updatedLastName">		
+		<TestStep action="EDIT_SEND_SALE_DESTINATION" description="EDIT_SEND_SALE_DESTINATION (PromptItemScanOp)"/>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptEditSendSaleDestinationOp)">
+			<Form name="SEND_SALE_DEST"><TestStep action="ACCEPT" description="ACCEPT (CustomerEditOp)">
+            <Form name="CUSTOMER_EDIT">
+                <Field name="lastName" value="!{lastName}"/>
+            </Form>
+        </TestStep>
+				<Field name="firstName" value="!{updatedFirstName}"/>
+				<Field name="lastName" value="!{updatedLastName}"/>
+			</Form>
+		</TestStep>		
+	</TestSequence>
+	<!--Update sendsale fist name last name-->
+	<TestSequence name="UPDATE_SEND_SALE_FIRST_LAST_NAME" parameters="updatedFirstName, updatedLastName">		
+		<TestStep action="EDIT_SEND_SALE_DESTINATION" description="EDIT_SEND_SALE_DESTINATION (PromptItemScanOp)"/>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptEditSendSaleDestinationOp)">
+			<Form name="SEND_SALE_DEST">
+				<Field name="firstName" value="!{updatedFirstName}"/>
+				<Field name="lastName" value="!{updatedLastName}"/>
+			</Form>
+		</TestStep>		
+	</TestSequence>
+	
+	<!--Update sendsale phone number-->
+	<TestSequence name="UPDATE_SEND_SALE_SHIP_METHOD" parameters="updatedShipMethod">		
+		<TestStep action="EDIT_SEND_SALE_DESTINATION" description="EDIT_SEND_SALE_DESTINATION (PromptItemScanOp)"/>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptEditSendSaleDestinationOp)">
+			<Form name="SEND_SALE_DEST">
+				<Field name="shippingMethod" value="!{updatedShipMethod}"/>
+			</Form>
+		</TestStep>		
+	</TestSequence>
+	<!--Update sendsale phone number-->
+	<TestSequence name="UPDATE_SEND_SALE_PHONE" parameters="telephone1">		
+		<TestStep action="EDIT_SEND_SALE_DESTINATION" description="EDIT_SEND_SALE_DESTINATION (PromptItemScanOp)"/>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptEditSendSaleDestinationOp)">
+			<Form name="SEND_SALE_DEST">
+				<Field name="telephone1" value="!{telephone1}"/>
+			</Form>
+		</TestStep>		
+	</TestSequence>
+	<!--Update sendsale destination-->
+	<TestSequence name="UPDATE_SEND_SALE_DESTINATION" parameters="newAddress">		
+		<TestStep action="EDIT_SEND_SALE_DESTINATION" description="EDIT_SEND_SALE_DESTINATION (PromptItemScanOp)"/>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptEditSendSaleDestinationOp)">
+            <Form name="SEND_SALE_DEST">
+                <Field name="address1" value="!{newAddress}"/>
+            </Form>
+        </TestStep>		
+	</TestSequence>
+	<!--02/03/2026-->
+	<!--Fill customer information-->
+	<TestSequence name="FILL_FORM_8300_AUTO" >
+		<TestStep action="ACCEPT" description="ACCEPT (Form8300LargeCashPaymentOp)" condition="@promptEquals(US_CASH_PAYMENT_FORM_8300)">
+            <Form name="US_CASH_PAYMENT_FORM_8300">
+                <Field name="custFirstName" value="BTM"/>
+                <Field name="custLastName" value="BTM"/>
+                <Field name="custAddress1" value="202 Helios Building"/>
+                <Field name="custCity" value="Garland"/>
+                <Field name="custState" value="TX"/>
+                <Field name="custPostalCode" value="75040"/>
+                <Field name="custSocialSecurityNumber" value="072182013652"/>
+                <Field name="custDateOfBirth" value="Wed Jun 30 00:00:00 ICT 1982"/>
+                <Field name="custOtherIdTypeDescription" value="CCCD"/>
+                <Field name="custOtherIdNumber" value="290765909"/>
+                <Field name="custOtherIdIssuer" value="US Citizen"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<!--Check customer does not exist in customer result-->
+	<TestSequence name="CHECK_CUSTOMER_ID_NOT_IN_CUSTOMER_RESULT" parameters="custId">
+		<Assertion class="dtv.xunit.assertion.ValidListItemAssertion" invert="true" >
+			<Parameter name="method" values="getCustId" />
+			<Parameter name="value" values="!{custId}" />
+		</Assertion>
+	</TestSequence>
+	
+	<!--Add New Customer in Customer Dashboard-->
+	<TestSequence name="CREATE_NEW_CUSTOMER" parameters="teleNumber,firstName,lastName,gender,organizationName,organizationTypeCode,birthDate,address1,
+	city,postalCode,state,phoneNumber1,email1,email2">
+		<TestStep action="SEARCH" description="SEARCH (CustomerSearchOp)" condition="@promptEquals(CUSTOMER_SEARCH)">
+            <Form name="CUSTOMER_SEARCH">
+                <Field name="telephone" value="!{teleNumber}"/>
+            </Form>
+        </TestStep>
+		<TestStep action="NEW" description="NEW (CustomerSearchOp)" />
+        <TestStep action="ACCEPT" description="ACCEPT (CustomerAddOp)">
+            <Form name="CUSTOMER_EDIT">
+                <Field name="firstName" value="!{firstName}"/>
+                <Field name="lastName" value="!{lastName}"/>
+                <Field name="gender" value="!{gender}"/>
+                <Field name="organizationName" value="!{organizationName}"/>
+				<Field name="organizationTypeCode" value="!{organizationTypeCode}"/>
+				<Field name="birthDate" value="!{birthDate}"/>
+                <Field name="address1" value="!{address1}"/>
+                <Field name="city" value="!{city}"/>
+                <Field name="postalCode" value="!{postalCode}"/>
+                <Field name="state" value="!{state}"/>
+                <Field name="phoneNumber1" value="!{phoneNumber1}"/>
+                <Field name="email1" value="!{email1}"/>
+				<Field name="email2" value="!{email2}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	
+	<!-- Change Country Customer -->	
+	<TestSequence name="CREATE_NEW_CUSTOMER_CHANGE_COUNTRY" parameters="countryId,teleNumber,firstName,lastName,gender,organizationName,organizationTypeCode,birthDate,address1,
+	city,postalCode,state,phoneNumber1,email1,email2">
+		<TestStep action="SEARCH" description="SEARCH (CustomerSearchOp)" condition="@promptEquals(CUSTOMER_SEARCH)">
+            <Form name="CUSTOMER_SEARCH">
+                <Field name="telephone" value="!{teleNumber}"/>
+            </Form>
+        </TestStep>
+		<TestStep action="NEW" description="NEW (CustomerSearchOp)" />		
+		<TestStep action="CHANGE_COUNTRY" description="Change Country"/>
+		<TestStep action="ACCEPT" description="Accept Country">
+			<ListSelect method="getCode" value="!{countryId}"/>
+        </TestStep>
+        <TestStep action="ACCEPT" description="ACCEPT (CustomerAddOp)">
+            <Form name="CUSTOMER_EDIT">
+                <Field name="firstName" value="!{firstName}"/>
+                <Field name="lastName" value="!{lastName}"/>
+                <Field name="gender" value="!{gender}"/>
+                <Field name="organizationName" value="!{organizationName}"/>
+				<Field name="organizationTypeCode" value="!{organizationTypeCode}"/>
+				<Field name="birthDate" value="!{birthDate}"/>
+                <Field name="address1" value="!{address1}"/>
+                <Field name="city" value="!{city}"/>
+                <Field name="postalCode" value="!{postalCode}"/>
+                <Field name="state" value="!{state}"/>
+                <Field name="phoneNumber1" value="!{phoneNumber1}"/>
+                <Field name="email1" value="!{email1}"/>
+				<Field name="email2" value="!{email2}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<!--Complete Sale Transaction by Cash with multiple item-->
+	<TestSequence name="CREATE_SALE_MULTI_ITM_BY_CASH" parameters="item1,item2">
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="2" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+
+	<!--Select Verified Return Transaction at Sale Screen-->
+	<TestSequence name="SEARCH_VERIFIED_RETURN_TRANSACTION_MULT_ITEMS" parameters="transbarcode,item1,item2,returnRC,returnComment">
+		<TestStep action="NEW_RETURN" description="Select Return Transaction at Sale Screen" /> <!--Cannot Sepearate-->
+		<SequenceRef name="SELECT_BTN_YES"/>
+		<SequenceRef name="FILL_ORIGINAL_TRANSACTION_BARCODE" values="!{transbarcode}"/>
+        <TestStep action="ACCEPT" description="ACCEPT (VerifiedReturnItemListSelectionOp)">
+            <ListSelect method="getItemId" values="!{item1},!{item2}"/>
+        </TestStep>
+        <SequenceRef name="SELECT_REASON_CODE" values="!{returnRC},!{returnComment}"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>
+	</TestSequence>
+	<!--Complete Suspend Sale Transaction with multiple item-->
+	<TestSequence name="CREATE_SUSPEND_SALE_MULTI_ITM" parameters="item1,item2">
+        <SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="2"/>
+		<SequenceRef name="SCAN_ITEM" values="!{item2}"/>
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+	</TestSequence>
+
+	<!--Complete Sale Transaction by Cash with multiple type-->
+	<TestSequence name="CREATE_SALE_MULTI_ITM_DISCOUNT_BY_CASH" parameters="item1,item2,discountOpAMT,newTaxAMT,discountReasonCode">
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="2" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{newTaxAMT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+
+	<!--Complete Suspend Sale Transaction with multiple item have discount-->
+	<TestSequence name="CREATE_SUSPEND_SALE_MULTI_ITM_WITH_DISC" parameters="item1,item2,discountOpAMT,newTaxAMT,discountReasonCode">
+        <SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="2"/>
+		<SequenceRef name="SCAN_ITEM" values="!{item2}"/>
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{newTaxAMT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+	</TestSequence>
+
+	<!--Complete Sale Transaction by Cash with multiple item > 2 items-->
+	<TestSequence name="CREATE_SALE_MULTI_ITM_>_3_BY_CASH" parameters="item1,item2,item3">
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item3}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+
+	<!--Complete Suspend Sale Transaction with multiple item > 2 items-->
+	<TestSequence name="CREATE_SUSPEND_SALE_MULTI_ITM_>_3" parameters="item1,item2,item3">
+        <SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{item3}"/>
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+	</TestSequence>
+
+	<!--Check Deal ID -->
+	<TestSequence name="CHECK_DEAL_ID" parameters="dealId">
+		<Assertion class="dtv.xunit.assertion.DealAppliedAssertion" >
+			<Parameter name="deal" value="!{dealId}" />
+		</Assertion>
+	</TestSequence>
+	<!--Add Item Discount for Special Order-->	
+	<TestSequence name="SPECIAL_ORDER_ADD_ITEM_DISCOUNT" parameters="itemid,discountOp,reasonCode,reqComment,percentAMT">
+		
+		<TestStep action="ADD_CUSTOMER_ACCOUNT_DISCOUNT" description="ADD_CUSTOMER_ACCOUNT_DISCOUNT (PromptCustAccountItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemid}" modelKey="LAYAWAY"/>
+        </TestStep>
+		<SequenceRef name="SELECT_DISCOUNT_OPTION" values="!{discountOp},!{reasonCode},!{reqComment}" />
+		<TestStep action="ACCEPT" data="!{percentAMT}" description="Enter !{percentAMT}%"/>	
+	</TestSequence>
+	<!--Select Void Special Order Item-->
+	<TestSequence name="VOID_SPECIAL_ORDER_ITEM" parameters="itemid,reasoncode,reqComment">
+		<TestStep action="VOID_SP_ORDER_ITEM" description="VOID_SP_ORDER_ITEM (PromptCustAccountItemScanOp)" >
+            <ListSelect method="getItemId" value="!{itemid}" modelKey="LAYAWAY" />
+        </TestStep>
+        <SequenceRef name="SELECT_FIRST_REASON_CODE" />
+	</TestSequence>
+	<!--Change Item Price for Special Order-->	
+	<TestSequence name="SPECIAL_ORDER_CHANGE_ITEM_PRICE" parameters="itemid,newPrice,reasonCode,reqComment">
+		<TestStep action="CHANGE_SP_ORDER_ITEM_PRICE" description="CHANGE_SP_ORDER_ITEM_PRICE (PromptCustAccountItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemid}" modelKey="SPECIAL_ORDER"/>
+        </TestStep>
+        <TestStep action="ACCEPT" data="!{newPrice}" description="Enter !{newPrice} for item price (PromptItemPriceChangeOp)"/>
+        <SequenceRef name="SELECT_REASON_CODE_COMMENT" values="!{reasonCode},!{reqComment},!{reqComment}"/>
+	</TestSequence>
+	<!--Change Item Qty for Special Order-->	
+	<TestSequence name="SPECIAL_ORDER_CHANGE_ITEM_QTY" parameters="itemId,newQty">
+		<TestStep action="CHANGE_SP_ORDER_ITEM_QUANTITY" description="CHANGE_SP_ORDER_ITEM_QUANTITY (PromptCustAccountItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemId}" modelKey="SPECIAL_ORDER"/>
+        </TestStep>
+        <TestStep action="ACCEPT" data="!{newQty}" description="Enter !{newQty} qty (PromptItemQuantityChangeOp)"/>
+	</TestSequence>
+	<!--Change Special Order Expected Date-->
+	<TestSequence name="CHANGE_SP_ORDER_EXPECTED_DATE" parameters="itemid">
+		<TestStep action="CHANGE_SP_ORDER_EXPECTED_DATE" description="CHANGE_SP_ORDER_EXPECTED_DATE (PromptCustAccountItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemid}" modelKey="SPECIAL_ORDER"/>
+        </TestStep>
+	</TestSequence>
+	<!-- Search for Special Order -->
+	<TestSequence name="SPECIAL_ORDER_SEARCH" parameters="custAccountId,firstName,lastName,telephone,customerId">
+		<TestStep action="SEARCH" description="SEARCH (SpecOrderRegisterSearchOp)">
+            <Form name="SPECIAL_ORDER_SEARCH">
+                <Field name="custAccountId" value="!{custAccountId}"/>
+                <Field name="firstName" value="!{firstName}"/>
+                <Field name="lastName" value="!{lastName}"/>
+                <Field name="telephone" value="!{telephone}"/>
+                <Field name="customerId" value="!{customerId}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<!--Search Layaway with layaway ID -->
+	<TestSequence name="ACCESS_OPEN_LAYAWAY_ID" parameters="layawayId">
+		<TestStep action="ACCEPT" description="Search layaway for !{layawayId}">
+			<Form name="LAYAWAY_SEARCH">
+				<Field name="custAccountId" value="!{layawayId}" />
+			</Form>
+		</TestStep>
+		<TestStep action="ACCEPT" description="Select most recent account from search results">
+			<ListSelect method="getAccountStateCode" value="OPEN" />
+		</TestStep>
+	</TestSequence>
+	<!--Select Layaway Pickup -->
+	<TestSequence name="SELECT_BTN_LAYAWAY_PICKUP">
+		<TestStep action="LAYAWAY_PICKUP_ITEM" description="LAYAWAY_PICKUP_ITEM (PromptLayawayMaintOptionsOp)"/>
+	</TestSequence>
+	
+	<!--Select one item to Pickup -->
+	<TestSequence name="SELECT_ONE_ITEM_PICKUP" parameters="itemId">
+		<TestStep action="ACCEPT" description="ACCEPT (ListPickableItemsOp)">
+			<ListSelect method="getItemId" values="!{itemId}" />
+		</TestStep>
+	</TestSequence>	
+
+	
+	<!--Select two items to Pickup -->
+	<TestSequence name="SELECT_TWO_ITEM_PICKUP" parameters="itemId1, itemId2">
+		<TestStep action="ACCEPT" description="ACCEPT (ListPickableItemsOp)">
+			<ListSelect method="getItemId" values="!{itemId1},!{itemId2}" />
+		</TestStep>
+	</TestSequence>	
+	<!--Complete Payment for LAYAWAY -->	
+	<TestSequence name="COMPLETE_LAYAWAY_PAYMENT">
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestSequence>	
+	<!--Create new LAYAWAY -->
+	<TestSequence name="START_LAYAWAY_CREATE" >
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+	</TestSequence>
+	<TestSequence name="COMPLETE_LAYAWAY_CREATE" parameters="paymentPeriods">
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestSequence>
+	<TestSequence name="SEACH_LAYWAY_BY_ACCOUNT_ID" parameters="acctId">
+		<TestStep description="Search layaway by !{acctId}" action="ACCEPT">
+			<Form name="LAYAWAY_SEARCH">			
+				<Field name="custAccountId" value="!{acctId}" />			
+			</Form>
+		</TestStep>
+		<TestStep description="Select most recent account from search results" action="ACCEPT">
+			<ListSelect method="getAccountStateCode" value="OPEN" />
+		</TestStep>
+	</TestSequence>
+	<!--Search Layaway-->	
+	<TestSequence name="ACCESS_OPEN_LAYAWAY_LASTNAME" parameters="lastName">
+		<TestStep description="Search layaway for !{lastName}" action="ACCEPT">
+			<Form name="LAYAWAY_SEARCH">
+				<Field name="lastName" value="!{lastName}" />			
+			</Form>
+		</TestStep>
+		<!--<TestStep description="Select most recent account from search results" action="ACCEPT">
+			<ListSelect method="getAccountStateCode" value="OPEN" />
+		</TestStep>-->
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST"/>
+	</TestSequence>
+	<!--Enter payment for layaway-->	
+	<TestSequence name="LAYAWAY_ENTER_PAYMENT" parameters="amount">
+        <TestStep action="LAYAWAY_PAYMENT" description="LAYAWAY_PAYMENT (PromptCustAccountItemScanOp)"/>
+        <TestStep action="ACCEPT" data="!{amount}" description="Enter amount (PromptLayawayPaymentAmountOp)"/>
+	</TestSequence>
+	<!--Select Shipping method -->
+	<TestSequence name="SELECT_SHIPPING_METHOD" parameters="shippingMethod">
+        <TestStep action="ACCEPT" description="ACCEPT (SpecOrderShippingFormOp)">
+            <Form name="SPECIAL_ORDER_SHIPTO">
+                <Field name="shippingMethod" value="!{shippingMethod}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<!-- View Special Order History -->
+	<TestSequence name="VIEW_SPECIAL_ORDER_HISTORY" >
+        <TestStep action="SP_ORDER_HISTORY" description="SP_ORDER_HISTORY (PromptSpecOrderOptionsOp)"/>
+		<Assertion promptKey="PROMPT_SP_ORDER_HISTORY"/>
+		<TestStep action="CANCEL" description="CANCEL (PromptSpecOrderHistoryOp)" condition="@promptEquals(PROMPT_SP_ORDER_HISTORY)"/>
+	</TestSequence>
+	<!--Confirm to Cancel Special Order -->
+	<TestSequence name="CONFIRM_CANCEL_SPECIAL_ORDER" >
+        <TestStep action="YES" description="YES (PromptCancelSpecOrderAccountOp)" condition="@promptEquals(SP_ORDER_CANCEL_CONFIRMATION)"/>
+	</TestSequence>
+	<!--Confirm Customer is Present -->
+	<TestSequence name="CONFIRM_CUSTOMER_IS_PRESENT_FOR_CANCEL" >
+        <TestStep action="YES" description="YES (PromptCustomerPresentForCancelOp)" condition="@promptEquals(CANCEL_CUSTOMER_PRESENT)"/>
+	</TestSequence>
+	<!--Select Cancel Special Order -->
+	<TestSequence name="SELECT_BTN_CANCEL_SPECIAL_ORDER" >
+        <TestStep action="CANCEL_SP_ORDER" description="CANCEL_SP_ORDER (PromptSpecOrderOptionsOp)"/>
+	</TestSequence>
+	<!-- Verify Special Order closed -->
+	<TestSequence name="VERIFY_SPECIAL_ORDER_STATUS" parameters="CustAcctStatcode,expectStatcode">
+		<Assertion target="!{CustAcctStatcode}" compareType="EQUALS" compareVal="!{expectStatcode}" />
+	</TestSequence>
+	<!--Create new customer in details-->
+	<TestSequence name="CREATE_NEW_CUSTOMER_IN_DETAILS" parameters="firstName,lastName,gender,organizationName,organizationTypeCode,birthDate,address1,city,postalCode,state,phoneNumber1,email1">
+		<TestStep action="SEARCH" description="SEARCH (CustomerSearchOp)" condition="@promptEquals(CUSTOMER_SEARCH)">
+            <Form name="CUSTOMER_SEARCH">
+                <Field name="telephone" value="!{phoneNumber1}"/>
+				<Field name="lastName" value="!{lastName}"/>
+            </Form>
+        </TestStep>
+		<TestStep action="NEW" description="NEW (CustomerSearchOp)" />
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerEditOp)">
+            <Form name="CUSTOMER_EDIT">
+                <Field name="firstName" value="!{firstName}"/>
+                <Field name="lastName" value="!{lastName}"/>
+                <Field name="gender" value="!{gender}"/>
+                <Field name="organizationName" value="!{organizationName}"/>
+				<Field name="organizationTypeCode" value="!{organizationTypeCode}"/>
+				<Field name="birthDate" value="!{birthDate}"/>
+                <Field name="address1" value="!{address1}"/>
+                <Field name="city" value="!{city}"/>
+                <Field name="postalCode" value="!{postalCode}"/>
+                <Field name="state" value="!{state}"/>
+                <Field name="phoneNumber1" value="!{phoneNumber1}"/>
+                <Field name="email1" value="!{email1}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	
+	<!--Cancel Layaway -->
+	<TestSequence name="LAYAWAY_CANCEL_REGISTER">
+		<TestStep action="CANCEL_LAYAWAY" description="Cancel Layaway" />
+		<TestStep action="YES" description="Confirm the customer is present" condition="@promptEquals(CANCEL_CUSTOMER_PRESENT)"/>
+		<TestStep action="YES" description="Confirm layaway cancellation"  condition="@promptEquals(CANCEL_LAYAWAY_CONFIRMATION)"/>
+	</TestSequence>
+	
+	<!--Compare Layaway status -->
+	<TestSequence name="ASSERT_LAYAWAY_STATUS" parameters="status">
+		<Assertion target="%^GET_LAYAWAYS_DB.CustAcctStatcode!" compareType="EQUALS" compareVal="!{status}" />
+	</TestSequence>
+	
+	<!--Change Transaction Tax Exempt-->
+	<TestSequence name="LAYAWAY_TAX_TRAN_EXEMPT" parameters="certificateHolderName,certificateNbr,reasoncode" >
+		<TestStep action="TAX_TRAN_EXEMPT" description="TAX_TRAN_EXEMPT (PromptItemScanOp)"/>
+		<SequenceRef name="FILL_TAX_EXEMPT_INFO" values="!{certificateHolderName}, !{certificateNbr}"/>
+        <SequenceRef name="SELECT_REASON_CODE_NO_COMMENT" values="!{reasoncode}"/>
+	</TestSequence>
+	 <!-- Change transaction tax percent for Layaway -->
+	 <TestSequence name="LAYAWAY_TAX_TRAN_CHANGE_AMOUNT" parameters="taxAMT,reasonCode">  
+		<TestStep action="TAX_TRAN_CHANGE_AMOUNT" description="TAX_TRAN_CHANGE_AMOUNT (PromptItemScanOp)"/>
+        <TestStep action="ACCEPT" data="!{taxAMT}"  description="Enter 2 (PromptTaxAmountOp)"/>
+        <SequenceRef name="SELECT_REASON_CODE_NO_COMMENT" values="!{reasonCode}"/>
+	 </TestSequence>	
+	
+	<!-- Add Group Discount for LAYAWAY-->
+	 <TestSequence name="ADD_LAYAWAY_GROUP_DISCOUNT" parameters="discountOp,reascode,item1,item2,percentAMT">  
+		<TestStep action="ADD_LAYAWAY_GROUP_DISCOUNT" description="ADD_LAYAWAY_GROUP_DISCOUNT (PromptCustAccountItemScanOp)"/>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptCustAccountDiscountOp)">
+			<ListSelect method="getDiscountCode" value="!{discountOp}" />
+		</TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptForGroupDiscountItemsOp)">
+				<ListSelect method="getItemId" values="!{item1},!{item2}" />
+		</TestStep>
+		<SequenceRef name="SELECT_REASON_CODE_NO_COMMENT" values="!{reascode}"/>   
+		<TestStep action="ACCEPT" data="!{percentAMT}" description="Enter !{percentAMT}%"/>	
+	 </TestSequence>			
+
+	 	<!-- Remove item discount for Layaway -->
+	<TestSequence name="LAYAWAY_REMOVE_ITEM_DISCOUNT" parameters="itemid, discountOp">
+		<TestStep action="SELECT_LAYAWAY_DISCOUNT_TO_REMOVE" description="SELECT_LAYAWAY_DISCOUNT_TO_REMOVE (PromptItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemid}" modelKey="LAYAWAY" />
+		</TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptDiscountsForSaleLineOp)">
+            <ListSelect method="getDiscountCode" value="!{discountOp}"/>
+        </TestStep>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptOp)"/>
+	</TestSequence>
+	
+	<!--Select Void Item-->
+	<TestSequence name="VOID_LAYAWAY_ITEM" parameters="itemid,reasoncode,reqComment">
+		<TestStep action="VOID_LAYAWAY_ITEM" description="Void item (PromptItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemid}" modelKey="LAYAWAY" />
+        </TestStep>
+        <SequenceRef name="SELECT_REASON_CODE_NO_COMMENT" values="!{reasoncode}"/>
+	</TestSequence>
+	<!--Select New Special Order -->
+	<TestSequence name="SELECT_BTN_NEW_SPECIAL_ORDER" >
+        <TestStep action="NEW" description="Select New Special Order at Special Order Lookup screen"/>
+	</TestSequence>
+	<!--Select SO Shipping Type - To Customer -->
+	<TestSequence name="SELECT_BTN_DIRECT_TO_CUSTOMER" >
+        <TestStep action="SHIP_CUST" description="Select SO Shipping Type - To Customer"/>
+	</TestSequence>
+	<!--Select SO Shipping Type - To Store -->
+	<TestSequence name="SELECT_BTN_SHIP_TO_STORE" >
+        <TestStep action="SHIP_STORE" description="Select SO Shipping Type - To Store"/>
+	</TestSequence>
+	<!--Select Done button on Special Order-->
+	<TestSequence name="SELECT_BTN_DONE_SPECIAL_ORDER" > 
+		<TestStep action="SPECIAL_ORDER_FINISH" description="Select Done on Special Order Screen"/>
+  	</TestSequence>
+	<!--Select Yes button on Confirm ON_HAND Item-->
+	<TestSequence name="CONFIRM_ONHAND" >
+		<TestStep action="YES" description="YES (ConfirmOrderOnHandItemOp)" condition="@promptEquals(SP_ORDER_CONFIRM_ONHAND)"/>
+	</TestSequence>
+	<!-- Enter Expected Date -->
+	<TestSequence name="ENTER_EXPECTED_DATE" parameters="expectedDate" >
+		<TestStep action="ACCEPT" data="!{expectedDate}" description="Enter the expected date for the item"/>
+	</TestSequence>
+	<!-- Fill Special Order Shipping Information -->
+	<TestSequence name="FILL_SO_SHIPPING_INFO" parameters="address1,address2,apartment,city,postalCode,firstName,lastName,telephone1,state,shippingMethod" >
+		<TestStep action="ACCEPT" description="ACCEPT (SpecOrderShippingFormOp)">
+		<Form name="SPECIAL_ORDER_SHIPTO">
+			<Field name="address1" value="!{address1}"/>
+			<Field name="address2" value="!{address2}"/>
+			<Field name="apartment" value="!{apartment}"/>
+			<Field name="city" value="!{city}"/>
+			<Field name="postalCode" value="!{postalCode}"/>
+			<Field name="firstName" value="!{firstName}"/>
+			<Field name="lastName" value="!{lastName}"/>
+			<Field name="telephone1" value="!{telephone1}"/>
+			<Field name="state" value="!{state}"/>
+			<Field name="shippingMethod" value="!{shippingMethod}"/>
+		</Form>
+		</TestStep>
+	</TestSequence>
+	<!--Skip Old Inventory Document-->	
+	<TestSequence name="SKIP_OLD_INVENTORY_DOCUMENT">
+		<TestStep action="CONTINUE" description="CONTINUE (CheckForOldDocumentsOp)" condition="@promptEquals(OLD_INVENTORY_DOCUMENTS)" />
+    </TestSequence>
+	<!-- Cancel Old Inventory Document -->
+	<TestSequence name="CANCEL_OLD_INVENTORY_DOCUMENT">
+        <TestStep action="CANCEL" description="CANCEL (CheckForOldDocumentsOp)" condition="@promptEquals(OLD_INVENTORY_DOCUMENTS)"/>
+	</TestSequence>
+	<!--Search for Receiving Document in Inventory > Receiving at BO-->
+	<TestSequence name="SEARCH_RECEIVING_DOCUMENT" parameters="documentId,custAcctId,documentSubtypeCode,statusCode">
+		<TestStep action="SEARCH" description="SEARCH (ReceivingDocSearchOp)">
+            <Form name="INVENTORY_CONTROL_SEARCH">
+                <Field name="documentId" value="!{documentId}"/>
+                <Field name="custAcctId" value="!{custAcctId}"/>
+                <Field name="documentSubtypeCode" value="!{documentSubtypeCode}"/>
+                <Field name="statusCode" value="!{statusCode}"/>
+            </Form>
+        </TestStep>
+        <TestStep action="ACCEPT" description="ACCEPT (ReceivingDocSearchOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!-- Select Carton in Receiving -->
+	<TestSequence name="SELECT_CARTON">
+        <TestStep action="ACCEPT" description="ACCEPT (PromptCartonScanOp)">
+            <ListSelect index="1" modelKey="RECEIVING_DOCUMENT"/>
+        </TestStep>
+	</TestSequence>
+	<!-- Receive Document in Total -->
+	<TestSequence name="RECEIVE_ENTIRE_CARTON_CHAIN">
+		<TestStep action="RECEIVE_ENTIRE_CARTON_CHAIN" description="RECEIVE_ENTIRE_CARTON_CHAIN (PromptReceivingItemScanOp)"/>
+	</TestSequence>
+	<!-- Select Save & Exit receiving > Yes -->
+	<TestSequence name="CLOSE_AND_EXIT_RECEIVING">
+        <TestStep action="INVENTORY_CLOSE_SAVE_EXIT_RECEIVING" description="INVENTORY_CLOSE_SAVE_EXIT_RECEIVING (PromptCartonScanOp)"/>
+        <TestStep action="YES" description="YES (PromptForCloseDocumentOp)" condition="@promptEquals(AUTO_CLOSE_ASN)"/>
+	</TestSequence>
+	<!--Skip Received Special Order Account List-->
+	<TestSequence name="SKIP_RECEIVED_SPECIAL_ORDER">
+		<TestStep action="ACCEPT" description="ACCEPT (ReceivedSpecOrderSearchOp)" condition="@promptEquals(RECEIVED_SP_ORDER_ACCOUNT_LIST)"/>
+	</TestSequence>
+	<!-- Select Pickup Item -->
+	<TestSequence name="SELECT_BTN_PICKUP_ITEM">
+		<TestStep action="SP_ORDER_PICKUP_ITEM" description="SP_ORDER_PICKUP_ITEM (PromptSpecOrderOptionsOp)"/>
+	</TestSequence>
+	<!--Select Add Send Sale button-->
+	<TestSequence name="SELECT_SEND_SALE" >
+        <TestStep action="ADD_NEW_SEND_SALE" description="ADD_NEW_SEND_SALE (PromptItemScanOp)"/>
+	</TestSequence>
+	<!--Select Shipping methos-->
+	<TestSequence name="SELECT_SEND_SALE_SHIPPING_METHOD" parameters="lastName,firstName,phone,address,postalCode,state,shipMethod">
+		<TestStep action="ACCEPT" description="Select Customer in the transaction to Ship" condition="@promptEquals(SENDSALE_RECENTSHIPTO)">
+            <ListSelect index="1"/>
+        </TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptSendSaleDestinationOp)">
+            <Form name="SEND_SALE_DEST">
+                <Field name="shippingMethod" value="!{shipMethod}"/>
+                <Field name="postalCode" value="!{postalCode}"/>
+                <Field name="address1" value="!{address}"/>
+				<Field name="telephone1" value="!{phone}"/>
+				<Field name="state" value="!{state}"/>
+				<Field name="lastName" value="!{lastName}"/>
+				<Field name="firstName" value="!{firstName}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<!--Print a receipt type-->
+	<TestSequence name="SELECT_RECEIPT_TYPE_TO_REPRINT" parameters="receiptType">
+		<TestStep action="ACCEPT" description="Select Layaway Receipt" condition="@equals(!{receiptType},Customer)">
+            <ListSelect method="getDisplayName" value="_receiptDocument_Customer"/>
+        </TestStep>
+		<TestStep action="ACCEPT" description="Select Layaway Receipt" condition="@equals(!{receiptType},Store)">
+            <ListSelect method="getDisplayName" value="_receiptDocument_Store"/>
+        </TestStep>
+		<TestStep action="ACCEPT" description="Select Layaway Receipt" condition="@equals(!{receiptType},LayawayCustomer)">
+            <ListSelect method="getDisplayName" value="_receiptDocument_LAYAWAY_ACCOUNT"/>
+        </TestStep>
+		<TestStep action="ACCEPT" description="Select Layaway Receipt" condition="@equals(!{receiptType},LayawayMerchandise)">
+            <ListSelect method="getDisplayName" value="_receiptDocument_LAYAWAY_MERCH_TICKET"/>
+        </TestStep>
+		<TestStep action="ACCEPT" description="Select Layaway Receipt" condition="@equals(!{receiptType},LayawayStore)">
+            <ListSelect method="getDisplayName" value="_receiptDocument_LAYAWAY_MAIN_STORE"/>
+        </TestStep>
+		<TestStep action="ACCEPT" description="Select Layaway Receipt" condition="@equals(!{receiptType},PostVoid)">
+            <ListSelect method="getDisplayName" value="_receiptDocument_POSTVOID"/>
+        </TestStep>
+		<TestStep action="ACCEPT" description="Select Layaway Receipt" condition="@equals(!{receiptType},SendSaleMerchandise)">
+            <ListSelect method="getDisplayName" value="_receiptDocument_SEND_SALE_MERCH_TICKET"/>
+        </TestStep>
+		<TestStep action="ACCEPT" description="Select Layaway Receipt" condition="@equals(!{receiptType},SendSaleStore)">
+            <ListSelect method="getDisplayName" value="_receiptDocument_SEND_SALE_MAIN_STORE"/>
+        </TestStep>
+		<TestStep action="ACCEPT" description="Select Layaway Receipt" condition="@equals(!{receiptType},SendSaleCustomer)">
+            <ListSelect method="getDisplayName" value="_receiptDocument_SEND_SALE_ACCOUNT"/>
+        </TestStep>
+		<TestStep action="ACCEPT" description="Select Layaway Receipt" condition="@equals(!{receiptType},SpecialOrderMerchandise)">
+            <ListSelect method="getDisplayName" value="_receiptDocument_SP_ORDER_MAIN_STORE"/>
+        </TestStep>
+		<TestStep action="ACCEPT" description="Select Layaway Receipt" condition="@equals(!{receiptType},SpecialOrderStore)">
+            <ListSelect method="getDisplayName" value="_receiptDocument_SP_ORDER_MAIN_STORE"/>
+        </TestStep>
+		<TestStep action="ACCEPT" description="Select Layaway Receipt" condition="@equals(!{receiptType},SpecialOrderCustomer)">
+            <ListSelect method="getDisplayName" value="_receiptDocument_SP_ORDER_ACCOUNT"/>
+        </TestStep>
+	</TestSequence>
+	<!--Select what receipt to print Customer or Store Copy-->
+	<TestSequence name="SELECT_RECEIPT_TO_REPRINT" parameters="customerReceipt,storeReceipt">
+		<TestStep action="ACCEPT" description="Select Customer Receipt" condition="@and(@equals(!{customerReceipt},Customer),@equals(!{storeReceipt},No))">
+            <ListSelect method="getDisplayName" value="_receiptDocument_Customer"/>
+        </TestStep>
+		<TestStep action="ACCEPT" description="Select Store Receipt" condition="@and(@equals(!{customerReceipt},No),@equals(!{storeReceipt},Store))">
+            <ListSelect method="getDisplayName" value="_receiptDocument_Store"/>
+        </TestStep>
+		<TestStep action="ACCEPT" description="Select Customer Receipt" condition="@and(@equals(!{customerReceipt},Customer),@equals(!{storeReceipt},Store))">
+            <ListSelect method="getDisplayName" values="_receiptDocument_Customer,_receiptDocument_Store"/>
+        </TestStep>
+	</TestSequence>
+	<!--Select Reprint Receipt option-->
+	<TestSequence name="SELECT_REPRINT_RECEIPT" >
+		<TestStep action="REPRINT_RECEIPT" description="Select Reprint Receipt"/>
+	</TestSequence>
+	<!-- Add Customer Account Coupon-->	
+	<TestSequence name="ADD_CUSTOMER_ACCOUNT_COUPON" parameters="couponid">
+		<TestStep action="ADD_CUSTOMER_ACCOUNT_COUPON" description="ADD_COUPON (PromptItemScanOp)"/>
+        <TestStep action="ACCEPT" data="!{couponid}" description="Enter  XUNITCOUPON (PromptCouponOp)"/>
+	</TestSequence>
+	<!-- Add Group Discount-->
+	 <TestSequence name="APPLY_LAYAWAY_GROUP_DISCOUNT" parameters="discountOp,reascode,item1,item2">  
+		<TestStep action="ADD_LAYAWAY_GROUP_DISCOUNT" description="Select Group Discount" />
+		<TestStep action="ACCEPT" description="Select discount code !{discountOp} (PromptDiscountOp)">
+			<ListSelect method="getDiscountCode" value="!{discountOp}" />
+		</TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptForGroupDiscountItemsOp)">
+				<ListSelect method="getItemId" values="!{item1},!{item2}" />
+		</TestStep>
+		<SequenceRef name="SELECT_REASON_CODE_NO_COMMENT" values="!{reascode}"/>   
+	 </TestSequence>
+	<!--Create Special Order Ship-to-Store at Sale Screen-->
+	<TestSequence name="COMPLETE_LAYAWAY_TENDER_BY_CASH" parameters="itemId,depositAmt,paymentPeriods">
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="1"/>		
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="!{depositAmt}"/>
+		<SequenceRef name="ENTER_LAYAWAY_PAYMENT_PERIODS" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+	<!--Enter payment periods-->
+	<TestSequence name="ENTER_LAYAWAY_PAYMENT_PERIODS" parameters="paymentPeriods">
+		<TestStep action="ACCEPT" data="!{paymentPeriods}" description="Enter !{paymentPeriods} (PromptLayawayPaymentPeriodCountOp)"/>
+  	</TestSequence>
+	<!--Select Done button on LAYAWAY-->
+	<TestSequence name="ACCEPT_LAYAWAY_DEPOSIT_RECOMMENDATION" > 
+		<TestStep action="ACCEPT" description="Select Enter on Layaway Customer Deposit" condition="@promptEquals(CUSTOMER_ACCOUNT_DEPOSIT_AMOUNT)"/>		
+		<TestStep action="YES" description="Select Yes" condition="@promptEquals(LAYAWAY_DEPOSIT_OVERRIDE)"/>		
+  	</TestSequence>
+	<!--Select Done button on LAYAWAY-->
+	<TestSequence name="SELECT_BTN_DONE_LAYWAY" > 
+		<TestStep action="LAYAWAY_FINISH" description="Select Done on LAYAWAY Screen"/>		
+  	</TestSequence>
+	<!--Fill Deposit Amount-->
+	<TestSequence name="FILL_DEPOSIT_AMOUNT" parameters="depositAmt"> 
+		<TestStep action="ACCEPT" data="!{depositAmt}" description="Enter deposit amount" condition="@isPositive(!{depositAmt})"/>
+		<TestStep action="ACCEPT"  description="Enter deposit amount" condition="@invert(@isPositive(!{depositAmt}))"/>
+		<TestStep action="YES" description="Select Yes" condition="@promptEquals(SP_ORDER_DEPOSIT_OVERRIDE)"/>		
+		<TestStep action="YES" description="Select Yes" condition="@promptEquals(LAYAWAY_DEPOSIT_OVERRIDE)"/>		
+  	</TestSequence>
+	<!--Create Special Order Ship-to-Store at Sale Screen-->
+	<TestSequence name="CREATE_SPECIAL_ORDER_SHIP_TO_STORE" parameters="itemId,expectedDate,depositAmt">
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<TestStep action="NEW" description="Select New Special Order at Special Order Lookup screen"/>
+		<TestStep action="SHIP_STORE" description="Select SO Shipping Type - To Store"/>
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<TestStep action="YES" description="YES (ConfirmOrderOnHandItemOp)" condition="@promptEquals(SP_ORDER_CONFIRM_ONHAND)"/>
+		<TestStep action="ACCEPT" data="!{expectedDate}" description="Enter the expected date for the item"/>
+		<TestStep action="SPECIAL_ORDER_FINISH" description="SPECIAL_ORDER_FINISH (PromptCustAccountItemScanOp)"/>
+		<TestStep action="ACCEPT" data="!{depositAmt}" description="Enter deposit amount" condition="@isPositive(!{depositAmt})"/>
+		<TestStep action="ACCEPT"  description="Enter deposit amount" condition="@invert(@isPositive(!{depositAmt}))"/>
+		<TestStep action="YES" description="Select Yes" condition="@promptEquals(SP_ORDER_DEPOSIT_OVERRIDE)"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+	<!--Skip Customer Notification after searching a customer-->
+	<TestSequence name="CANCEL_TRANSACTION_HAS_ITEM" > 
+		<TestStep action="ROLLBACK_TRANS_PROMPT" description="Select Cancel Transaction Button that has item in the transaction."/>
+		<SequenceRef name="SELECT_BTN_YES" />
+  	</TestSequence>
+	<!--Skip Customer Notification after searching a customer-->
+	<TestSequence name="SELECT_RESUME_TRANSACTION_LIST" parameters="TranSeq"> 
+		<TestStep action="RESUME_TRANSACTION" description="Select Resume Transaction Button"/>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptSuspendedCustomerOp)">
+            <ListSelect method="getTransactionSequence" value="!{TranSeq}" />
+        </TestStep>
+  	</TestSequence>
+	<!--Skip Customer Notification after searching a customer-->
+	<TestSequence name="SKIP_CUSTOMER_NOTIFICATION" > 
+		<SequenceRef name="SKIP_RESUME_TRANS" />
+		<SequenceRef name="SKIP_DELINQUENT_LAYAWAY" />
+  	</TestSequence>
+	<!--Refund tender by house account amount-->
+	<TestSequence name="ADD_COUPON" parameters="couponID,reasonCode, reasonReqComment"> 
+		<SequenceRef name="SELECT_BTN_COUPON" values="!{couponID}" />
+		<SequenceRef name="SELECT_REASON_CODE_COMMENT" values="!{reasonCode},!{reasonReqComment},BTM Test"/>
+  	</TestSequence>
+	<!--Scan return item with Warranty Item-->
+	<TestSequence name="SCAN_RETURN_WARRANTY_ITEM" parameters="itemid, returnRC,reqComment,warrantyID,newReturnPrice">
+		<Assertion promptKey="RETURN_ITEM_SCAN" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"  />
+		<TestStep description="Continue Blind return" action="CONTINUE" condition="@promptEquals(RETURN_TRANSACTION_LIST)" />
+		<TestStep description="Accept Item not in purchase history" action="YES" condition="@promptEquals(ITEM_NOT_IN_HISTORY)" />
+		<SequenceRef name="SELECT_REASON_CODE_COMMENT" values="!{returnRC},!{reqComment},BTM Test"/>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptReturnPriceHistoryOp)" condition="@promptEquals(RETURN_PRICE_HISTORY)" >
+            <ListSelect index="1"/>
+        </TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptLowestReturnPriceInfoOp)" condition="@promptEquals(LOWEST_RETURN_PRICE_NOTIFICATION)" />
+		<TestStep description="Confirm warranty return" action="YES" condition="@promptEquals(CONFIRM_WARRANTY_APPLY_RETURN)" /> <!--New update-->
+		<TestStep action="ACCEPT" description="ACCEPT (PromptWarrantyPlanOp)" condition="@promptEquals(SELECT_WARRANTY)"><!--New update-->
+            <ListSelect index="1"/>
+        </TestStep>
+		<TestStep description="Enter warranty ID" action="ACCEPT" data="!{warrantyID}" condition="@promptEquals(ENTER_WARRANTY_ID)" /><!--New update-->
+		<TestStep description="Accept Warranty ID not on file" action="YES" condition="@promptEquals(ACCEPT_WARRANTY_NOT_ON_FILE)" /><!--New update-->
+		<TestStep description="Enter return price" action="ACCEPT" data="!{newReturnPrice}" condition="@checkSysConfig(ItemReturn---AlwaysPromptForItemPriceUponBlindReturn)" />
+		<TestStep action="NO" description="Select No on Restocking fee" condition="@promptEquals(RESTOCKING_FEE_APPLY_MESSAGE)" />
+	</TestSequence>
+
+	<!--Scan return item with Serial Item-->
+	<TestSequence name="SCAN_RETURN_SERIAL_ITEM" parameters="itemid,Serial,returnRC,reqComment,newReturnPrice">
+		<Assertion promptKey="RETURN_ITEM_SCAN" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"  />
+		<TestStep action="ACCEPT" data="!{Serial}" description="Enter serial number (PromptItemSerialNumberOp)" condition="@promptEquals(ITEM_SERIAL_NEEDED)"/> <!--New update-->
+		<TestStep description="Continue Blind return" action="CONTINUE" condition="@promptEquals(RETURN_TRANSACTION_LIST)" />
+		<TestStep description="Accept Item not in purchase history" action="YES" condition="@promptEquals(ITEM_NOT_IN_HISTORY)" />
+		<SequenceRef name="SELECT_REASON_CODE_COMMENT" values="!{returnRC},!{reqComment},BTM Test"/>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptReturnPriceHistoryOp)" condition="@promptEquals(RETURN_PRICE_HISTORY)" >
+            <ListSelect index="1"/>
+        </TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptLowestReturnPriceInfoOp)" condition="@promptEquals(LOWEST_RETURN_PRICE_NOTIFICATION)" />
+		<TestStep description="Enter return price" action="ACCEPT" data="!{newReturnPrice}" condition="@checkSysConfig(ItemReturn---AlwaysPromptForItemPriceUponBlindReturn)" />
+		<TestStep action="NO" description="Select No on Restocking fee" condition="@promptEquals(RESTOCKING_FEE_APPLY_MESSAGE)" />
+	</TestSequence>
+	<!--Refund tender by house account amount-->
+	<TestSequence name="REFUND_TENDER_BY_HOUSE_ACOUNT" parameters="HaAMT"> 
+		<TestStep action="REFUND_HOUSE_ACCOUNT" description="REFUND_HOUSE_ACCOUNT (MobilePromptTenderMenuOp)"/>
+		<TestStep action="ACCEPT" description="Enter !{HaAMT} (CashSuggestionPromptTenderAmtOp)">
+			<ListSelect index="1"/>
+        </TestStep>
+		<TestStep action="ACCEPT" data="!{HaAMT}" description="Enter !{HaAMT} (CashSuggestionPromptTenderAmtOp)"/>
+  	</TestSequence>
+	<!--Select Verified Return Transaction at Sale Screen-->
+	<TestSequence name="VERIFIED_RETURN_TRANSACTION_WITH_SERIAL_ITM" parameters="transbarcode,returnRC,returnComment,Serial">
+		<TestStep action="NEW_RETURN" description="Select Return Transaction at Sale Screen" />
+		<SequenceRef name="SELECT_BTN_YES"/>
+		<SequenceRef name="FILL_ORIGINAL_TRANSACTION_BARCODE" values="!{transbarcode}"/>
+        <TestStep action="ACCEPT" description="ACCEPT (VerifiedReturnItemListSelectionOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+        <SequenceRef name="SELECT_REASON_CODE" values="!{returnRC},!{returnComment}"/>
+		<SequenceRef name="ENTER_SERIAL_NUMBER" values="!{Serial}"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>
+	</TestSequence>
+	<!--Change Item Price for Layaway-->	
+	<TestSequence name="LAYAWAY_CHANGE_ITEM_PRICE" parameters="itemid,newPrice,reasonCode,reqComment">
+		<TestStep action="CHANGE_LAYAWAY_ITEM_PRICE" description="CHANGE_LAYAWAY_ITEM_PRICE (PromptCustAccountItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemid}" modelKey="LAYAWAY"/>
+        </TestStep>
+        <TestStep action="ACCEPT" data="!{newPrice}" description="Enter !{newPrice} for item price (PromptItemPriceChangeOp)"/>
+        <SequenceRef name="SELECT_REASON_CODE_COMMENT" values="!{reasonCode},!{reqComment},!{reqComment}"/>
+	</TestSequence>
+	
+	<!--Add Item Discount for Layaway-->	
+	<TestSequence name="LAYAWAY_ADD_ITEM_DISCOUNT" parameters="itemid,discountOp,reasonCode,reqComment,percentAMT">
+		<TestStep action="ADD_LAYAWAY_DISCOUNT" description="ADD_LAYAWAY_DISCOUNT (PromptCustAccountItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemid}" modelKey="LAYAWAY"/>
+        </TestStep>
+		<SequenceRef name="SELECT_DISCOUNT_OPTION" values="!{discountOp},!{reasonCode},!{reqComment}" />
+		<TestStep action="ACCEPT" data="!{percentAMT}" description="Enter !{percentAMT}%"/>	
+	</TestSequence>
+	
+	<!-- Modify item discount for Layaway -->
+	<TestSequence name="LAYAWAY_MODIFY_ITEM_DISCOUNT" parameters="itemid,discountOp,reasonCode,reqComment,percentAMT">
+		<TestStep action="SELECT_LAYAWAY_DISCOUNT_TO_CHANGE" description="SELECT_LAYAWAY_DISCOUNT_TO_CHANGE (PromptItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemid}" modelKey="LAYAWAY" />
+        </TestStep>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptDiscountsForSaleLineOp)">
+            <ListSelect method="getDiscountCode" value="!{discountOp}"/>
+        </TestStep>
+        <SequenceRef name="SELECT_DISCOUNT_OPTION" values="!{discountOp},!{reasonCode},!{reqComment}" />
+		<TestStep action="ACCEPT" data="!{percentAMT}" description="Enter !{percentAMT}%"/>	
+	</TestSequence>
+	<!--Change Item Qty for Layaway-->
+	<TestSequence name="LAYAWAY_CHANGE_ITEM_QTY" parameters="itemId,newQty">
+		<TestStep action="CHANGE_LAYAWAY_ITEM_QUANTITY" description="CHANGE_LAYAWAY_ITEM_QUANTITY (PromptCustAccountItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemId}" modelKey="LAYAWAY"/>
+        </TestStep>
+        <TestStep action="ACCEPT" data="!{newQty}" description="Enter !{newQty} qty (PromptItemQuantityChangeOp)"/>
+	</TestSequence>
+	<!--Check Layaway status -->
+	<TestSequence name="ASSERT_LAYAWAY_SETUP_RECEIPTS">
+		<Assertion class="dtv.xunit.assertion.ReceiptGeneratedAssertion">
+			<Parameter name="RECEIPT_ID1" value="Customer" />
+			<Parameter name="RECEIPT_ID2" value="LAYAWAY_ACCOUNT" />
+			<Parameter name="RECEIPT_ID3" value="LAYAWAY_MAIN_STORE" />
+		</Assertion>
+	</TestSequence>
+	<!--Create New Customer within Transaction -->
+	<TestSequence name="CREATE_NEW_CUSTOMER_IN_TRAN" parameters="teleNumber,lastName">
+		<TestStep action="SEARCH" description="SEARCH (CustomerSearchOp)" condition="@promptEquals(CUSTOMER_SEARCH)">
+            <Form name="CUSTOMER_SEARCH">
+                <Field name="telephone" value="!{teleNumber}"/>
+            </Form>
+        </TestStep>
+		<TestStep action="NEW" description="NEW (CustomerSearchOp)" />
+		<SequenceRef name="FILL_CUSTOMER_INFOMATION" values="!{lastName}"/>
+	</TestSequence>
+	
+	<!--Run a report search criteria-->
+	<TestSequence name="SEARCH_REPORTING" parameters="startDate,startDateOp,displayOp,showChart,showCriteria">
+		<TestStep action="ACCEPT" description="ACCEPT (PromptReportParametersOp)">
+			<Form name="REPORT_GET_PARAMS">
+				<Field name="dtvStartDate" value="!{startDate}"/>
+				<Field name="dtvStartDate_combo" value="!{startDateOp}"/>
+				<Field name="displayOption" value="!{displayOp}"/>
+				<Field name="showChart" value="!{showChart}"/>
+				<Field name="showCriteria" value="!{showCriteria}"/>
+				<Field name="argBusinessDateStart" value="!{startDate}"/>
+			</Form>
+		</TestStep>
+	</TestSequence>
+	<!--Check Layaway status -->
+	<TestSequence name="ASSERT_LAYAWAY_SETUP_RECEIPTS">
+		<Assertion class="dtv.xunit.assertion.ReceiptGeneratedAssertion">
+			<Parameter name="RECEIPT_ID1" value="Customer" />
+			<Parameter name="RECEIPT_ID2" value="LAYAWAY_ACCOUNT" />
+			<Parameter name="RECEIPT_ID3" value="LAYAWAY_MAIN_STORE" />
+		</Assertion>
+	</TestSequence>
+	<!--Complete a sale with Serial item-->
+	<TestSequence name="COMPLETE_SALE_SERIAL_TENDER_CASH" parameters="itemid,serialNo">
+		<SequenceRef name="SCAN_ITEM_SERIAL" values="!{itemid}, !{serialNo}"/>		
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+	<!--Scan KIT/Component item at Sale Screen-->
+	<TestSequence name="SCAN_KIT_ITEM" parameters="itemid">
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" condition="@promptEquals(SALE_ITEM_SCAN)"/>
+	</TestSequence>
+	<!--Scan attach item at Sale Screen-->
+	<TestSequence name="SCAN_ATTACH_ITEM" parameters="itemid">
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" condition="@promptEquals(SALE_ITEM_SCAN)"/>
+		<TestStep action="SELECT_ALL" description="SELECT_ALL (PromptAttachedItemsOp)"/>
+	</TestSequence>
+	<!--Skip resume transaction-->
+	<TestSequence name="SKIP_DELINQUENT_LAYAWAY">
+		<TestStep action="NO" description="Skip Delinquent Layaway" condition="@promptEquals(DELINQUENT_LAYAWAY_ACCOUNT_LIST)"/>
+	</TestSequence>
+	<!--Create Special Order Ship-to-Customer at Sale Screen-->
+	<TestSequence name="CREATE_SPECIAL_ORDER_SHIP_TO_CUSTOMER" parameters="address1,address2,apartment,city,postalCode,firstName,lastName,telephone1,state,shippingMethod,itemId,cardAMT">
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<TestStep action="NEW" description="Select New Special Order at Special Order Lookup screen"/>
+		<TestStep action="SHIP_CUST" description="Select SO Shipping Type - Direct To Customer"/>
+		<TestStep action="ACCEPT" description="ACCEPT (SpecOrderShippingFormOp)">
+			<Form name="SPECIAL_ORDER_SHIPTO">
+				<Field name="address1" value="!{address1}"/>
+				<Field name="address2" value="!{address2}"/>
+				<Field name="apartment" value="!{apartment}"/>
+				<Field name="city" value="!{city}"/>
+				<Field name="postalCode" value="!{postalCode}"/>
+				<Field name="firstName" value="!{firstName}"/>
+				<Field name="lastName" value="!{lastName}"/>
+				<Field name="telephone1" value="!{telephone1}"/>
+				<Field name="state" value="!{state}"/>
+				<Field name="shippingMethod" value="!{shippingMethod}"/>
+			</Form>
+		</TestStep>
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<TestStep action="YES" description="YES (ConfirmOrderOnHandItemOp)" condition="@promptEquals(SP_ORDER_CONFIRM_ONHAND)"/>
+		<TestStep action="SPECIAL_ORDER_FINISH" description="SPECIAL_ORDER_FINISH (PromptCustAccountItemScanOp)"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+	<!--Complete Return Exchange transaction -->
+	<TestSequence name="COMPLETE_RETURN_EXCHANGE_TRANS" parameters="item1,item2,returnRC,reqComment">
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="1" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},!{returnRC},!{reqComment},3"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+	<!--Fill post void transaction informtion-->
+	<TestSequence name="FILL_POST_VOID_TRAN_BARCODE" parameters="tranBarcode">
+		<TestStep description="Enter original rcpt info" action="ACCEPT">
+			<Form name="POST_VOID_ORIG_TRANS">
+				 <Field name="origTransBarcode" value="!{tranBarcode}"/>
+			</Form>
+		</TestStep>
+	</TestSequence>
+	<!--Select Item in list with method-->
+	<TestSequence name="SELECT_ELEMENT_IN_METHOD" parameters="getMethod, getValue">
+		<TestStep description="Select element via !{getMethod}" action="ACCEPT" >
+			<ListSelect method="!{getMethod}" value="!{getValue}" />
+		</TestStep>
+	</TestSequence>
+	<!--Select Reason Code-->
+	<TestSequence name="SELECT_REASON_CODE_COMMENT" parameters="reasonCode, reqComment,rcComment">
+		<TestStep description="Select first reason code" action="ACCEPT" condition="@equals(VLX,!{reasonCode})">
+			<ListSelect index="1"/>
+		</TestStep>
+		<TestStep description="Select reason code !{reasonCode} AND !{reqComment}" action="ACCEPT" condition="@invert(@equals(VLX,!{reasonCode}))">
+			<ListSelect method="getReasonCode" value="!{reasonCode}" />
+		</TestStep>
+		<TestStep description="Enter reason code comment !{rcComment}" action="ACCEPT" data="!{rcComment}" condition="@equals(PROMPT,!{reqComment})" />
+		<TestStep description="Enter reason code comment !{rcComment}" action="ACCEPT" data="!{rcComment}" condition="@equals(REQUIRED,!{reqComment})" />
+	</TestSequence>
+	<!--Enter Item for Item Lookup-->
+	<TestSequence name="ENTER_VALUE_ITEM_LOOKUP" parameters="Itemid,Dept,SubDept,Class,SubClass,Style,Desc">	
+		<Assertion promptKey="ITEM_LOOKUP" />	
+		<TestStep action="SEARCH" description="SEARCH (ItemSearchOp)">
+            <Form name="ITEM_LOOKUP">
+                <Field name="itemId" value="!{Itemid}"/>
+				<Field name="merchLevel1Id" value="!{Dept}"/>
+				<Field name="merchLevel2Id" value="!{SubDept}"/>
+                <Field name="merchLevel3Id" value="!{Class}"/>
+				<Field name="merchLevel4Id" value="!{SubClass}"/>
+                <Field name="styleId" value="!{Style}"/>
+				<Field name="description" value="!{Desc}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<!--Select Item Lookup-->	
+	<TestSequence name="SELECT_ITEM_LOOKUP" parameters="Itemid"	>
+		<TestStep action="ACCEPT" description="ACCEPT (ItemSearchOp)">
+            <ListSelect method="getItemId" value="!{Itemid}" modelKey="CURRENT_TRANSACTION"/>
+        </TestStep>
+		<!--<Assertion promptKey="ITEM_RESULT" />-->		
+	</TestSequence>	
+	<!--Add Item To Transaction-->	
+	<TestSequence name="ADD_ITEMLOOKUP_TO_TRANSACTION" >
+		<TestStep action="ITEM_SELECTION" description="ITEM_SELECTION (DisplayFoundItemOp)"/>
+	</TestSequence>
+	<!--Add Item To Transaction-->	
+	<TestSequence name="CHECK_ITEM_DETAILS" parameters="itemId">
+		<Assertion class="dtv.xunit.assertion.ListItemFieldsAssertion" >
+			<Parameter name="modelKey" value="ITEM_LABEL_SELECTION"/>
+			<Parameter name="idMethod" value="getItemId"/>
+			<Parameter name="idValue"  value="!{itemId}"/>
+			<Parameter name="method.getItemTypeCode" value="STANDARD"/>
+			<Parameter name="method.getDescription" value="Career Dress Moleskin"/>
+		</Assertion>
+	</TestSequence>
+	<!--Change Transaction Tax Exempt-->
+	<TestSequence name="ADD_TRANS_TAX_EXEMPT" parameters="certificateHolderName,certificateNbr,reasonCode">
+		<TestStep action="NEW" description="NEW (PromptTaxExemptionOp)" condition="@promptEquals(SELECT_TAX_EXEMPTION)"/>
+        <SequenceRef name="FILL_TAX_EXEMPT_INFO" values="!{certificateHolderName}, !{certificateNbr}"/>
+        <SequenceRef name="SELECT_REASON_CODE_NO_COMMENT" values="!{reasonCode}"/>
+	</TestSequence>
+	<!--Complete Sale Transaction with Multiple Item type-->
+	<TestSequence name="CREATE_SALE_MULT_ITEM" parameters="item1,item2,cashAMT">
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="SCAN_ATTACH_ITEM" values="!{item2}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+	<!--Complete Sale Exchange transaction -->
+	<TestSequence name="CREATE_SALE_EXCHANGE_TRANS" parameters="item1,item2,returnRC,reqComment">
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="3" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},!{returnRC},!{reqComment},0"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+	<!--Remove Customer in Sale Transaction-->
+	<TestSequence name="REMOVE_CUSTOMER_IN_SALE">
+		<TestStep action="REMOVE_CUST_ASSOC" description="Remove customer in Sale (CustomerSaleOverviewOp)">
+            <Form name="CUSTOMER_SALE_OVERVIEW"/>
+        </TestStep>
+	</TestSequence>
+	<!--Create New Customer Does Not Exist when Start Sale-->
+	<TestSequence name="CREATE_NEW_CUSTOMER_START_SALE" parameters="teleNumber,lastName">
+		<TestStep action="SEARCH" description="SEARCH (CustomerSearchOp)" condition="@promptEquals(CUSTOMER_SEARCH)">
+            <Form name="CUSTOMER_SEARCH">
+                <Field name="telephone" value="!{teleNumber}"/>
+            </Form>
+        </TestStep>
+		<TestStep action="NEW" description="NEW (CustomerSearchOp)" />
+		<SequenceRef name="FILL_CUSTOMER_INFOMATION" values="!{lastName}"/>
+	</TestSequence>
+	<!--Add Transaction Tax Percent-->
+	<TestSequence name="ADD_TRANSACTION_TAX_PER" parameters="newTransTaxPer, reasonCode">
+		<TestStep action="ACCEPT" data="!{newTransTaxPer}" description="Enter transaction tax amount (PromptTaxAmountOp)"/>
+        <SequenceRef name="SELECT_REASON_CODE_NO_COMMENT" values="!{reasonCode}"/>
+	</TestSequence>
+	<!--Add Transaction Tax Amount-->
+	<TestSequence name="ADD_TRANSACTION_TAX_AMT" parameters="newTransTaxAmt, reasonCode">
+		<TestStep action="ACCEPT" data="!{newTransTaxAmt}" description="Enter transaction tax amount (PromptTaxAmountOp)"/>
+        <SequenceRef name="SELECT_REASON_CODE_NO_COMMENT" values="!{reasonCode}"/>
+	</TestSequence>
+	<!--Enter a warranty item with price-->
+	<TestSequence name="SELECT_TWO_ITEMS" parameters="item1,item2">
+		<TestStep action="ACCEPT" description="Select two items (PromptItemScanOp)">
+            <ListSelect method="getItemId" values="!{item1},!{item2}" />
+        </TestStep>
+	</TestSequence>
+	<!--Enter a warranty item with price-->
+	<TestSequence name="SELECT_CHANGE_WARRANTY_CUSTOMER" >
+		<TestStep action="PRE_CHANGE_WARRANTY_CUSTOMER"  description="Change Warranty Customer [PRE_CHANGE_WARRANTY_CUSTOMER]"/>
+		 <TestStep action="ACCEPT" description="ACCEPT (PromptWarrantyPlanOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!--Enter a warranty item with price-->
+	<TestSequence name="SCAN_WARRANTY_ITEM_PRICE" parameters="itemid,price">
+		<TestStep action="ACCEPT" data="!{itemid}" description="Enter warranty !{itemid} (PromptItemScanOp)"/>
+		<TestStep action="ACCEPT" data="!{price}" description="Enter warranty price for !{itemid} "/>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptWarrantyPlanOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!--Complete a sale with Warranty item without selecting Warranty Plan-->
+	<TestSequence name="COMPLETE_SALE_WARRANTY_WO_PLAN_TENDER_CASH" parameters="witemId,custLastName,custFirstName">
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_FULLNAME" values="!{custLastName}, !{custFirstName}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="ENTER_WARRANTY_ITEM_WITHOUT_WARRANTY_PLAN" values="!{witemId}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+	<!--Complete a sale with Warranty item-->
+	<TestSequence name="COMPLETE_SALE_WARRANTY_TENDER_CASH" parameters="witemId,custLastName,custFirstName">
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_FULLNAME" values="!{custLastName}, !{custFirstName}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_WARRANTY_ITEM" values="!{witemId}"/>		
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+	<!--Select a Item on Item List-->
+	<TestSequence name="SELECT_WARRANTIES_FOR_RETURN" >
+		<TestStep action="ACCEPT" description="Select the first item in the list" condition="@promptEquals(SELECT_WARRANTIES_FOR_RETURN)">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!--Select a Item on Item List-->
+	<TestSequence name="SELECT_FIRST_ITEM_IN_LIST" >
+		<TestStep action="ACCEPT" description="Select the first item in the list">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!--Select Add Item on Item Maintenance-->
+	<TestSequence name="SELECT_ADD_WARRANTY">
+		<TestStep description="Add Warranty [PRE_SALE_WARRANTY]" action="PRE_SALE_WARRANTY" />
+	</TestSequence>
+	<!--Add Item into current transaction-->
+	<TestSequence name="ENTER_WARRANTY_ITEM_WITHOUT_WARRANTY_PLAN" parameters="itemid">
+        <TestStep action="ACCEPT" data="!{itemid}" description="Enter warranty !{itemid} (PromptItemScanOp)"/>
+		 <TestStep action="CONTINUE" description="Decline Warranty [CONTINUE] "/>
+	</TestSequence>
+	<!--Enter warranty plan-->
+	<TestSequence name="SELECT_WARRANTY_PLAN" parameters="warrantyNo">
+        <TestStep action="ACCEPT" description="ACCEPT (PromptWarrantyPlanOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+		<TestStep action="ACCEPT" data="!{warrantyNo}" description="Enter warranty #"/>
+	</TestSequence>
+	<!--Add Item into current transaction-->
+	<TestSequence name="ADD_WARRANTY_MANUAL" parameters="itemid">
+        <TestStep action="ACCEPT" description="Manual Entry [ADD_WARRANTIES_TO_MANUAL_ITEM] ">
+            <ListSelect index="4"/>
+        </TestStep>
+	</TestSequence>
+	<!--Add Item into current transaction-->
+	<TestSequence name="ADD_WARRANTY_PRE_TRAN_RECEIPT" parameters="itemid">
+        <TestStep action="ACCEPT" description="Previous Transaction with Receipt [ADD_WARRANTIES_TO_RECEIPT_TRANS_ITEM]">
+            <ListSelect index="3"/>
+        </TestStep>		
+	</TestSequence>
+	<!--Add Item into current transaction-->
+	<TestSequence name="ADD_WARRANTY_CUSTOMER_HIS" parameters="itemid">		
+        <TestStep action="ACCEPT" description="Customer History [ADD_WARRANTIES_TO_HISTORY_TRANS_ITEM] ">
+            <ListSelect index="2"/>
+        </TestStep>
+	</TestSequence>
+	<!--Add Item into current transaction-->
+	<TestSequence name="ADD_WARRANTY_CURRENT_TRANSACTION" parameters="itemid">
+        <TestStep action="ACCEPT" description=" Current Transaction [ADD_WARRANTIES_TO_CURRENT_TRANS_ITEM]">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!--Check customer does not exist in customer result-->
+	<TestSequence name="CHECK_CUSTOMER_ID_NOT_IN_CUSTOMER_RESULT" parameters="custId">
+		<Assertion class="dtv.xunit.assertion.ValidListItemAssertion" invert="true" >
+			<Parameter name="method" values="getCustId" />
+			<Parameter name="value" values="!{custId}" />
+		</Assertion>
+	</TestSequence>
+	<!--Check Customer Phone does not Exist-->
+	<TestSequence name="CHECK_CUSTOMER_PHONE_NOT_IN_CUSTOMER_RESULT" parameters="teleNumber">
+		<Assertion class="dtv.xunit.assertion.ValidListItemAssertion" invert="true" >
+			<Parameter name="method" values="getTelephone1" />
+			<Parameter name="value" values="!{teleNumber}" />
+		</Assertion>
+	</TestSequence>
+	<!--Check Customer Phone does not Exist-->
+	<TestSequence name="CHECK_CUSTOMER_PHONE_NOT_IN_CUSTOMER_RESULT" parameters="teleNumber">
+		<Assertion class="dtv.xunit.assertion.ValidListItemAssertion" invert="true" >
+			<Parameter name="method" values="getTelephone1" />
+			<Parameter name="value" values="!{teleNumber}" />
+		</Assertion>
+	</TestSequence>
+	<!--Search Customer by state code-->
+	<TestSequence name="CHECK_CUSTOMER_STATE_IN_CUSTOMER_RESULT" parameters="custStateCode">
+		<Assertion class="dtv.xunit.assertion.ValidListItemAssertion" >
+			<Parameter name="method" values="getState" />
+			<Parameter name="value" values="!{custStateCode}" />
+		</Assertion>
+	</TestSequence>
+	<!--Search Customer by postal code-->
+	<TestSequence name="CHECK_CUSTOMER_POSTALCODE_IN_CUSTOMER_RESULT" parameters="custPostalCode">
+		<Assertion class="dtv.xunit.assertion.ValidListItemAssertion" >
+			<Parameter name="method" values="getPostalCode" />
+			<Parameter name="value" values="!{custPostalCode}" />
+		</Assertion>
+	</TestSequence>
+	<!--Search Customer by Email does not Exist-->
+	<TestSequence name="CUSTOMER_SEARCH_BY_EMAIL_NOT_EXIST" parameters="custEmail">
+		<TestStep action="SEARCH" description="SEARCH (CustomerSearchOp)">
+            <Form name="CUSTOMER_SEARCH">
+                <Field name="emailAddress" value="!{custEmail}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<!--Search Customer by Customer Address does not Exist-->
+	<TestSequence name="CUSTOMER_SEARCH_BY_ADDRESS_NOT_EXIST" parameters="custState,custCity">
+		<TestStep action="SEARCH" description="SEARCH (CustomerSearchOp)">
+            <Form name="CUSTOMER_SEARCH">
+                <Field name="state" value="!{custState}"/>
+                <Field name="city" value="!{custCity}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<!--Search Customer by customer Id does not Exist-->
+	<TestSequence name="CUSTOMER_SEARCH_BY_ID_NOT_EXIST" parameters="custID">
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerSearchOp)" condition="@promptEquals(CUSTOMER_SEARCH)">
+            <Form name="CUSTOMER_SEARCH">
+				<Field name="customerId" value="!{custID}" />
+			</Form>
+        </TestStep>
+	</TestSequence>
+	<!--Search Customer by Customer Postal Code does not Exist-->
+	<TestSequence name="CUSTOMER_SEARCH_BY_POSTAL_CODE_NOT_EXIST" parameters="custPostalCode">
+		<TestStep action="SEARCH" description="SEARCH (CustomerSearchOp)">
+            <Form name="CUSTOMER_SEARCH">
+                <Field name="postalCode" value="!{custPostalCode}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<!--Edit Customer in Customer Dashboard-->
+	<TestSequence name="EDIT_CUSTOMER_DASHBOARD" parameters="firstName,lastName,gender,organizationName,organizationTypeCode,birthDate,address1,
+	city,postalCode,state,phoneNumber1,email1">
+		<TestStep action="CUSTOMER_EDIT_FROM_DASHBOARD" description="CUSTOMER_EDIT_FROM_DASHBOARD (CustomerDashboardOp)">
+            <Form name="CUSTOMER_MAINTENANCE"/>
+        </TestStep>
+        <TestStep action="ACCEPT" description="ACCEPT (CustomerEditOp)">
+            <Form name="CUSTOMER_EDIT">
+                <Field name="firstName" value="!{firstName}"/>
+                <Field name="lastName" value="!{lastName}"/>
+                <Field name="gender" value="!{gender}"/>
+                <Field name="organizationName" value="!{organizationName}"/>
+				<Field name="organizationTypeCode" value="!{organizationTypeCode}"/>
+				<Field name="birthDate" value="!{birthDate}"/>
+                <Field name="address1" value="!{address1}"/>
+                <Field name="city" value="!{city}"/>
+                <Field name="postalCode" value="!{postalCode}"/>
+                <Field name="state" value="!{state}"/>
+                <Field name="phoneNumber1" value="!{phoneNumber1}"/>
+                <Field name="email1" value="!{email1}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<!--Add house account buyer-->
+	<TestSequence name="ADD_HOUSE_ACCOUNT_BUYER" parameters="addLastName, addFirstName">
+		<TestStep action="ADD_BUYER" description="ADD_BUYER (CustomerDashboardOp)"/>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptHouseAcctAddBuyerOp)">
+            <Form name="HOUSE_ACCT_ADD_EDIT_BUYER">
+                <Field name="lastName" value="!{addLastName}"/>
+                <Field name="firstName" value="!{addFirstName}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<!--Update house account buyer-->
+	<TestSequence name="UPDATE_HOUSE_ACCOUNT_STATUS" parameters="updateLastNameBuyer">
+		<TestStep action="EDIT_BUYER" data="dtv.xst.dao.cat.impl.ChargeAccountUserModel@4bcfbf77 Id: 1000::HOUSE_ACCOUNT::HA0357004000002::HAU0357004000002" description="Edit buyer"/>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptHouseAcctEditBuyerOp)">
+            <Form name="HOUSE_ACCT_ADD_EDIT_BUYER">
+                <Field name="lastName" value="!{updateLastNameBuyer}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<!--Update house account status-->
+	<TestSequence name="UPDATE_HOUSE_ACCOUNT_STATUS" parameters="updateCredit">
+		<TestStep action="EDIT_STATUS" description="EDIT_STATUS (CustomerDashboardOp)"/>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptHAStatusListOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+        <TestStep action="EDIT_STATUS" description="EDIT_STATUS (CustomerDashboardOp)"/>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptHAStatusListOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!--Update house account credit-->
+	<TestSequence name="UPDATE_HOUSE_ACCOUNT_CREDIT" parameters="updateCredit">
+		<TestStep action="HOUSE_ACCOUNT_CHANGE_CREDITLIMIT" description="HOUSE_ACCOUNT_CHANGE_CREDITLIMIT (CustomerDashboardOp)"/>
+        <TestStep action="ACCEPT" data="!{updateCredit}" description="Enter credit need update (PromptEditCreditLimitOp)"/>
+	</TestSequence>
+	<!--Create new house account-->
+	<TestSequence name="CREATE_HOUSE_ACCOUNT" parameters="houseAccountAmount">
+		<TestStep action="CUST_MAINT_HOUSE_ACCOUNT_NEW" description="CUST_MAINT_HOUSE_ACCOUNT_NEW (CustomerDashboardOp)">
+            <Form name="CUSTOMER_MAINTENANCE"/>
+        </TestStep>
+        <TestStep action="ACCEPT" data="!{houseAccountAmount}" description="Enter house account amount (PromptCreateHouseAccountOp)"/>
+	</TestSequence>
+	<!--Enter Serial Number-->
+	<TestSequence name="ENTER_SERIAL_NUMBER" parameters="Serial">
+		<Assertion promptKey="ITEM_SERIAL_NEEDED" />
+		<TestStep action="ACCEPT" data="!{Serial}" description="Enter !{Serial} (PromptItemSerialNumberOp)"/>
+	</TestSequence>
+	<!--Select OK button-->
+	<TestSequence name="SELECT_OK">
+		<TestStep action="OK" description="Select OK button"/>
+	</TestSequence>
+	<!--Select OK button-->
+	<TestSequence name="SELECT_CANCEL">
+		<TestStep action="CANCEL" description="Select CANCEL button"/>
+	</TestSequence>
+	<!--Fill customer information-->
+	<TestSequence name="FILL_CUSTOMER_INFOMATION" parameters="lastName">
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerEditOp)">
+            <Form name="CUSTOMER_EDIT">
+                <Field name="lastName" value="!{lastName}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<!--Search Customer by Customer Postal Code and Customer Name-->
+	<TestSequence name="CUSTOMER_SEARCH_BY_POSTAL_CODE_AND_CUST_NAME" parameters="custPostalCode, custFirstName, custLastName">
+		<TestStep action="SEARCH" description="SEARCH (CustomerSearchOp)">
+            <Form name="CUSTOMER_SEARCH">
+                <Field name="postalCode" value="!{custPostalCode}"/>
+				<Field name="firstName" value="!{custFirstName}"/>
+				<Field name="lastName" value="!{custLastName}" />
+            </Form>
+        </TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerSearchOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!--Search Customer by Customer Phone and Customer Name-->
+	<TestSequence name="CUSTOMER_SEARCH_BY_PHONE_AND_CUST_NAME" parameters="teleNumber, custFirstName, custLastName">
+		<TestStep action="SEARCH" description="SEARCH (CustomerSearchOp)">
+            <Form name="CUSTOMER_SEARCH">
+                <Field name="telephone" value="!{teleNumber}"/>
+				<Field name="firstName" value="!{custFirstName}"/>
+				<Field name="lastName" value="!{custLastName}" />
+            </Form>
+        </TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerSearchOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!--Search Customer by Customer email and Customer Name-->
+	<TestSequence name="CUSTOMER_SEARCH_BY_EMAIL_AND_CUST_NAME" parameters="custEmail, custFirstName, custLastName">
+		<TestStep action="SEARCH" description="SEARCH (CustomerSearchOp)">
+            <Form name="CUSTOMER_SEARCH">
+                <Field name="emailAddress" value="!{custEmail}"/>
+				<Field name="firstName" value="!{custFirstName}"/>
+				<Field name="lastName" value="!{custLastName}" />
+            </Form>
+        </TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerSearchOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!--Create New Customer Does Not Exist-->
+	<TestSequence name="CREATE_NEW_CUSTOMER_WITH_PHONE" parameters="teleNumber,lastName">
+		<TestStep action="SEARCH" description="SEARCH (CustomerSearchOp)" condition="@promptEquals(CUSTOMER_SEARCH)">
+            <Form name="CUSTOMER_SEARCH">
+                <Field name="telephone" value="!{teleNumber}"/>
+            </Form>
+        </TestStep>
+		<TestStep action="NEW" description="NEW (CustomerSearchOp)" />
+        <TestStep action="ACCEPT" description="ACCEPT (CreateCustomerFromSearchOp)"/>
+        <TestStep action="CUSTOMER_EDIT_FROM_DASHBOARD" description="CUSTOMER_EDIT_FROM_DASHBOARD (CreateCustomerFromSearchOp)">
+            <Form name="CUSTOMER_MAINTENANCE"/>
+        </TestStep>
+		<SequenceRef name="FILL_CUSTOMER_INFOMATION" values="!{lastName}"/>
+	</TestSequence>
+	<!--Search Print Customer Detail-->
+	<TestSequence name="PRINT_CUSTOMER_DETAIL">
+		<TestStep action="PRINT_CUSTOMER" description="PRINT_CUSTOMER (CustomerDashboardOp)">
+            <Form name="CUSTOMER_MAINTENANCE"/>
+        </TestStep>
+	</TestSequence>
+	<!--Search Customer by Email-->
+	<TestSequence name="CUSTOMER_SEARCH_BY_EMAIL" parameters="custEmail">
+		<TestStep action="SEARCH" description="SEARCH (CustomerSearchOp)">
+            <Form name="CUSTOMER_SEARCH">
+                <Field name="emailAddress" value="!{custEmail}"/>
+            </Form>
+        </TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerSearchOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!--Search Customer by Customer Address-->
+	<TestSequence name="CUSTOMER_SEARCH_BY_ADDRESS" parameters="custState,custCity">
+		<TestStep action="SEARCH" description="SEARCH (CustomerSearchOp)">
+            <Form name="CUSTOMER_SEARCH">
+                <Field name="state" value="!{custState}"/>
+                <Field name="city" value="!{custCity}"/>
+            </Form>
+        </TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerSearchOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!--Search Customer by Customer Postal Code-->
+	<TestSequence name="CUSTOMER_SEARCH_BY_POSTAL_CODE" parameters="custPostalCode">
+		<TestStep action="SEARCH" description="SEARCH (CustomerSearchOp)">
+            <Form name="CUSTOMER_SEARCH">
+                <Field name="postalCode" value="!{custPostalCode}"/>
+            </Form>
+        </TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerSearchOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!--Search Customer by telephone-->
+	<TestSequence name="CUSTOMER_SEARCH_BY_PHONE" parameters="teleNumber">
+		<TestStep action="SEARCH" description="SEARCH (CustomerSearchOp)" condition="@promptEquals(CUSTOMER_SEARCH)">
+            <Form name="CUSTOMER_SEARCH">
+                <Field name="telephone" value="!{teleNumber}"/>
+            </Form>
+        </TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerSearchOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!--Complete Suspend Sale Exchange Transaction-->
+	<TestSequence name="CREATE_SUSPEND_SALE_EXCHANGE" parameters="item1,item2,returnRC,reqComment">
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="3"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},!{returnRC},!{reqComment},9.99" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+	</TestSequence>
+	<!--Complete Suspend Return Exchange Transaction-->
+	<TestSequence name="CREATE_SUSPEND_RETURN_EXCHANGE" parameters="item1,item2,returnRC,reqComment">
+		<SequenceRef name="SCAN_ITEM" values="!{item2}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},!{returnRC},!{reqComment},9.99" iterations="3" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+	</TestSequence>
+	<!--Complete Suspend Even Exchange Transaction-->
+	<TestSequence name="CREATE_SUSPEND_EVEN_EXCHANGE" parameters="item1,item2,returnRC,reqComment,newprice,priceChangereascode,priceChangeCommentReq">
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},!{priceChangereascode},!{priceChangeCommentReq}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},!{returnRC},!{reqComment},0" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item2},!{newprice},!{priceChangereascode},!{priceChangeCommentReq}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+	</TestSequence>
+	<!--Complete Suspend Blind Return Transaction-->
+	<TestSequence name="CREATE_SUSPEND_BLIND_RETURN" parameters="itemid,returnRC,reqComment">
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},!{returnRC},!{reqComment},0" iterations="3" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+	</TestSequence>
+	<!--Complete Suspend Unverified Return Transaction-->
+	<TestSequence name="CREATE_SUSPEND_UNVERIFIED_RETURN" parameters="origTransSeq,origTransBusinessDate,origLocationId,origWorkStationId,itemid,returnRC,reqComment">
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},!{returnRC},!{reqComment},0" iterations="6" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+	</TestSequence>
+	<!--Select Suspend Transaction at Sale Screen-->
+	<TestSequence name="SELECT_SUSPEND_TRANSACTION" >
+		<TestStep action="SUSPEND_TRANSACTION" description="Suspend transaction (PromptOp)"/>
+	</TestSequence>
+	<!--Complete Suspend Sale Transaction-->
+	<TestSequence name="CREATE_SUSPEND_SALE" parameters="itemid">
+        <SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="3" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+	</TestSequence>
+	<!--Create sale change tax percent-->
+	<TestSequence name="CREATE_SALE_CHANGE_TAX_PER" parameters="itemid,TaxPER,cashAMT">
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="3" />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{TaxPER}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+	<!--Create sale change tax exempt-->
+	<TestSequence name="CREATE_SALE_CHANGE_TAX_EXEMPT" parameters="itemid,certificateHolderName,certificateNbr,reasonCode,cashAMT">
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="3" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{itemid},!{certificateHolderName},!{certificateNbr},!{reasonCode}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+	<!--Create sale change tax location-->
+	<TestSequence name="CREATE_SALE_CHANGE_TAX_LOC" parameters="itemid,newPostalCode,cashAMT,reascode,reqComment">
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="3" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{itemid},!{newPostalCode},!{reascode},!{reqComment}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+	<!--Select Void Item-->
+	<TestSequence name="VOID_ITEM" parameters="itemid,reascode,reqComment">
+		<TestStep action="VOID_LINE" description="Void item (PromptItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemid}" modelKey="CURRENT_TRANSACTION" />
+        </TestStep>
+        <SequenceRef name="SELECT_REASON_CODE_COMMENT" values="!{reascode},!{reqComment},Void Item Comment"/>
+	</TestSequence>
+	<!--Create sale change tax location-->
+	<TestSequence name="CREATE_SALE_VOID_ITEM" parameters="item1,item2,reascode,reqComment,cashAMT">
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="2" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" iterations="2" />
+		<SequenceRef name="VOID_ITEM" values ="!{item2},!{reascode},!{reqComment}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+	<!--Create sale change tax amount-->
+	<TestSequence name="CREATE_SALE_CHANGE_TAX_AMT" parameters="itemid, newTaxAMT,cashAMT">
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="3" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{itemid},!{newTaxAMT}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+	<!--Select Remove Discount-->
+	<TestSequence name="REMOVE_ITEM_DISCOUNT" parameters="itemid, discountCode">
+		<TestStep action="SELECT_DISCOUNT_TO_REMOVE" description="SELECT_DISCOUNT_TO_REMOVE (PromptItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemid}" modelKey="CURRENT_TRANSACTION" />
+        </TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptDiscountsForSaleLineOp)" condition="@promptEquals(DISCOUNT_TO_REMOVE)">
+            <ListSelect method="getDiscountCode" value="!{discountCode}"/>
+        </TestStep>
+	</TestSequence>
+	<!--Select Remove Discount-->
+	<TestSequence name="REMOVE_DISCOUNT" parameters="itemid, discountCode">
+		<TestStep action="SELECT_DISCOUNT_TO_REMOVE" description="SELECT_DISCOUNT_TO_REMOVE (PromptItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemid}" modelKey="CURRENT_TRANSACTION" />
+        </TestStep>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptDiscountsForSaleLineOp)">
+            <ListSelect method="getDiscountCode" value="!{discountCode}"/>
+        </TestStep>
+	</TestSequence>
+	<!--Select Modify Discount-->
+	<TestSequence name="MODIFY_DISCOUNT" parameters="itemid,discountCodeRemove,discountOp,reascode,reqComment"> <!--Remove percentAMT. Not need this parameter-->
+		<TestStep action="SELECT_DISCOUNT_TO_CHANGE" description="SELECT_DISCOUNT_TO_CHANGE (PromptItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemid}"  modelKey="CURRENT_TRANSACTION"/>
+        </TestStep>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptDiscountsForSaleLineOp)">
+            <ListSelect method="getDiscountCode" value="!{discountCodeRemove}"/>
+        </TestStep>
+        <SequenceRef name="SELECT_DISCOUNT_OPTION" values="!{discountOp},!{reascode},!{reqComment}" />
+	</TestSequence>
+	<!--Select Return Item at Sale Screen-->
+	<TestSequence name="SELECT_RETURN_ITEM" >
+		<TestStep action="NEW_RETURN" description="NEW_RETURN (PromptOp)"/>
+	</TestSequence>
+	<!--Complete Sale Transaction with cash-->
+	<TestSequence name="CREATE_SALE_BY_CASH" parameters="itemid">
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="5" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+	<!--Tender Credit/Debit-->
+	<TestSequence name="TENDER_BY_CREDIT" parameters="cardAMT">
+		<TestStep action="TENDER_EFTL_CREDIT_CARD" description="TENDER_EFTL_CREDIT_CARD (MobilePromptTenderMenuOp)"/>
+		<TestStep action="ACCEPT" data="!{cardAMT}" description="Enter !{cardAMT} (CashSuggestionPromptTenderAmtOp)"/>
+  	</TestSequence>
+	<!--Complete Sale Transaction with Credit/Debit-->
+	<TestSequence name="CREATE_SALE_BY_CREDIT" parameters="itemid, cashAMT">
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="5" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CREDIT/DEBIT" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+	<!--Tender Coupon-->
+	<TestSequence name="TENDER_BY_COUPON" parameters="couponAMT">
+		<TestStep action="ADD_BLIND_COUPON_TENDER" description="ADD_BLIND_COUPON_TENDER (MobilePromptTenderMenuOp)"/>
+		<TestStep action="ACCEPT" data="!{couponAMT}" description="Enter !{couponAMT} (CashSuggestionPromptTenderAmtOp)"/>
+  	</TestSequence>
+	<!--Complete Sale Transaction with Coupon-->
+	<TestSequence name="CREATE_SALE_BY_COUPON" parameters="itemid, cashAMT">
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="5" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_COUPON" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestSequence>
+	<!--Skip resume transaction-->
+	<TestSequence name="SKIP_RESUME_TRANS">
+		<TestStep action="EXIT" description="Skip choose resume transaction" condition="@promptEquals(SUSPENDED_CUSTOMER_TRANSACTIONS)"/>
+	</TestSequence>
+	<!--Choose resume transaction-->
+	<TestSequence name="CHOOSE_RESUME_TRANS" parameters="TranSeq">
+		<TestStep action="ACCEPT" description="ACCEPT (PromptSuspendedCustomerOp)">
+            <ListSelect method="getTransactionSequence" value="!{TranSeq}" />
+        </TestStep>
+	</TestSequence>
+	<!--Add Coupon-->
+	<TestSequence name="SELECT_BTN_COUPON" parameters="couponid">
+		<TestStep action="ADD_COUPON" description="ADD_COUPON (PromptItemScanOp)"/>
+        <TestStep action="ACCEPT" data="!{couponid}" description="Enter  XUNITCOUPON (PromptCouponOp)"/>
+	</TestSequence>
+	<!--Change Item Price-->
+	<TestSequence name="CHANGE_PRICE" parameters="itemId,newPrice,reasonCode,reqComment">
+		<TestStep action="PRE_CHANGE_ITEM_PRICE" description="PRE_CHANGE_ITEM_PRICE (PromptItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemId}" modelKey="CURRENT_TRANSACTION"/>
+        </TestStep>
+        <TestStep action="ACCEPT" data="!{newPrice}" description="Enter !{newPrice} for item price (PromptItemPriceChangeOp)"/>
+        <SequenceRef name="SELECT_REASON_CODE_NO_COMMENT" values="!{reasonCode}" />
+		<!--<TestStep action="ACCEPT" description="ACCEPT (NotifyItemUpdatedOp)"/>-->
+	</TestSequence>
+	<!--Change Item Qty-->
+	<TestSequence name="CHANGE_ITEM_QTY" parameters="itemId,newQty">
+		<TestStep action="PRE_CHANGE_ITEM_QUANTITY" description="PRE_CHANGE_ITEM_QUANTITY (PromptItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemId}" modelKey="CURRENT_TRANSACTION"/>
+        </TestStep>
+        <TestStep action="ACCEPT" data="!{newQty}" description="Enter !{newQty} qty (PromptItemQuantityChangeOp)"/>
+	</TestSequence>
+	<!--Add Item-->
+	<TestSequence name="SCAN_STYLE_ITEM" parameters="styleId,dimension1,dimension2,dimension3">
+		<TestStep action="ACCEPT" data="!{styleId}" description="Enter !{styleId} (PromptItemScanOp)"/>
+        <TestStep action="ACCEPT" description="ACCEPT (CheckStyleLookupOp)">
+            <!--<ListSelect method="getDimensionValue" value="!{dimension1}"/>-->
+			<ListSelect index="1"/>
+        </TestStep>
+        <TestStep action="ACCEPT" description="ACCEPT (CheckStyleLookupOp)" condition="@promptEquals(ENTER_ITEM_DIMENSION)">
+            <ListSelect index="2"/>
+        </TestStep>
+        <TestStep action="ACCEPT" description="ACCEPT (CheckStyleLookupOp)" condition="@promptEquals(ENTER_ITEM_DIMENSION)">
+            <ListSelect index="2"/>
+        </TestStep>
+	</TestSequence>
+	<!--Add Serial Item-->
+	<TestSequence name="SCAN_ITEM_SERIAL" parameters="itemid,serialNo">
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" condition="@promptEquals(SALE_ITEM_SCAN)"/>
+		<TestStep action="ACCEPT" data="!{serialNo}" description="Enter !{serialNo} (PromptItemSerialNumberOp)"/>
+	</TestSequence>
+	<!--Add Item has PROMPT_FOR_CUSTOMER=CUSTOMER_PROMPT_REQUIRED that require to add customer-->
+	<TestSequence name="SCAN_ITEM_CUSTOMER_REQ" parameters="itemid,custLastName">
+		<TestStep action="ACCEPT" data="!{itemid}" description="Enter !{itemid} (PromptItemScanOp)"/>
+		<!--PROMPT_FOR_CUSTOMER=CUSTOMER_PROMPT_REQUIRED-->
+		<SequenceRef name="CUSTOMER_SEARCH_BY_LASTNAME" values="!{custLastName}" />
+	</TestSequence>
+	<TestSequence name="SCAN_ITEM_PROMPT" parameters="itemid,promptValue">
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" condition="@promptEquals(SALE_ITEM_SCAN)"/>
+		<!--PROMPT_FOR_CUSTOMER=CUSTOMER_PROMPT_REQUIRED-->
+		<TestStep action="ACCEPT" data="!{promptValue}" description="Enter description !{promptValue} (PromptItemDescriptionOp)" condition="@promptEquals(ENTER_ITEM_DESC)"/>
+		<TestStep action="ACCEPT" data="!{promptValue}" description="Enter description !{promptValue} (PromptItemDescriptionOp)" condition="@promptEquals(ITEM_PROPERTY)"/>
+		<!--PROMPT_FOR_QUANTITY_FLAG-->
+        <TestStep action="ACCEPT" data="!{promptValue}" description="Enter Qty=!{promptValue} (PromptItemQuantityOp)" condition="@promptEquals(ENTER_ITEM_QUANTITY)"/>   
+		<!--PROMPT_FOR_PRICE_FLAG-->
+		<TestStep action="ACCEPT" data="!{promptValue}" description="Enter Price=!{promptValue} (PromptItemPriceOp)" condition="@promptEquals(ENTER_ITEM_PRICE)"/>    
+	</TestSequence>
+	
+	<TestSequence name="CHECK_ITEM_IN_THE_TRANSACTION" parameters="itemId">
+		<Assertion class="dtv.xunit.assertion.ValidListItemAssertion" >
+			<Parameter name="method" value="getItemId" />
+			<Parameter name="value" value="!{itemId}" />
+			<Parameter name="key" value="CURRENT_TRANSACTION" />
+		</Assertion>
+	</TestSequence>
+	<!--Select Add Item on Item Maintenance-->
+	<TestSequence name="SELECT_ADD_ITEM">
+		<TestStep description="Select Add Item on Item Maintenance" action="ADD_TO_CART" />
+	</TestSequence>
+	<!--Cancel Tramsaction without item at Sale Screen-->
+	<TestSequence name="CANCEL_SALE_TRANSACTION_WITHOUT_ITEM">
+		<Assertion promptKey="SALE_ITEM_SCAN" />
+		<TestStep action="ROLLBACK_TRANS_PROMPT" description="Select Cancel Transaction at Sale Screen" />
+	</TestSequence>
+	<!--Change Item Tax Amount-->
+	<TestSequence name="CHANGE_ITEM_TAX_AMT" parameters="itemId,newTaxAMT">
+		<TestStep action="ACCEPT" description="ACCEPT (Select Item !{itemId} in the tran)">
+			<ListSelect method="getItemId" values="!{itemId}" modelKey="CURRENT_TRANSACTION"/>
+		</TestStep>
+		<TestStep action="TAX_ITEM_CHANGE_AMOUNT" description="TAX_ITEM_CHANGE_AMOUNT (PromptItemScanOp)"/>
+        <TestStep action="ACCEPT" data="!{newTaxAMT}" description="Enter !{newTaxAMT} (PromptTaxAmountOp)"/>
+		<SequenceRef name="SELECT_FIRST_REASON_CODE"/>
+	</TestSequence>
+	<!--Select Unverified Return Transaction with Transaction Info at Sale Screen-->
+	<TestSequence name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" parameters="origTransSeq, origTransBusinessDate, origLocationId, origWorkStationId">
+        <SequenceRef name="SELECT_BTN_YES"/>
+		<SequenceRef name="FILL_ORIGINAL_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}"/>		
+		<SequenceRef name="SELECT_BTN_YES"/>		
+	</TestSequence>
+	<!--tender exchange from Mall Certificate-->
+	<TestSequence name="TENDER_EXCHANGE_INCOMMING_MALL_CERT" parameters="mallCertNo,mallCertAMT">
+		<TestStep action="STANDARD_INCOMING_TENDER_EXCHANGE_VOUCHER_TENDER" description="STANDARD_INCOMING_TENDER_EXCHANGE_VOUCHER_TENDER (MobilePromptTenderMenuOp)"/>
+        <TestStep action="ACCEPT" data="!{mallCertNo}" description="Enter !{mallCertNo} (PromptVoucherNumberOp)"/>
+        <TestStep action="ACCEPT" data="!{mallCertAMT}" description="Enter !{mallCertAMT} (PromptIncomingVoucherTenderExchangeAmtOp)"/>
+	</TestSequence>
+	<!--tender exchange from Check-->
+	<TestSequence name="TENDER_EXCHANGE_INCOMMING_CHECK" parameters="checkSerial,checkNo,stateCode,IDNo,birthDate,checkAMT">
+		<TestStep action="INCOMING_TENDER_EXCHANGE_CHECK" data="CHECK" description="Enter CHECK (MobilePromptTenderMenuOp)"/>
+        <TestStep action="ACCEPT" data="!{checkSerial}" description="Enter !{checkSerial} (ReadMicrOp)"/>
+        <TestStep action="ACCEPT" data="!{checkNo}" description="Enter !{checkNo} (ReadMicrOp)"/>
+        <TestStep action="ACCEPT" data="!{stateCode}" description="Enter !{stateCode} (PromptIdentityVerificationOp)"/>
+        <TestStep action="ACCEPT" data="!{IDNo}" description="Enter !{IDNo} (PromptIdentityVerificationOp)"/>
+        <TestStep action="ACCEPT" data="!{birthDate}" description="Enter !{birthDate} (PromptBirthdayOp)"/>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptVerifyBirthDateOp)"/>
+        <TestStep action="ACCEPT" data="!{checkAMT}" description="Enter !{checkAMT} (PromptIncomingTenderExchangeAmountOp)"/>
+	</TestSequence>
+	<!--tender exchange to CASH-->
+	<TestSequence name="TENDER_EXCHANGE_OUTCOMMING_CASH" parameters="cashAMT">
+		<TestStep action="OUTGOING_TENDER_EXCHANGE_LOCAL_CURRENCY" description="OUTGOING_TENDER_EXCHANGE_LOCAL_CURRENCY (MobilePromptTenderMenuOp)"/>
+        <TestStep action="ACCEPT" data="!{cashAMT}" description="Enter !{cashAMT} (PromptOutgoingTenderExchangeAmountOp)"/>
+        <SequenceRef name="SELECT_BTN_YES" />
+	</TestSequence>
+	<!-- Tender with Merch Credit Card -->
+	<TestSequence name="REFUND_TO_ISSUE_MERCH_CREDIT_CARD" parameters="amount, cardNo">
+		<TestStep description="Tender to Merchandise Credit Card" action="STANDARD_TENDER_VOUCHER" />
+		<TestStep description="Enter valid Merchandise Credit Card No !{cardNo}" action="ACCEPT" data="!{cardNo}" />
+		<Assertion promptKey="VOUCHER_ALREADY_REDEEMED" invert="true" />
+		<SequenceRef name="ENTER_TRANS_AMOUNT" values="!{amount}" />
+	</TestSequence>
+	<!--Fill post void transaction informtion-->
+	<TestSequence name="POST_VOID_STEPS" parameters="reasonCode">
+		<TestStep description="Select transaction to post void" action="ACCEPT">
+			<ListSelect index="1" />
+		</TestStep>
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_REASON_CODE_NO_COMMENT" values="!{reasonCode}" />
+	</TestSequence>
+	<!--Fill post void transaction informtion-->
+	<TestSequence name="FILL_POST_VOID_ORIG_TRANS" parameters="tranSeq,tranBusinessDate,tranLocationId,tranRegId,tranAMT">
+		<TestStep description="Enter original rcpt info" action="ACCEPT">
+			<Form name="POST_VOID_ORIG_TRANS">
+				<Field name="origTransSeq" value="!{tranSeq}" />
+				<Field name="origTransBusinessDate" value="!{tranBusinessDate}" />
+				<Field name="origLocationId" value="!{tranLocationId}" />
+				<Field name="origWorkStationId" value="!{tranRegId}" />
+				<Field name="origTransAmt" value="!{tranAMT}" />
+			</Form>
+		</TestStep>
+	</TestSequence>
+	<!--Add Item-->
+	<TestSequence name="SCAN_RETURN_ITEM" parameters="itemid, returnRC,reqComment,newReturnPrice">
+		<Assertion promptKey="RETURN_ITEM_SCAN" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"  />
+		<TestStep description="Continue Blind return" action="CONTINUE" condition="@promptEquals(RETURN_TRANSACTION_LIST)" />
+		<TestStep description="Accept Item not in purchase history" action="YES" condition="@promptEquals(ITEM_NOT_IN_HISTORY)" />
+		<SequenceRef name="SELECT_REASON_CODE_COMMENT" values="!{returnRC},!{reqComment},BTM Test"/>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptReturnPriceHistoryOp)" condition="@promptEquals(RETURN_PRICE_HISTORY)" >
+            <ListSelect index="1"/>
+        </TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptLowestReturnPriceInfoOp)" condition="@promptEquals(LOWEST_RETURN_PRICE_NOTIFICATION)" />
+		<TestStep description="Enter return price" action="ACCEPT" data="!{newReturnPrice}" condition="@checkSysConfig(ItemReturn---AlwaysPromptForItemPriceUponBlindReturn)" />
+		<TestStep action="NO" description="Select No on Restocking fee" condition="@promptEquals(RESTOCKING_FEE_APPLY_MESSAGE)" />
+	</TestSequence>
+	<!--Go to Back Sale Item screen-->
+	<TestSequence name="GO_SALE_SCREEN">
+		<TestStep description="Back to Sale Screen" action="SALE_ITEM_START" />
+	</TestSequence>
+	<!--Select Associate by ID-->
+	<TestSequence name="SELECT_COMM_ASSOC_BY_ID" parameters="assocID">
+		<TestStep action="SELECT" description="SELECT (PromptOp)" condition="@checkSysConfig(CommissionedAssociates---PromptForCommissionedAssociates)"/>
+		<TestStep action="ACCEPT" data="!{assocID}" description="Enter Associate (PromptCommAssocOp)" condition="@checkSysConfig(CommissionedAssociates---PromptForCommissionedAssociates)"/>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptCommAssocOp)" condition="@checkSysConfig(CommissionedAssociates---PromptForCommissionedAssociates)"/>
+	</TestSequence>
+	<!--Select inputed action-->
+	<TestSequence name="SELECT_ACTION" parameters="xAction">
+		<TestStep description="Select !{xAction}" action="!{xAction}" />
+	</TestSequence>
+	<!--Paid Out Steps-->
+	<TestSequence name="PAID_OUT_STEPS" parameters="paidOutRC, paidOutComment, paidOutAmt">
+		<SequenceRef name="SELECT_REASON_CODE" values="!{paidOutRC},paidOutComment"/>
+        <SequenceRef name="ENTER_VALUE" values="!{paidOutAmt},enter paid in amount"/>
+	</TestSequence>
+	<!--Select Paid In Menu-->
+	<TestSequence name="ENTER_PAID_OUT_CODE" parameters="paidOutNo">
+		<TestStep action="ACCEPT" data="!{paidOutNo}" description="Enter paid out barcode !{paidOutNo}"/>
+	</TestSequence>
+	<!--Select Paid In Steps-->
+	<TestSequence name="PAID_IN_STEPS" parameters="paidInRC, paidInComment, paidInAmt">		
+		<TestStep action="ACCEPT" description="Skip to enter Paid Out Bardcode"/>
+		<SequenceRef name="SELECT_REASON_CODE" values="!{paidInRC},paidInComment"/>
+		<SequenceRef name="ENTER_VALUE" values="!{paidInAmt},enter paid in amount"/>
+	</TestSequence>
+	<!--Change default float-->
+	<TestSequence name="CHANGE_TILL_FLOAT_STEPS" parameters="changeFloatRC,tillID,newFloat">
+		<Assertion promptKey="CHANGE_FLOAT_REASON" />
+		<SequenceRef name="SELECT_FIRST_REASON_CODE" />
+		<TestStep description="Enter transaction comment" action="ACCEPT" data="BTM XUNIT testing" condition="@promptEquals(ADD_TRANSACTION_COMMENT)" />
+		<TestStep action="ACCEPT" description="ACCEPT (PromptCountableCashTendersOp)" condition="@promptEquals(COUNTABLE_CASH_CURRENCY_LIST)">
+            <ListSelect method="getTenderId" value="USD_CURRENCY"/>
+        </TestStep>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptTenderRepositoryListOp)">
+            <ListSelect method="getTenderRepositoryId" value="!{tillID}"/>
+        </TestStep>
+		<SequenceRef name="ENTER_VALUE" values="!{newFloat},enter a new float"/>
+		<SequenceRef name="SELECT_BTN_YES" />
+	</TestSequence>
+	<!--Enter value and enter description-->
+	<TestSequence name="ENTER_VALUE" parameters="dValue,description">
+		<TestStep action="ACCEPT" data="!{dValue}" description="!{description}" />
+	</TestSequence>
+	<!-- Select MIDDAY_DEPOSIT-->
+	<TestSequence name="MIDDAY_DEPOSIT_STEPS" >
+		<TestStep description="Select Midday Deposit" action="MID_DAY_DEPOSIT" />
+		<TestStep action="COUNT_SELECTED" description="Count Travel Check">
+            <ListSelect method="getName" value="USD_TRAVELERS_CHECK" modelKey="TILL_COUNT"/>
+        </TestStep>
+        <TestStep action="ACCEPT" data="@getCurrentTillCountItem.getTotalSystemAmount.divide(100).intValue()" description="Enter Travel Check Counted (MobileTenderDenominationCountOp)" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)"/>
+        <TestStep action="ABORT_CHANGES" description="ABORT_CHANGES (MobileTenderDenominationCountOp)"/>
+		<TestStep action="COUNT_SELECTED" description="Count Cash USD Currency">
+            <ListSelect  method="getName" modelKey="TILL_COUNT" value="USD_CURRENCY"/>
+        </TestStep>
+        <TestStep action="ACCEPT" data="@getCurrentTillCountItem.getTotalSystemAmount.multiply(100).intValue()" description="Enter Cash Counted"/>
+        <TestStep action="ABORT_CHANGES" description="ABORT_CHANGES (MobileTenderDenominationCountOp)"/>
+	</TestSequence>
+	<!-- Select first reason code-->
+	<TestSequence name="SELECT_FIRST_REASON_CODE" >
+		<TestStep description="Select first reason code" action="ACCEPT">
+			<ListSelect index="1"/>
+		</TestStep>
+	</TestSequence>
+	<!-- Select MIDDAY_DEPOSIT Overshot > 0-->
+	<TestSequence name="MIDDAY_DEPOSIT_GREATER" parameters="greaterAMT" >
+		<TestStep description="Select Midday Deposit" action="MID_DAY_DEPOSIT" />
+		<TestStep action="COUNT_SELECTED" description="Count Travel Check">
+            <ListSelect  method="getName" modelKey="TILL_COUNT" value="USD_TRAVELERS_CHECK"/>
+        </TestStep>
+        <TestStep action="ACCEPT" data="@add(@getCurrentTillCountItem.getTotalSystemAmount.multiply(100).intValue(),1)" description="Enter Travel Check Counted (MobileTenderDenominationCountOp)" condition="@isPositive(@getCurrentTillCountItem.getTotalSystemAmount)"/>
+        <TestStep action="ABORT_CHANGES" description="ABORT_CHANGES (MobileTenderDenominationCountOp)"/>
+		<TestStep action="COUNT_SELECTED" description="Count Cash USD Currency">
+            <ListSelect  method="getName" modelKey="TILL_COUNT" value="USD_CURRENCY"/>
+        </TestStep>
+        <TestStep action="ACCEPT" data="@add(@getCurrentTillCountItem.getTotalSystemAmount.multiply(100).intValue(),!{greaterAMT})" description="Enter Cash Counted"/>
+        <TestStep action="ABORT_CHANGES" description="ABORT_CHANGES (MobileTenderDenominationCountOp)"/>
+	</TestSequence>
+	<!-- Till Audit [TILL_AUDIT]-->
+	<TestSequence name="SELECT_TILL_AUDIT" parameters="auditAMT">
+		<TestStep action="TILL_AUDIT" description="Select Till Audit"/>
+		<TestStep action="COUNT_SELECTED" description="Count Cash USD Currency">
+            <ListSelect  method="getName" modelKey="TILL_COUNT" value="USD_CURRENCY"/>
+        </TestStep>
+        <TestStep action="ACCEPT" data="!{auditAMT}" description="Enter Cash Counted"/>
+        <TestStep action="ABORT_CHANGES" description="ABORT_CHANGES (MobileTenderDenominationCountOp)"/>
+	</TestSequence>
+	<!--Select OK button-->
+	<TestSequence name="ACT_ACCEPT" >
+		<TestStep action="ACCEPT" description="ACCEPT (PromptOp)"/>
+	</TestSequence>
+	<!--Select YES button-->
+	<TestSequence name="SELECT_BTN_YES" >
+		<TestStep action="YES" description="Select YES on Prompt"/>
+	</TestSequence>
+	<!--Select NO button-->
+	<TestSequence name="SELECT_BTN_NO" >
+		<TestStep action="NO" description="Select NO on Prompt"/>
+	</TestSequence>
+	<!--Select Skip on Customer Search-->
+	<TestSequence name="SKIP_CUST" >
+		<TestStep action="CONTINUE" description="CONTINUE (CustomerSearchOp)">
+            <Form name="CUSTOMER_SEARCH"/>
+        </TestStep>
+	</TestSequence>
+	<!--Select Associate-->
+	<TestSequence name="SELECT_FIRST_COMM_ASSOC">
+		<TestStep action="ACCEPT" description="ACCEPT (PromptCommAssocListOp)" condition="@checkSysConfig(CommissionedAssociates---PromptForCommissionedAssociates)">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!--Select Associate-->
+	<TestSequence name="SELECT_BACK_COMM_ASSOC">
+		<Assertion promptKey="PROMPT_COMMASSOC_LIST" />
+		<TestStep action="CANCEL" description="ACCEPT (PromptOp)" condition="@promptEquals(PROMPT_COMMASSOC_LIST)"/>
+	</TestSequence>
+	<!--Change Item Tax Location-->
+	<TestSequence name="CHANGE_TAX_LOC" parameters="itemId, newPostalCode,reasonCode,reqComment">
+		<TestStep action="TAX_ITEM_CHANGE_LOCATION" description="TAX_ITEM_CHANGE_LOCATION (PromptItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemId}" modelKey="CURRENT_TRANSACTION"/>
+        </TestStep>
+        <TestStep action="ACCEPT" data="!{newPostalCode}" description="Enter postal code (PromptPostalCodeOp)"/>
+        <SequenceRef name="SELECT_REASON_CODE_COMMENT" values="!{reasonCode},!{reqComment},Change TaxLoc"/>
+	</TestSequence>
+	<!--Change Tax Percent-->
+	<TestSequence name="CHANGE_TAX_PER" parameters="TaxPER">
+		<TestStep action="TAX_ITEM_CHANGE_PERCENT" description="TAX_ITEM_CHANGE_PERCENT"/>
+        <TestStep action="ACCEPT" data="!{TaxPER}" description="Enter !{TaxPER}"/>
+		<SequenceRef name="SELECT_FIRST_REASON_CODE"/>
+	</TestSequence>
+	<!--Change Tax Exempt-->
+	<TestSequence name="ADD_ITEM_TAX_EXEMPT" parameters="itemId,certificateHolderName,certificateNbr,reasonCode">
+		<TestStep action="TAX_ITEM_EXEMPT" description="TAX_ITEM_EXEMPT (PromptItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemId}" modelKey="CURRENT_TRANSACTION"/>
+        </TestStep>
+		<TestStep action="NEW" description="NEW (PromptTaxExemptionOp)" condition="@promptEquals(SELECT_TAX_EXEMPTION)"/>
+        <SequenceRef name="FILL_TAX_EXEMPT_INFO" values="!{certificateHolderName}, !{certificateNbr}"/>
+        <SequenceRef name="SELECT_REASON_CODE_NO_COMMENT" values="!{reasonCode}"/>
+	</TestSequence>
+	<!--Fill create new tax exempt form-->
+	<TestSequence name="FILL_TAX_EXEMPT_INFO" parameters="certificateHolderName, certificateNbr">
+		<TestStep description="Enter field tax exempt" action="ACCEPT">
+			<Form name="TAX_EXEMPTION">
+                <Field name="certificateHolderName" value="!{certificateHolderName}"/>
+                <Field name="certificateNbr" value="!{certificateNbr}"/>
+            </Form>
+		</TestStep>
+	</TestSequence>
+	<!--Add Item-->
+	<TestSequence name="SCAN_ITEM" parameters="itemid">
+		<TestStep action="ACCEPT" data="!{itemid}" description="Enter !{itemid} (PromptItemScanOp)"/>
+		<TestStep action="YES" description="YES (PromptAttachedItemsOp)" condition="@promptEquals(ADD_ATTACHED_ITEM_QUESTION)"/>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptAttachedItemSellingGroupDifferentOp)" condition="@promptEquals(ATTACHED_ITEM_SELLING_GROUP_DIFFERENT)"/>
+	</TestSequence>
+	<!--Select Amount Due-->
+	<TestSequence name="SELECT_AMT_DUE">
+		<TestStep action="PRE_TENDERING" description="Select Amount Due on Sale Screen"/>
+  	</TestSequence>
+	<!--Select Refund #-->
+	<TestSequence name="SELECT_REFUND">
+		<TestStep action="PRE_TENDERING" description="Select Refund#"/>
+  	</TestSequence>
+	<!--Select Refund By Cash-->
+	<TestSequence name="REFUND_TENDER_BY_CASH" parameters="cashAMT">
+		<TestStep action="REFUND_LOCAL_CURRENCY" description="REFUND_LOCAL_CURRENCY (MobilePromptTenderMenuOp)" />
+		<TestStep action="ACCEPT" data="!{cashAMT}" description="Enter !{cashAMT} (CashSuggestionPromptTenderAmtOp)"/>
+  	</TestSequence>
+	<!--Select CASH-->
+	<TestSequence name="TENDER_BY_CASH" parameters="cashAMT">
+		<TestStep action="TENDER_LOCAL_CURRENCY" description="TENDER_LOCAL_CURRENCY (MobilePromptTenderMenuOp)"/>
+		<TestStep action="ACCEPT" data="!{cashAMT}" description="Enter !{cashAMT} (CashSuggestionPromptTenderAmtOp)"/>
+  	</TestSequence>
+	<!--Select Print Only-->
+	<TestSequence name="PRINT_ONLY">
+		<TestStep action="PRINT_ONLY" description="PRINT_ONLY (CheckSaleCompleteOp)"/>
+		<SequenceRef name="FILL_FORM_8300_AUTO" />
+  	</TestSequence>
+	<!--Select Change Due-->
+	<TestSequence name="CHANGE_DUE">
+		<TestStep action="ACCEPT" description="Select OK on Change Due - Cash Drawer Prompt" condition="@promptEquals(CLOSE_CASHDRAWER_CHANGE_OK)"/>
+		<TestStep action="ACCEPT" description="Select OK on Change Due - Cash Drawer Prompt" condition="@promptEquals(NOTIFY_TENDER_VALUE_IN_TILL)"/>
+  	</TestSequence>
+	<!--Enter Select Tender-->
+	<TestSequence name="SELECT_ABORT_CHANGES" >
+		<TestStep action="ABORT_CHANGES" description="ABORT_CHANGES (TenderTotalNormalCountOp)"/>
+	</TestSequence>
+	<!--Check Disbled Menu-->
+	<TestSequence name="ASSERT_DISABLED_MENU_ITEM" parameters="menuCode">
+		<Assertion class="dtv.xunit.assertion.EnabledActionAssertion" invert="true">
+			<Parameter name="key" value="!{menuCode}" />
+		</Assertion>
+	</TestSequence>
+	<TestSequence name="SYSTEM_CYCLE_QUESTIONS">
+		<!-- This base sequence just assumes the generic question about the weather -->
+		<TestStep description="Select first answer" action="ACCEPT" condition="@promptEquals(SYSTEM_CYCLE_QUESTION)">
+			<ListSelect index="1" />
+		</TestStep>
+	</TestSequence>
+	<!--Select Reason Code-->
+	<TestSequence name="SELECT_REASON_CODE" parameters="reasonCode, reasonComment">
+		<TestStep description="Select reason code !{reasonCode}" action="ACCEPT" >
+			<ListSelect method="getReasonCode" value="!{reasonCode}" />
+		</TestStep>
+		<TestStep description="Enter reason code comment !{reasonComment}" action="ACCEPT" data="!{reasonComment}" />
+	</TestSequence>
+	<!--Select Reason Code no comment-->
+	<TestSequence name="SELECT_REASON_CODE_NO_COMMENT" parameters="reascode">
+		<TestStep description="Select reason code !{reascode}" action="ACCEPT">
+			<ListSelect method="getReasonCode" value="!{reascode}" />
+		</TestStep>
+	</TestSequence>
+	<!--Search Customer by lastName and select the customer to view-->
+	<TestSequence name="CUSTOMER_SEARCH_BY_LASTNAME" parameters="custLastName">
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerSearchOp)" condition="@promptEquals(CUSTOMER_SEARCH)">
+            <Form name="CUSTOMER_SEARCH">
+				<Field name="lastName" value="!{custLastName}" />
+			</Form>
+        </TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerSearchOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!--Search Customer by lastName-->
+	<TestSequence name="SEARCH_CUSTOMER_BY_LASTNAME" parameters="custLastName">
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerSearchOp)" condition="@promptEquals(CUSTOMER_SEARCH)">
+            <Form name="CUSTOMER_SEARCH">
+				<Field name="lastName" value="!{custLastName}" />
+			</Form>
+        </TestStep>
+	</TestSequence>
+	<!--Search Customer by Postal Code-->
+	<TestSequence name="SEARCH_CUSTOMER_BY_POSTALCODE" parameters="custPostalCode">
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerSearchOp)" condition="@promptEquals(CUSTOMER_SEARCH)">
+            <Form name="CUSTOMER_SEARCH">
+				<Field name="postalCode" value="!{custPostalCode}" />
+			</Form>
+        </TestStep>
+	</TestSequence>
+	<!--Search Customer by lastName and firstName-->
+	<TestSequence name="CUSTOMER_SEARCH_BY_FULLNAME" parameters="custLastName,custFirstName">
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerSearchOp)" >
+            <Form name="CUSTOMER_SEARCH">
+				<Field name="firstName" value="!{custFirstName}"/>
+				<Field name="lastName" value="!{custLastName}" />
+			</Form>
+        </TestStep>
+		
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerSearchOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!--Search Customer by customer Id-->
+	<TestSequence name="CUSTOMER_SEARCH_BY_ID" parameters="custID">
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerSearchOp)" condition="@promptEquals(CUSTOMER_SEARCH)">
+            <Form name="CUSTOMER_SEARCH">
+				<Field name="customerId" value="!{custID}" />
+			</Form>
+        </TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerSearchOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!--Search a random Customer-->
+	<TestSequence name="CUSTOMER_SEARCH_BY_DB" >
+		<TestStep action="ACCEPT" description="ACCEPT (CustomerSearchOp)" condition="@promptEquals(CUSTOMER_SEARCH)">
+            <Form name="CUSTOMER_SEARCH">
+				<Field name="customerId" value="%?CUSTOMERS_DB.CustId" />
+			</Form>
+        </TestStep>
+		<TestStep action="ACCEPT" description="Add cust to transaction">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!-- Change Tran Tax Location
+	<TestSequence name="CHANGE_TRAN_TAX_LOCATION" parameters="newPostalCode,reasonCode,commentReasonCode">
+		<TestStep description="Change transaction tax location" action="TAX_TRAN_CHANGE_LOCATION" />
+		<TestStep description="Enter new postal code !{newPostalCode}" action="ACCEPT" data="!{newPostalCode}" />
+		<SequenceRef name="SELECT_REASON_CODE" values="!{reasonCode}, !{commentReasonCode}" />
+	</TestSequence>-->
+	<!-- Select SEARCH button
+	<TestSequence name="SELECT_SEARCH_CUSTOMER" >
+		<TestStep action="ACCEPT" description="SEARCH (CustomerSearchOp)">
+            <Form name="CUSTOMER_SEARCH"/>
+				<Field name="lastName" value="BTM" />
+			</Form>
+        </TestStep>
+		<Assertion promptKey="CUSTOMER_LIST" />
+	</TestSequence>-->
+	<!-- Select Add Item on Item Maintenance
+	<TestSequence name="SELECT_ADD_ITEM" parameters="itemid">
+		<TestStep action="ACCEPT" data="!{itemid}" description="Enter !{itemid} (PromptPriceInquiryOp)"/>
+        <TestStep action="ADD_TO_CART" description="ADD_TO_CART (DisplayItemPriceOp)"/>
+	</TestSequence>	-->
+	<TestSequence name="SCAN_WARRANTY_ITEM" parameters="itemid">
+		<TestStep action="ACCEPT" data="!{itemid}" description="Enter warranty !{itemid} (PromptItemScanOp)"/>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptWarrantyPlanOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+	</TestSequence>
+	<!--Change Item Qty-->
+	<TestSequence name="CHANGE_QTY" parameters="newQty">
+		<TestStep action="PRE_CHANGE_ITEM_QUANTITY" description="PRE_CHANGE_ITEM_QUANTITY (PromptItemScanOp)">
+            <ListSelect index="1" modelKey="CURRENT_TRANSACTION"/>
+        </TestStep>
+        <TestStep action="ACCEPT" data="!{newQty}" description="Enter !{newQty} qty (PromptItemQuantityChangeOp)"/>
+	</TestSequence>
+	
+	
+	<!--Change DECLINE warranty -->
+	<TestSequence name="SELECT_DECLINE_WARRANTY" >
+        <TestStep action="CONTINUE" description="Select Decline Warranty on Warranty Plan"/>
+	</TestSequence>
+	<!--Select New Layaway -->
+	<TestSequence name="SELECT_BTN_NEW_LAYWAY" >
+        <TestStep action="NEW" description="Select New Layaway"/>
+	</TestSequence>
+	<!--Select Done on Layaway Item-->
+	<TestSequence name="LAYAWAY_DEPOSIT" parameters="paymentPeriods" >
+		<TestStep description="Enter suggested deposit" data="@getCurrentCustomerAccount(LAYAWAY).getAccountBalance.divide(10)" action="ACCEPT"  />
+		<TestStep action="ACCEPT" data="!{paymentPeriods}" description="Enter !{paymentPeriods} (PromptLayawayPaymentPeriodCountOp)"/>
+	</TestSequence>
+	<!--Run a report with default values-->
+	<TestSequence name="RUN_REPORT_DEFAULT_PARAMS" parameters="reportName">
+		<TestStep description="Select report !{reportName}" action="!{reportName}" />
+		<TestStep action="ACCEPT" description="ACCEPT (PromptReportParametersOp)">
+            <Form name="REPORT_GET_PARAMS">
+            </Form>
+        </TestStep>
+		<TestStep action="CANCEL" description="CANCEL (PromptReportParametersOp)"/>
+		<Assertion promptKey="ERROR_WITH_INFO" invert="true" />
+	</TestSequence>
+	<!--Run a report search criteria-->
+	<TestSequence name="REPORT_SEARCH_CRITERIAS" parameters="startDate,startDateOp,priorBusinessDaysIncluded,startReg,endReg,transactionType,employeeId,transSeq,customerId,tndrId,showCriteria">
+			<TestStep action="ACCEPT" description="ACCEPT (PromptReportParametersOp)">
+				<Form name="REPORT_GET_PARAMS">
+					<Field name="dtvStartDate" value="!{startDate}"/>
+					<Field name="dtvStartDate_combo" value="!{startDateOp}"/>
+					<Field name="priorBusinessDaysIncluded" value="!{priorBusinessDaysIncluded}"/>
+					<Field name="startReg" value="!{startReg}"/>
+					<Field name="endReg" value="!{endReg}"/>
+					<Field name="transactionType" value="!{transactionType}"/>
+					<Field name="employeeId" value="!{employeeId}"/>
+					<Field name="transSeq" value="!{transSeq}"/>
+					<Field name="customerId" value="!{customerId}"/>
+					<Field name="tndrId" value="!{tndrId}"/>
+					<Field name="showCriteria" value="!{showCriteria}"/>
+				</Form>
+			</TestStep>
+		</TestSequence>
+	<!--Select Report Name-->
+	<TestSequence name="SELECT_REPORT" parameters="reportName">
+		<TestStep description="Select report !{reportName}" action="!{reportName}" />
+	</TestSequence>
+	<!--Electronic Journal-->
+	<TestSequence name="EJOURNAL_SEARCH_CRITERIAS" parameters="startDate,endDate,regIDStart,RegIDEnd,tranIDStart,tranIDEnd,startTime,endTime,cashierStart,cashierEnd,custIdName,tranType,tender">
+		<TestStep action="SEARCH" description="SEARCH (PromptElectronicJournalSearchOp)">
+            <Form name="TRANSACTION_SEARCH">
+                <Field name="registerIdStart" value="!{regIDStart}"/>
+                <Field name="registerIdEnd" value="!{RegIDEnd}"/>
+                <Field name="tranIdStart" value="!{tranIDStart}"/>
+                <Field name="tranIdEnd" value="!{tranIDEnd}"/>
+                <Field name="startDate" value="!{startDate}"/>
+                <Field name="startTime" value="!{startTime}"/>
+                <Field name="endDate" value="!{endDate}"/>
+                <Field name="endTime" value="!{endTime}"/>
+                <Field name="cashierStart" value="!{cashierStart}"/>
+                <Field name="cashierEnd" value="!{cashierEnd}"/>
+                <Field name="custIdOrName" value="!{custIdName}"/>
+                <Field name="tranType" value="!{tranType}"/>
+                <Field name="tender" value="!{tender}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<!--Add Transaction Discount -->	
+	<TestSequence name="APPLY_TRANSACTION_DISCOUNT" parameters="discountOp,discountAMT,reascode,reqComment">		
+		<TestStep action="ADD_TRAN_DISCOUNT" description="Add Transaction Discount (PromptItemScanOp)" />
+		<SequenceRef name="SELECT_DISCOUNT_OPTION" values="!{discountOp},!{reascode},!{reqComment}" />
+		<TestStep action="ACCEPT" data="!{discountAMT}" description="Enter !{discountAMT}%" condition="@promptEquals(DISCOUNT_AMOUNT)" />		
+		<TestStep action="ACCEPT" data="!{discountAMT}" description="Enter !{discountAMT}%" condition="@promptEquals(DISCOUNT_PERCENT)" />			
+	</TestSequence>
+	<!--Select Discount Option-->
+	<TestSequence name="SELECT_DISCOUNT_OPTION" parameters="discountOp,reascode,reqComment">
+		<TestStep action="ACCEPT" description="Select discount code !{discountOp} (PromptDiscountOp)">
+			<ListSelect method="getDiscountCode" value="!{discountOp}" />
+		</TestStep>
+		<SequenceRef name="SELECT_REASON_CODE_COMMENT" values="!{reascode},!{reqComment},!{reqComment}"/>
+	</TestSequence>
+	<!-- Add Item Discount-->
+	<TestSequence name="APPLY_ITEM_DISCOUNT" parameters="discountOp,percentAMT,reascode,reqComment">		
+		<TestStep action="ADD_ITEM_DISCOUNT" description="Add Item Discount (PromptItemScanOp)" />
+		<SequenceRef name="SELECT_DISCOUNT_OPTION" values="!{discountOp},!{reascode},!{reqComment}" />
+		<TestStep action="ACCEPT" data="!{percentAMT}" description="Enter !{percentAMT} amount" condition="@promptEquals(DISCOUNT_AMOUNT)" />		
+		<TestStep action="ACCEPT" data="!{percentAMT}" description="Enter !{percentAMT}%" condition="@promptEquals(DISCOUNT_PERCENT)" />		
+	</TestSequence>
+	<!-- Add Group Discount-->
+	 <TestSequence name="APPLY_GROUP_DISCOUNT" parameters="discountOp,reascode,item1,item2">  
+		<TestStep action="ADD_GROUP_DISCOUNT" description="Select Group Discount" />
+		<TestStep action="ACCEPT" description="Select discount code !{discountOp} (PromptDiscountOp)">
+			<ListSelect method="getDiscountCode" value="!{discountOp}" />
+		</TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptForGroupDiscountItemsOp)">
+				<ListSelect method="getItemId" values="!{item1},!{item2}" />
+		</TestStep>
+		<SequenceRef name="SELECT_REASON_CODE_NO_COMMENT" values="!{reascode}"/>   
+	 </TestSequence>
+	<!--Select Till Maintenance -> Cash Pickup-->
+	<TestSequence name="SELECT_CASH_PICKUP">
+		<TestStep description="Select Cash Pickup" action="CASH_PICKUP_COUNT" />
+		<TestStep description="Select currency to pickup" action="ACCEPT">
+			<ListSelect index="1" />
+		</TestStep>
+	</TestSequence>
+	<!-- Cash Pickup Process-->
+	<TestSequence name="ENTER_CASH_AMT" parameters="cashAMT">
+		<!-- <TestStep description="Select Cash Pickup" action="CASH_PICKUP_COUNT" />-->
+		<TestStep description="Enter cash amount !{cashAMT}" action="ACCEPT" data="!{cashAMT}" />
+	</TestSequence>	
+	<!-- Cash Transfer Process-->
+	<TestSequence name="SELECT_CASH_TRANSFER" >
+		<TestStep description="Select Cash Transfer" action="CASH_TRANSFER_COUNT" />
+		<TestStep description="Select currency to transfer" action="ACCEPT">
+			<ListSelect index="3" />
+		</TestStep>
+	</TestSequence>
+	
+	<!-- -->
+	<TestSequence name="VERIFY_TRANS_COMPLETED">
+		<Assertion target="@getTransaction" compareType="IS_NULL" description="Assert that the current transaction is null" />
+	</TestSequence>
+	<!-- Select Done-->
+	<TestSequence name="SELECT_DONE" >
+		<TestStep action="DONE" description="Select DONE"/>
+	</TestSequence>
+	<!--Performing Send Sale transaction-->
+	<TestSequence name="SEND_SALE_TRANSACTION" parameters="phone,shipMethod">
+        <TestStep action="ADD_NEW_SEND_SALE" description="ADD_NEW_SEND_SALE (PromptItemScanOp)"/>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptItemsEligibleForSendSaleOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+		<TestStep action="CONTINUE" description="CONTINUE (PromptShipToPartyXrefsOp)"/>
+        <TestStep action="ACCEPT" description="ACCEPT (PromptSendSaleDestinationOp)">
+            <Form name="SEND_SALE_DEST">
+                <Field name="telephone1" value="!{phone}"/>
+                <Field name="shippingMethod" value="!{shipMethod}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<TestSequence name="FILL_ORIGINAL_TRANSACTION_BARCODE" parameters="orgBarcode">
+		<TestStep action="ACCEPT" description="ACCEPT (PromptOrigReceiptInformationOp)" condition="@promptEquals(ORIGINAL_RECEIPT_INFORMATION)">
+            <Form name="ORIGINAL_RECEIPT_INFORMATION">
+                <Field name="origTransBarcode" value="!{orgBarcode}"/>
+            </Form>
+        </TestStep>
+		
+		<TestStep action="ACCEPT" description="ACCEPT (PromptOrigReceiptInformationOp)" condition="@promptEquals(ORIGINAL_RECEIPT_INFORMATION_WARRANTY)">
+            <Form name="ORIGINAL_RECEIPT_INFORMATION_WARRANTY">
+                <Field name="origTransBarcode" value="!{orgBarcode}"/>
+            </Form>
+        </TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptOrigReceiptInformationOp)" condition="@promptEquals(GENERIC_INITIAL_SEARCH_INFO)">
+            <Form name="GENERIC_INITIAL_SEARCH_INFO">
+                <Field name="origTransBarcode" value="!{orgBarcode}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<TestSequence name="FILL_ORIGINAL_TRANSACTION_INFO" parameters="origTransSeq,origTransBusinessDate,origLocationId,origWorkStationId">
+		<TestStep action="ACCEPT" description="ACCEPT (PromptOrigReceiptInformationOp)">
+            <Form name="ORIGINAL_RECEIPT_INFORMATION">
+                <Field name="origTransSeq" value="!{origTransSeq}"/>
+                <Field name="origTransBusinessDate" value="!{origTransBusinessDate}"/>
+                <Field name="origLocationId" value="!{origLocationId}"/>
+                <Field name="origWorkStationId" value="!{origWorkStationId}"/>
+            </Form>
+        </TestStep>
+	</TestSequence>
+	<!--Select Verified Return Transaction at Sale Screen-->
+	<TestSequence name="SEARCH_VERIFIED_RETURN_TRANSACTION" parameters="transbarcode,returnRC,returnComment">
+		<TestStep action="NEW_RETURN" description="Select Return Transaction at Sale Screen" />
+		<SequenceRef name="SELECT_BTN_YES"/>
+		<SequenceRef name="FILL_ORIGINAL_TRANSACTION_BARCODE" values="!{transbarcode}"/>
+        <TestStep action="ACCEPT" description="ACCEPT (VerifiedReturnItemListSelectionOp)">
+            <ListSelect index="1"/>
+        </TestStep>
+        <SequenceRef name="SELECT_REASON_CODE" values="!{returnRC},!{returnComment}"/>
+		<!--<TestStep action="ACCEPT" data="1" description="Enter 1 (PromptReturnVerificationItemQuantityOp)"/>-->
+		<SequenceRef name="GO_SALE_SCREEN"/>
+	</TestSequence>
+	
+	<!--Select Unverified Return Transaction at Sale Screen-->
+	<TestSequence name="SEARCH_UNVERIFIED_RETURN_TRANSACTION" parameters="transbarcode">		
+		<TestStep action="NEW_RETURN" description="Select Return Transaction at Sale Screen" />
+        <SequenceRef name="SELECT_BTN_YES"/>
+		<SequenceRef name="FILL_ORIGINAL_TRANSACTION_BARCODE" values="!{transbarcode}"/>		
+		<SequenceRef name="SELECT_BTN_YES"/>		
+	</TestSequence>
+	<!--Select Blind Return Transaction at Sale Screen-->
+	<TestSequence name="BLIND_RETURN_TRANSACTION" >
+		<TestStep action="NEW_RETURN" description="NEW_RETURN (PromptOp)"/>
+        <SequenceRef name="SELECT_BTN_NO"/>
+	</TestSequence>
+</XunitConfig>

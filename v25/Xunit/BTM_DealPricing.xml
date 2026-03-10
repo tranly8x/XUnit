@@ -1,0 +1,2174 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<Parameter name="discountReasonCode" value="%?DISCOUNT_REASONS.ReasonCode" />
+	<Parameter name="voidReasoncode" value="VL1" />
+	<Parameter name="transDiscountOpAMT" value="TRANS_AMT" />
+	<Parameter name="transDiscountOpPCT" value="TRANS_PCT" />
+	<Parameter name="returnRC" value="RET41" />
+	<Parameter name="returnComment" value="Test auto return" />
+	<Parameter name="discountOpAMT" value="ITEM_AMT" />
+	<Parameter name="newTaxAMT" value="1.5" />
+	<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+	<Parameter name="associateID" value="100" />
+	
+<!-- LINE ITEM DISCOUNTS - Item Discount % off -->
+	<!-- TEST CASES: DEAL-LI-PCT-S-001, DEAL-LI-PCT-S-002, DEAL-LI-PCT-S-003, DEAL-LI-PCT-S-004, DEAL-LI-PCT-S-005, DEAL-LI-PCT-S-006, DEAL-LI-PCT-S-007, DEAL-LI-PCT-S-008,
+	DEAL-LI-PCT-S-009, DEAL-LI-PCT-S-010, DEAL-LI-PCT-S-012, DEAL-LI-PCT-S-013, DEAL-LI-PCT-S-014, DEAL-LI-PCT-S-015, DEAL-LI-PCT-ES-001, DEAL-LI-PCT-ES-002, DEAL-LI-PCT-ES-003, DEAL-LI-PCT-VR-001,
+	DEAL-LI-PCT-VR-001, DEAL-LI-PCT-VR-002, DEAL-LI-PCT-SR-001, DEAL-LI-PCT-SR-002 -->
+	<Parameter name="dealId" value="79:2645:1234" />
+	<Parameter name="LID%_dealExpiredItem" value="6005" />
+	<Parameter name="LID%_itemDealX" value="6000" /> <!-- Special case: DEAL-LI-PCT-S-003 should have the parameter set to 6001, as this case expects that the item does not meet the deal criteria. -->
+	<Parameter name="LID%_itemDealY" value="6001" />
+	<Parameter name="LID%_itemNotDeal" value="6004" />
+	
+	<!--NOTE: item meet: 6000, not meet: 6001 -->
+	
+<!-- LINE ITEM DISCOUNTS - Item Discount $ off -->	
+	<!-- TEST CASES: DEAL-LI-AMT-S-001, DEAL-LI-AMT-S-002, DEAL-LI-AMT-S-003 -->
+	<Parameter name="dealId" value="79:2645:22233" />
+	<Parameter name="LID$_dealExpiredItem" value="6001" />
+	<Parameter name="LID$_itemDealX" value="6000" />
+	<Parameter name="LID$_itemNotDeal" value="6001" />
+	
+	<!-- TEST CASES:  DEAL-LI-AMT-ES-001, DEAL-LI-AMT-ES-002, DEAL-LI-AMT-ES-003, DEAL-LI-AMT-VR-001, DEAL-LI-AMT-VR-002,
+	DEAL-LI-AMT-SR-001, DEAL-LI-AMT-SR-002 -->
+	<Parameter name="dealId" value="79:2645:222" />
+	<Parameter name="LID$_dealExpiredItem" value="6001" />
+	<Parameter name="LID$_itemDealY" value="6001" />
+	<Parameter name="LID$_itemDealX" value="6002" />
+	<Parameter name="LID$_itemNotDeal" value="6001" />
+	
+<!-- FIX/QUANTITY PRICE -->		
+	<!-- TEST CASES: DEAL-LI-FQP-S-001, DEAL-LI-FQP-S-002, DEAL-LI-FQP-S-003, DEAL-LI-FQP-S-004, DEAL-LI-FQP-S-005, DEAL-LI-FQP-S-006, DEAL-LI-FQP-ES-001, DEAL-LI-FQP-ES-002, DEAL-LI-FQP-ES-003,
+	DEAL-LI-FQP-ES-004, DEAL-LI-FQP-ES-005, DEAL-LI-FQP-ES-006, DEAL-LI-FQP-VR-001, DEAL-LI-FQP-VR-002, DEAL-LI-FQP-SR-001, DEAL-LI-FQP-SR-002, -->
+	<Parameter name="dealId" value="81:2651:" />
+	<Parameter name="FQP_dealExpiredItem" value="6001" />
+	<Parameter name="FQP_itemDealX" value="6000" />
+	<Parameter name="FQP_itemNotDeal" value="6002" />
+	<Parameter name="FQP_itemDealY" value="6001" />
+	
+<!-- BUY X GET Y - Buy X item and get $Y (or %) off the item -->
+	<!-- TEST CASES: DEAL-LI-IPA-S-001, DEAL-LI-IPA-S-002, DEAL-LI-IPA-S-003, DEAL-LI-IPA-ES-001, DEAL-LI-IPA-ES-002, DEAL-LI-IPA-ES-003, DEAL-LI-IPA-VR-001, DEAL-LI-IPA-VR-002, DEAL-LI-IPA-SR-001,
+	DEAL-LI-IPA-SR-002 -->
+	<Parameter name="dealId" value="82:2652:BUYXGETY$" />
+	<Parameter name="BXG_$YOR%Y_dealExpiredItem" value="6000" /> <!--Enter deal expired item-->
+	<Parameter name="BXG_$YOR%Y_itemDealY" value="6001" />
+	<Parameter name="BXG_$YOR%Y_itemDealX" value="6000" />
+	<Parameter name="BXG_$YOR%Y_itemNotDeal" value="6005" /> <!--Enter item NOT apply deal-->
+	
+<!-- BUY X GET Y - Buy X item qty for $Y (or %/$ off each) -->
+	<!-- TEST CASES: DEAL-LI-QTD-S-001,	DEAL-LI-QTD-S-002, DEAL-LI-QTD-S-003, DEAL-LI-QTD-ES-001, DEAL-LI-QTD-ES-002, DEAL-LI-QTD-ES-003, DEAL-LI-QTD-VR-001, DEAL-LI-QTD-VR-002, DEAL-LI-QTD-SR-001,
+	DEAL-LI-QTD-SR-002 -->
+	<Parameter name="dealId" value="82:2652:BUY2XGETY$" />
+	<Parameter name="B2XG$Yor%Y_each_dealExpiredItem" value="6000" /> <!--Enter deal expired item-->
+	<Parameter name="B2XG$Yor%Y_each_itemDealX" value="6000" />
+	<Parameter name="B2XG$Yor%Y_each_itemDealY" value="6001" />
+	<Parameter name="B2XG$Yor%Y_each_itemNotDeal" value="6002" /> <!--Enter item NOT apply deal-->
+	
+<!-- BUY X GET Y - Buy X item, get Y item at a discount -->
+	<!-- TEST CASES: DEAL-LI-MIX-1-S-001, DEAL-LI-MIX-1-S-002, DEAL-LI-MIX-1-S-003, DEAL-LI-MIX-1-ES-001, DEAL-LI-MIX-1-ES-002, DEAL-LI-MIX-1-ES-003, DEAL-LI-MIX-1-VR-001, DEAL-LI-MIX-1-VR-002, DEAL-LI-MIX-1-SR-001, 
+	DEAL-LI-MIX-1-SR-002 -->
+	<Parameter name="dealId" value="82:2652:BUYXGETY$" />
+	<Parameter name="BXG_Ydisc_itemDealX" value="6000" />
+	<Parameter name="BXG_Ydisc_itemDealY" value="6001" />
+	<Parameter name="BXG_Ydisc_itemNotDeal" value="6002" /> <!--Enter item NOT apply deal-->
+	<Parameter name="BXG_Ydisc_dealExpiredItem" value="6000" /> <!--Enter deal expired item-->
+	
+<!-- BUY X GET Y - Buy X AND Y, get Z at % (or $, or New Price) off -->
+	<!-- TEST CASES: DEAL-LI-MIX-2-S-001, DEAL-LI-MIX-2-S-002, DEAL-LI-MIX-2-S-003, DEAL-LI-MIX-2-ES-001, DEAL-LI-MIX-2-ES-002, DEAL-LI-MIX-2-ES-003 -->
+	<Parameter name="dealId" value="84:2654:BuyXnYGetZ$" />
+	<Parameter name="BXnY_Zoff_dealExpiredItem" value="6000" /> <!--Enter deal expired item-->
+	<Parameter name="BXnY_Zoff_itemDealY" value="6001" />
+	<Parameter name="BXnY_Zoff_itemDealX" value="6000" />
+	<Parameter name="BXnY_Zoff_itemDealZ" value="6002" />
+	<Parameter name="BXnY_Zoff_itemNotDeal" value="6002" /> <!--Enter item NOT apply deal-->
+	
+	<!-- TEST CASES: DEAL-LI-MIX-2-VR-001, DEAL-LI-MIX-2-VR-002, DEAL-LI-MIX-2-SR-001, DEAL-LI-MIX-2-SR-002,   -->
+	<Parameter name="dealId" value="79:2645:222" />
+	<Parameter name="BXnY_Zoff__Suspend_itemDealX" value="6000" />
+	<Parameter name="BXnY_Zoff__Suspend_itemDealY" value="6001" />
+	<Parameter name="BXnY_Zoff__Suspend_itemDealZ" value="6002" />
+	
+<!-- BUY X GET Y - Buy 2 (or more) of X and get Z at % off -->
+	<!-- TEST CASES: DEAL-LI-MIX-4-S-001, DEAL-LI-MIX-4-S-002, DEAL-LI-MIX-4-S-003, DEAL-LI-MIX-4-ES-001, DEAL-LI-MIX-4-ES-002, DEAL-LI-MIX-4-ES-003, DEAL-LI-MIX-4-VR-001, DEAL-LI-MIX-4-VR-002, DEAL-LI-MIX-4-SR-001,
+	DEAL-LI-MIX-4-SR-002 -->
+	<Parameter name="dealId" value="82:2652:BUY2XGETZ%" />
+	<Parameter name="B2X_%Z_dealExpiredItem" value="6004" /> <!--Enter deal expired item-->
+	<Parameter name="B2X_%Z_itemDealZ" value="6001" />
+	<Parameter name="B2X_%Z_itemDealX" value="6000" />
+	<Parameter name="B2X_%Z_itemNotDeal" value="6003" /> <!--Enter item NOT apply deal-->
+	
+<!-- BUY X GET Y - Buy X, get Y% off another -->
+	<!-- TEST CASES: DEAL-LI-MIX-5-S-001, DEAL-LI-MIX-5-S-002, DEAL-LI-MIX-5-S-003, DEAL-LI-MIX-5-ES-001, DEAL-LI-MIX-5-ES-002, DEAL-LI-MIX-5-ES-003, DEAL-LI-MIX-5-VR-001, DEAL-LI-MIX-5-VR-002, DEAL-LI-MIX-5-SR-001,
+	DEAL-LI-MIX-5-SR-002 -->
+	<Parameter name="dealId" value="82:2652:BUYXGETY%" />
+	<Parameter name="BXG_%Y_other_dealExpiredItem" value="6003" /> <!--Enter deal expired item-->
+	<Parameter name="BXG_%Y_other_itemDealY" value="6001" />
+	<Parameter name="BXG_%Y_other_itemDealX" value="6000" />
+	<Parameter name="BXG_%Y_other_itemNotDeal" value="6005" /> <!--Enter item NOT apply deal-->
+	
+<!-- BUY X GET Y - Buy X OR Y and get Z at % off -->
+	<!-- TEST CASES: DEAL-LI-MIX-6-S-001, DEAL-LI-MIX-6-S-002, DEAL-LI-MIX-6-S-003, DEAL-LI-MIX-6-ES-001, DEAL-LI-MIX-6-ES-002, DEAL-LI-MIX-6-ES-003, DEAL-LI-MIX-6-VR-001, DEAL-LI-MIX-6-VR-002, DEAL-LI-MIX-6-SR-001,
+	DEAL-LI-MIX-6-SR-002 -->
+	<Parameter name="dealId" value="86:2654:BUYXORYGETZ%" />
+	<Parameter name="BXorY_%Z_dealExpiredItem" value="6003" /> <!--Enter deal expired item-->
+	<Parameter name="BXorY_%Z_itemDealZ" value="6001" />
+	<Parameter name="BXorY_%Z_itemDealX" value="6000" />
+	<Parameter name="BXorY_%Z_itemNotDeal" value="6005" /> <!--Enter item NOT apply deal-->
+	
+	<!-- TEST CASES -->
+	<!--
+		Item Discount % off - ITEM_SKU_PCT
+		Item Discount AMT off - Deal Name: ITEM_SKU_AMT
+		Fixed Quantity/Price 
+		Buy X item and get $Y (or %) off the item
+		Buy X item qty for $Y (or %/$ off each)
+		Buy X item, get Y item at a discount
+		Buy X AND Y, get Z at % (or $, or New Price) off
+		Merchandise Level Triger
+		Buy 2 (or more) of X and get Z at % off
+		Buy X, get Y% off another
+		Buy X OR Y and get Z at % off
+		Buy item from MERCHLEVEL1 X (excluding clearance items and discounted items), get Y% off
+		Line Item Deal 3H - Multiple item qualifiers used to match an item for a deal
+		Item Properties Deal
+		Transaction Deals	
+			Purchase X dollars and get Y% (or $) off	
+			Purchase X dollars and get item Y for $Z
+			Tiered % or $ Off
+		Deal Triggers	
+			Group Membership Triggers a Deal	
+			Coupon Triggers a Deal
+	-->
+	<!-- Item Discount % off - ITEM_SKU_PCT -->
+	<!--SALE TRANSACTION - Deal Pricing-->	
+    <TestCase name="DEAL-LI-PCT-S-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_dealExpiredItem}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> -->
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+   <TestCase name="DEAL-LI-PCT-S-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_itemDealX}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> -->
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that a line-item % off deal is NOT applied to the sale transaction when the item does not meet the deal’s qualifying conditions.-->	
+    <TestCase name="DEAL-LI-PCT-S-003" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_itemDealX}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--Verify that the line item deal % off is correctly applied to the sale transaction with items has quantity change.-->	
+    <TestCase name="DEAL-LI-PCT-S-004" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_itemDealX}" />
+		<SequenceRef name="CHANGE_QTY" values="2" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the line item deal % off is correctly applied to the sale transaction with items has price change.-->	
+    <TestCase name="DEAL-LI-PCT-S-005" applicationKey="REGISTER" >
+		<Parameter name="newPrice" value="70" />
+		<Parameter name="priceChangereascode" value="PC2" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_itemDealX}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="CHANGE_PRICE" values="!{LID%_itemDealX},!{newPrice},!{priceChangereascode}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the line item deal % off is correctly applied to the sale transaction with items has been applied the item discount.-->	
+    <TestCase name="DEAL-LI-PCT-S-006" applicationKey="REGISTER" >
+		<Parameter name="priceChangereascode" value="PC2" />
+		<Parameter name="discountOpAMT" values="ITEM_AMT" />
+		<Parameter name="newTaxAMT" values="7" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_itemDealX}" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{newTaxAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the line item deal % off is correctly applied to the sale transaction that has voided item.-->	
+    <TestCase name="DEAL-LI-PCT-S-007" applicationKey="REGISTER" >
+		<Parameter name="priceChangereascode" value="PC2" />
+		<Parameter name="discountOpAMT" values="ITEM_AMT" />
+		<Parameter name="newTaxAMT" values="7" />
+		<Parameter name="voidReasonCode" values="VL1" /> 
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_itemDealX}" iterations="2" />
+		<SequenceRef name="VOID_ITEM_NO_COMMENT" values="!{LID%_itemDealX}, %?VOID_LINE_REASONS.ReasonCode" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the line item deal % off is correctly applied to the sale transaction with modified discount.-->	
+    <TestCase name="DEAL-LI-PCT-S-008" applicationKey="REGISTER" >
+		<Parameter name="discountOpPCT" values="ITEM_PCT" />
+		<Parameter name="discountOpAMT" values="ITEM_AMT" />
+		<Parameter name="newTaxAMT" values="7" />
+		<Parameter name="newTaxPCT" values="5" />
+		<Parameter name="voidReasonCode" values="VL1" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_itemDealX}" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpPCT},!{newTaxPCT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq"/>
+		<SequenceRef name="MODIFY_DISCOUNT" values="!{LID%_itemDealX},!{discountOpPCT},!{discountOpAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the line item deal % off is correctly applied to the sale transaction with removed discount.-->	
+    <TestCase name="DEAL-LI-PCT-S-009" applicationKey="REGISTER" >
+		<Parameter name="discountOpPCT" values="ITEM_PCT" />
+		<Parameter name="newTaxPCT" values="5" />
+		<Parameter name="voidReasonCode" values="VL1" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_itemDealX}" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpPCT},!{newTaxPCT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq"/>
+		<SequenceRef name="REMOVE_DISCOUNT" values="!{LID%_itemDealX},!{discountOpPCT}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the line item deal % off is correctly applied to the sale transaction with transaction discount.-->	
+    <TestCase name="DEAL-LI-PCT-S-010" applicationKey="REGISTER" >
+		<Parameter name="discountOpPCT" values="ITEM_PCT" />
+		<Parameter name="newTaxPCT" values="5" />
+		<Parameter name="voidReasonCode" values="VL1" />
+		<Parameter name="discountAMT" values="10" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_itemDealX}" />
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{transDiscountOpAMT},!{discountAMT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the line item deal % off is correctly applied to the sale transaction with a coupon.-->	
+    <!-- <TestCase name="DEAL-LI-PCT-S-012" applicationKey="REGISTER" > 
+		<Parameter name="itemDealX" value="1020" /> Please use mnt file load deal change item id into 1020 so that can apply COUPON
+		<Parameter name="couponid" values="XUNITCOUPON" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_itemDealX}" />
+		<SequenceRef name="SELECT_BTN_COUPON" values="!{couponid}" />
+		<<SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase> -->
+
+	<!--Verify that the line item deal % off is correctly applied to the sale transaction with a transaction deal.-->	
+	<!-- <TestCase name="DEAL-LI-PCT-S-013" applicationKey="REGISTER" > 
+		 <Parameter name="itemDealX" value="1020" /> Please use mnt file load deal change item id into 1020 so that can apply COUPON
+		<Parameter name="couponid" values="XUNITCOUPON" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_itemDealX}" />
+		<SequenceRef name="SELECT_BTN_COUPON" values="!{couponid}" />
+		<SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase> -->
+
+	<!--Verify that the line item deal % off is correctly applied to the sale transaction with group discount.-->	
+    <TestCase name="DEAL-LI-PCT-S-014" applicationKey="REGISTER" > 
+		<Parameter name="GroupDiscountOpPer" value="GRP_PCT" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_itemDealX}" />
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_itemDealY}" />
+		<SequenceRef name="APPLY_GROUP_DISCOUNT" values="!{GroupDiscountOpPer},!{reascode},!{LID%_itemDealX},!{LID%_itemDealY}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the line item deal % off is NOT applied to the sale transaction if the item is disallowed deal.-->	
+    <TestCase name="DEAL-LI-PCT-S-015" applicationKey="REGISTER" > 
+		<!-- <Parameter name="itemDealX" value="6000" /> WARNING: Please disable deal applied for item 6000 to testing this case-->
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_itemDealX}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--SALE EXCHANGE - Deal Pricing-->
+	<!--Verify that the line item deal % off cannot be applied to the exchange sale transaction if the business date is outside of the deal effective date.-->	
+    <TestCase name="DEAL-LI-PCT-ES-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_dealExpiredItem}" iterations="4" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{LID%_dealExpiredItem},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the line-item % off deal is correctly applied only to qualifying items in the exchange sale transaction.-->	
+    <TestCase name="DEAL-LI-PCT-ES-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_itemDealX}" iterations="5" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{LID%_itemDealX},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that a line-item % off deal is NOT applied to the exchange sale transaction when the item does not meet the deal’s qualifying conditions.-->	
+    <TestCase name="DEAL-LI-PCT-ES-003" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_itemNotDeal}" iterations="4" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{LID%_itemNotDeal},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verified Return - Deal Pricing-->
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied the line item deal % off.-->	
+    <TestCase name="DEAL-LI-PCT-VR-001" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="!{LID%_itemDealX}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),!{returnRC},!{returnComment}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied with the line item deal % off and quantity > 1. NOT WORK-->	
+    <TestCase name="DEAL-LI-PCT-VR-002" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_MULTI_ITM_BY_CASH" values="!{LID%_itemDealX},!{LID%_itemDealY}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION_MULT_ITEMS" values="@getBarcode(@getLastTransactionId),!{LID%_itemDealX},!{LID%_itemDealY},!{returnRC},!{returnComment}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the line item deal % off is correctly applied to the suspended sale transaction-->	
+    <TestCase name="DEAL-LI-PCT-SR-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_itemDealX}" iterations="2" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+    </TestCase>
+
+	<!--Verify that the line item deal % off is correctly applied to the transaction that is resumed from a suspended sale transaction.-->	
+    <TestCase name="DEAL-LI-PCT-SR-002" applicationKey="REGISTER" >
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SUSPEND_SALE" values="!{LID%_itemDealX}"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransaction.getTransactionSequence" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SCAN_ITEM" values="!{LID%_itemDealX}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!-- Item Discount AMT off - Deal Name: ITEM_SKU_AMT -->
+	<!--Verify that the line item deal $ off cannot be applied to the sale transaction if the business date is outside of the deal effective date.-->	
+	<TestCase name="DEAL-LI-AMT-S-001" applicationKey="REGISTER" >
+		<Parameter name="dealId" value="79:2645:22233" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID$_dealExpiredItem}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the line-item $ off deal is correctly applied only to qualifying items in the sale transaction.-->
+   <TestCase name="DEAL-LI-AMT-S-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID$_itemDealX}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that a line-item $ off deal is NOT applied to the sale transaction when the item does not meet the deal’s qualifying conditions.-->	
+    <TestCase name="DEAL-LI-AMT-S-003" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID$_itemNotDeal}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the line item deal $ off cannot be applied to the exchange sale transaction if the business date is outside of the deal effective date.-->	
+    <TestCase name="DEAL-LI-AMT-ES-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID$_dealExpiredItem}" iterations="3" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{LID$_dealExpiredItem},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the line-item $ off deal is correctly applied only to qualifying items in the exchange sale transaction.-->	
+    <TestCase name="DEAL-LI-AMT-ES-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID$_itemDealX}" iterations="3" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{LID$_itemDealX},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that a line-item $ off deal is NOT applied to the exchange sale transaction when the item does not meet the deal’s qualifying conditions.-->	
+    <TestCase name="DEAL-LI-AMT-ES-003" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID$_itemNotDeal}" iterations="3" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{LID$_itemNotDeal},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied the line item deal $ off.-->	
+    <TestCase name="DEAL-LI-AMT-VR-001" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="!{LID$_itemDealX}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),!{returnRC},!{returnComment}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied with the line item deal % off and quantity > 1-->	
+    <TestCase name="DEAL-LI-AMT-VR-002" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_MULTI_ITM_BY_CASH" values="!{LID$_itemDealX},!{LID$_itemDealY}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="NEW_RETURN" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION_MULT_ITEMS" values="@getBarcode(@getLastTransactionId),!{LID$_itemDealX},!{LID$_itemDealY},!{returnRC},!{returnComment}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the line item deal $ off is correctly applied to the suspended sale transaction-->	
+    <TestCase name="DEAL-LI-AMT-SR-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{LID$_itemDealX}" iterations="2" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+    </TestCase>
+
+	<!--Verify that the line item deal $ off is correctly applied to the transaction that is resumed from a suspended sale transaction.-->	
+    <TestCase name="DEAL-LI-AMT-SR-002" applicationKey="REGISTER" >
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SUSPEND_SALE" values="!{LID$_itemDealX}"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransaction.getTransactionSequence" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SCAN_ITEM" values="!{LID$_itemDealX}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!-- Fixed Quantity/Price -->
+	<!--Verify that the Fixed Quantity/Price deal cannot be applied to the sale transaction if the business date is outside of the deal effective date.-->	
+	<TestCase name="DEAL-LI-FQP-S-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{FQP_dealExpiredItem}" iterations="2" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Fixed Quantity/Price deal is correctly applied only to qualifying items in the sale transaction.-->
+   <TestCase name="DEAL-LI-FQP-S-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{FQP_itemDealX}" iterations="2"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Fixed Quantity/Price deal is NOT applied to excluded items in the sale transaction even when quantity meets the required quantity.-->	
+    <TestCase name="DEAL-LI-FQP-S-003" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{FQP_itemNotDeal}" iterations="2"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Fixed Quantity/Price deal is NOT applied to the sale transaction when the item quantity is less than the required quantity.-->	
+    <TestCase name="DEAL-LI-FQP-S-004" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{FQP_itemDealX}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Fixed Quantity/Price deal is applied to the sale transaction when the item quantity equals the required quantity.-->
+   <TestCase name="DEAL-LI-FQP-S-005" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{FQP_itemDealX}" iterations="2"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Fixed Quantity/Price deal is partially applied to the sale transaction when the item quantity is greater than the required quantity.-->
+   <TestCase name="DEAL-LI-FQP-S-006" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{FQP_itemDealX}" iterations="4"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Fixed Quantity/Price deal cannot be applied to the Exchange Sale transaction if the business date is outside of the deal effective date.-->	
+    <TestCase name="DEAL-LI-FQP-ES-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{FQP_dealExpiredItem}" iterations="4" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{FQP_dealExpiredItem},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Fixed Quantity/Price deal is correctly applied only to qualifying items in the Exchange Sale transaction.-->	
+    <TestCase name="DEAL-LI-FQP-ES-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{FQP_itemDealX}" iterations="5" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{FQP_itemDealX},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Fixed Quantity/Price deal is NOT applied to excluded items in the Exchange Sale transaction even when quantity meets the required quantity.-->	
+    <TestCase name="DEAL-LI-FQP-ES-003" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{FQP_itemNotDeal}" iterations="6" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{FQP_itemNotDeal},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Fixed Quantity/Price deal is NOT applied to the Exchange Sale transaction when the item quantity is less than the required quantity.-->	
+    <TestCase name="DEAL-LI-FQP-ES-004" applicationKey="REGISTER" >
+		<Parameter name="item2" value="6003" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{FQP_itemDealX}" iterations="1" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" iterations="4" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{FQP_itemDealX},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Fixed Quantity/Price deal is applied to the Exchange Sale transaction when the item quantity equals the required quantity.-->	
+    <TestCase name="DEAL-LI-FQP-ES-005" applicationKey="REGISTER" >
+		<Parameter name="item2" value="6003" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{FQP_itemDealX}" iterations="2" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" iterations="2" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{FQP_itemDealX},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Fixed Quantity/Price deal is partially applied to the Exchange Sale transaction when the item quantity is greater than the required quantity.-->	
+    <TestCase name="DEAL-LI-FQP-ES-006" applicationKey="REGISTER" >
+		<Parameter name="item2" value="6003" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{FQP_itemDealX}" iterations="4" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" iterations="2" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{FQP_itemDealX},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied the Fixed Quantity/Price.-->	
+    <TestCase name="DEAL-LI-FQP-VR-001" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="!{FQP_itemDealX}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),!{returnRC},!{returnComment}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied with the Fixed Quantity/Price and quantity > 1.-->	
+    <TestCase name="DEAL-LI-FQP-VR-002" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_MULTI_ITM_BY_CASH" values="!{FQP_itemDealX},!{FQP_itemDealY}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="NEW_RETURN" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION_MULT_ITEMS" values="@getBarcode(@getLastTransactionId),!{FQP_itemDealX},!{FQP_itemDealY},!{returnRC},!{returnComment}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the line Fixed Quantity Price off is correctly applied to the suspended sale transaction-->	
+    <TestCase name="DEAL-LI-FQP-SR-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{FQP_itemDealX}" iterations="2" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+    </TestCase>
+
+	<!--Verify that the line Fixed Quantity Price off is correctly applied to the transaction that is resumed from a suspended sale transaction.-->	
+    <TestCase name="DEAL-LI-FQP-SR-002" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="6002" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SUSPEND_SALE" values="!{FQP_itemDealX}"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransaction.getTransactionSequence" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Buy X item and get $Y (or %) off the item-->
+	<!--Verify that the Buy X item and get $Y (or %) off the item cannot be applied to the sale transaction if the business date is outside of the deal effective date.-->	
+	<TestCase name="DEAL-LI-IPA-S-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_$YOR%Y_dealExpiredItem}" />
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_$YOR%Y_itemDealY}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X item and get $Y (or %) off the item deal is correctly applied only to qualifying items in the sale transaction.-->
+   <TestCase name="DEAL-LI-IPA-S-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_$YOR%Y_itemDealX}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_$YOR%Y_itemDealY}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X item and get $Y (or %) off the item deal is NOT applied to excluded items in the sale transaction.-->	
+    <TestCase name="DEAL-LI-IPA-S-003" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_$YOR%Y_itemDealX}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_$YOR%Y_itemNotDeal}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X item and get $Y (or %) off the item cannot be applied to the Exchange Sale transaction if the business date is outside of the deal effective date.-->	
+    <TestCase name="DEAL-LI-IPA-ES-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_$YOR%Y_dealExpiredItem}" />
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_$YOR%Y_itemDealY}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{BXG_$YOR%Y_itemDealY},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X item and get $Y (or %) off the item deal is correctly applied only to qualifying items in the Exchange Sale transaction.-->	
+    <TestCase name="DEAL-LI-IPA-ES-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_$YOR%Y_itemDealX}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_$YOR%Y_itemDealY}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{BXG_$YOR%Y_itemDealY},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X item and get $Y (or %) off the item deal is NOT applied to excluded items in the Exchange Sale transaction.-->	
+    <TestCase name="DEAL-LI-IPA-ES-003" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_$YOR%Y_itemDealX}" />
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_$YOR%Y_itemNotDeal}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{BXG_$YOR%Y_itemNotDeal},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied the Buy X item and get $Y (or %) off the item.-->	
+    <TestCase name="DEAL-LI-IPA-VR-001" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_MULTI_ITM_BY_CASH" values="!{BXG_$YOR%Y_itemDealX},!{BXG_$YOR%Y_itemDealY}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),!{returnRC},!{returnComment}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied with the Buy X item and get $Y (or %) off the item and quantity > 1.-->	
+    <TestCase name="DEAL-LI-IPA-VR-002" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_MULTI_ITM_BY_CASH" values="!{BXG_$YOR%Y_itemDealX},!{BXG_$YOR%Y_itemDealY}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="NEW_RETURN" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION_MULT_ITEMS" values="@getBarcode(@getLastTransactionId),!{BXG_$YOR%Y_itemDealX},!{BXG_$YOR%Y_itemDealY},!{returnRC},!{returnComment}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	
+	<!--Verify that the line Buy X item and get $Y (or %) off the item deal is correctly applied to the suspended sale transaction-->	
+    <TestCase name="DEAL-LI-IPA-SR-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_$YOR%Y_itemDealX}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_$YOR%Y_itemDealY}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+    </TestCase>
+
+	<!--Verify that the line Buy X item and get $Y (or %) off the item deal is correctly applied to the transaction that is resumed from a suspended sale transaction.-->	
+    <TestCase name="DEAL-LI-IPA-SR-002" applicationKey="REGISTER" >
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SUSPEND_SALE_MULTI_ITM" values="!{BXG_$YOR%Y_itemDealX}, !{BXG_$YOR%Y_itemDealY}"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransaction.getTransactionSequence" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_$YOR%Y_itemDealX}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Buy X item qty for $Y (or %/$ off each)-->
+	<!--Verify that the Buy X item quantity for $Y (or %) off the each cannot be applied to the sale transaction if the business date is outside of the deal effective date.-->	
+	<TestCase name="DEAL-LI-QTD-S-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{B2XG$Yor%Y_each_dealExpiredItem}" iterations="2"/>
+		<SequenceRef name="SCAN_ITEM" values="!{B2XG$Yor%Y_each_itemDealY}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X item qty for $Y (or %/$ off each) deal is correctly applied only to qualifying items in the sale transaction.-->
+   <TestCase name="DEAL-LI-QTD-S-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{B2XG$Yor%Y_each_itemDealX}" iterations="2"/>
+		<SequenceRef name="SCAN_ITEM" values="!{B2XG$Yor%Y_each_itemDealY}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X item qty for $Y (or %/$ off each) deal is NOT applied to excluded items in the sale transaction.-->	
+    <TestCase name="DEAL-LI-QTD-S-003" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{B2XG$Yor%Y_each_itemDealX}" iterations="2"/>
+		<SequenceRef name="SCAN_ITEM" values="!{B2XG$Yor%Y_each_itemNotDeal}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X item quantity for $Y (or %) off the each cannot be applied to the Exchange Sale transaction if the business date is outside of the deal effective date.-->	
+    <TestCase name="DEAL-LI-QTD-ES-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{B2XG$Yor%Y_each_dealExpiredItem}" iterations="2"/>
+		<SequenceRef name="SCAN_ITEM" values="!{B2XG$Yor%Y_each_itemDealY}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{B2XG$Yor%Y_each_itemDealY},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X item qty for $Y (or %/$ off each) deal is correctly applied only to qualifying items in the Exchange Sale transaction.-->	
+    <TestCase name="DEAL-LI-QTD-ES-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{B2XG$Yor%Y_each_itemDealX}" iterations="2"/>
+		<SequenceRef name="SCAN_ITEM" values="!{B2XG$Yor%Y_each_itemDealY}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{B2XG$Yor%Y_each_itemDealY},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X item qty for $Y (or %/$ off each) deal is NOT applied to excluded items in the Exchange Sale transaction.-->	
+    <TestCase name="DEAL-LI-QTD-ES-003" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{B2XG$Yor%Y_each_itemDealX}" iterations="2"/>
+		<SequenceRef name="SCAN_ITEM" values="!{B2XG$Yor%Y_each_itemNotDeal}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{B2XG$Yor%Y_each_itemNotDeal},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied the Buy X item quantity for $Y (or %) off the each.-->	
+    <TestCase name="DEAL-LI-QTD-VR-001" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_MULTI_ITM_BY_CASH" values="!{B2XG$Yor%Y_each_itemDealX},!{B2XG$Yor%Y_each_itemDealY}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),!{returnRC},!{returnComment}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied with the Buy X item quantity for $Y (or %) off the each and quantity > 1. NOT WORK-->	
+    <TestCase name="DEAL-LI-QTD-VR-002" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_MULTI_ITM_BY_CASH" values="!{B2XG$Yor%Y_each_itemDealX},!{B2XG$Yor%Y_each_itemDealY}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="NEW_RETURN" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION_MULT_ITEMS" values="@getBarcode(@getLastTransactionId),!{B2XG$Yor%Y_each_itemDealX},!{B2XG$Yor%Y_each_itemDealY},!{returnRC},!{returnComment}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	
+	<!--Verify that the Buy X item quantity for $Y (or %) off the each deal is correctly applied to the suspended sale transaction-->	
+    <TestCase name="DEAL-LI-QTD-SR-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{B2XG$Yor%Y_each_itemDealX}" iterations="2"/>
+		<SequenceRef name="SCAN_ITEM" values="!{B2XG$Yor%Y_each_itemDealY}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+    </TestCase>
+
+	<!--Verify that the Buy X item quantity for $Y (or %) off the each deal is correctly applied to the transaction that is resumed from a suspended sale transaction.-->	
+    <TestCase name="DEAL-LI-QTD-SR-002" applicationKey="REGISTER" >
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SUSPEND_SALE_MULTI_ITM" values="!{B2XG$Yor%Y_each_itemDealX}, !{B2XG$Yor%Y_each_itemDealY}"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransaction.getTransactionSequence" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SCAN_ITEM" values="!{B2XG$Yor%Y_each_itemDealX}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	 <!--Buy X item, get Y item at a discount-->
+	<!--Verify that the Buy X item, get Y item at a discount cannot be applied to the sale transaction if the business date is outside of the deal effective date.-->	
+	<TestCase name="DEAL-LI-MIX-1-S-001" applicationKey="REGISTER" >
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<Parameter name="newTaxAMT" value="2.0" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_Ydisc_dealExpiredItem}" />
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_Ydisc_itemDealY}" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{newTaxAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X item, get Y item at a discount deal is correctly applied only to qualifying items in the sale transaction.-->
+   <TestCase name="DEAL-LI-MIX-1-S-002" applicationKey="REGISTER" >
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<Parameter name="newTaxAMT" value="2.0" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_Ydisc_itemDealX}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_Ydisc_itemDealY}"/>
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{newTaxAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X item, get Y item at a discount deal is NOT applied to excluded items in the sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-1-S-003" applicationKey="REGISTER" >
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<Parameter name="newTaxAMT" value="2.0" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_Ydisc_itemDealX}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_Ydisc_itemNotDeal}"/>
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{newTaxAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X item, get Y item at a discount cannot be applied to the exchange sale transaction if the business date is outside of the deal effective date.-->	
+    <TestCase name="DEAL-LI-MIX-1-ES-001" applicationKey="REGISTER" >
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<Parameter name="newTaxAMT" value="1.5" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_Ydisc_dealExpiredItem}" />
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_Ydisc_itemDealY}" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{newTaxAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{BXG_Ydisc_itemDealY},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X item, get Y item at a discount deal is correctly applied only to qualifying items in the exchange sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-1-ES-002" applicationKey="REGISTER" >
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<Parameter name="newTaxAMT" value="1.5" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_Ydisc_itemDealX}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_Ydisc_itemDealY}"/>
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{newTaxAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{BXG_Ydisc_itemDealY},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X item, get Y item at a discount deal is NOT applied to excluded items in the exchange sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-1-ES-003" applicationKey="REGISTER" >
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<Parameter name="newTaxAMT" value="1.5" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_Ydisc_itemDealX}" />
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_Ydisc_itemNotDeal}" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{newTaxAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{BXG_Ydisc_itemNotDeal},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied the Buy X item, get Y item at a discount.-->	
+    <TestCase name="DEAL-LI-MIX-1-VR-001" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<Parameter name="newTaxAMT" value="1.5" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_MULTI_ITM_DISCOUNT_BY_CASH" values="!{BXG_Ydisc_itemDealX},!{BXG_Ydisc_itemDealY},!{discountOpAMT},!{newTaxAMT}, !{discountReasonCode}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),!{returnRC},!{returnComment}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied with the Buy X item, get Y item at a discount and quantity > 1.-->	
+    <TestCase name="DEAL-LI-MIX-1-VR-002" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<Parameter name="newTaxAMT" value="1.5" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_MULTI_ITM_DISCOUNT_BY_CASH" values="!{BXG_Ydisc_itemDealX},!{BXG_Ydisc_itemDealY},!{discountOpAMT},!{newTaxAMT}, !{discountReasonCode}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="NEW_RETURN" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION_MULT_ITEMS" values="@getBarcode(@getLastTransactionId),!{BXG_Ydisc_itemDealX},!{BXG_Ydisc_itemDealY},!{returnRC},!{returnComment}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	
+	<!--Verify that the Buy X item, get Y item at a discount deal is correctly applied to the suspended sale transaction-->	
+    <TestCase name="DEAL-LI-MIX-1-SR-001" applicationKey="REGISTER" >
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<Parameter name="newTaxAMT" value="1.5" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_Ydisc_itemDealX}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_Ydisc_itemDealY}"/>
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{newTaxAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+    </TestCase>
+
+	<!--Verify that the Buy X item, get Y item at a discount deal is correctly applied to the transaction that is resumed from a suspended sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-1-SR-002" applicationKey="REGISTER" >
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<Parameter name="newTaxAMT" value="1.5" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SUSPEND_SALE_MULTI_ITM_WITH_DISC" values="!{BXG_Ydisc_itemDealX}, !{BXG_Ydisc_itemDealY},!{discountOpAMT},!{newTaxAMT}, !{discountReasonCode}"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransaction.getTransactionSequence" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_Ydisc_itemDealX}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Buy X AND Y, get Z at % (or $, or New Price) off-->
+	<!--Verify that the Buy X AND Y, get Z at % (or $, or New Price) off cannot be applied to the sale transaction if the business date is outside of the deal effective date.-->	
+	<TestCase name="DEAL-LI-MIX-2-S-001" applicationKey="REGISTER" >
+		<Parameter name="item3" value="6002" />
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXnY_Zoff_dealExpiredItem}" />
+		<SequenceRef name="SCAN_ITEM" values="!{BXnY_Zoff_itemDealY}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item3}" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{newTaxAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X AND Y, get Z at % (or $, or New Price) off deal is correctly applied only to qualifying items in the sale transaction.-->
+   <TestCase name="DEAL-LI-MIX-2-S-002" applicationKey="REGISTER" >
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXnY_Zoff_itemDealX}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXnY_Zoff_itemDealY}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXnY_Zoff_itemDealZ}"/>
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{newTaxAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X AND Y, get Z at % (or $, or New Price) off deal is NOT applied to excluded items in the sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-2-S-003" applicationKey="REGISTER" >
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXnY_Zoff_itemDealX}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXnY_Zoff_itemDealY}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXnY_Zoff_itemNotDeal}"/>
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{newTaxAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X AND Y, get Z at % (or $, or New Price) off cannot be applied to the Exchange Sale transaction if the business date is outside of the deal effective date.-->	
+    <TestCase name="DEAL-LI-MIX-2-ES-001" applicationKey="REGISTER" >
+		<Parameter name="item1" value="6001" />
+		<Parameter name="item2" value="6002" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXnY_Zoff_dealExpiredItem}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{BXnY_Zoff_dealExpiredItem},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X AND Y, get Z at % (or $, or New Price) off deal is correctly applied only to qualifying items in the Exchange Sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-2-ES-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXnY_Zoff_itemDealX}" />
+		<SequenceRef name="SCAN_ITEM" values="!{BXnY_Zoff_itemDealY}" />
+		<SequenceRef name="SCAN_ITEM" values="!{BXnY_Zoff_itemDealZ}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{BXnY_Zoff_itemDealX},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X AND Y, get Z at % (or $, or New Price) off deal is NOT applied to excluded items in the Exchange Sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-2-ES-003" applicationKey="REGISTER" >
+		<Parameter name="item1" value="6001" />
+		<Parameter name="item2" value="6002" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="SCAN_ITEM" values="!{BXnY_Zoff_itemNotDeal}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{BXnY_Zoff_itemNotDeal},!{returnRC},!{returnComment},0" /> 
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied the Buy X AND Y, get Z at % (or $, or New Price) off.-->	
+    <TestCase name="DEAL-LI-MIX-2-VR-001" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_MULTI_ITM_>_3_BY_CASH" values="!{BXnY_Zoff__Suspend_itemDealX}, !{BXnY_Zoff__Suspend_itemDealY}, !{BXnY_Zoff__Suspend_itemDealZ}"/>
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),!{returnRC},!{returnComment}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied with the Buy X AND Y, get Z at % (or $, or New Price) off and quantity > 1. NOT WORK-->	
+    <TestCase name="DEAL-LI-MIX-2-VR-002" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_MULTI_ITM_>_3_BY_CASH" values="!{BXnY_Zoff__Suspend_itemDealX}, !{BXnY_Zoff__Suspend_itemDealY}, !{BXnY_Zoff__Suspend_itemDealZ}"/>
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="NEW_RETURN" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION_MULT_ITEMS" values="@getBarcode(@getLastTransactionId),!{BXnY_Zoff__Suspend_itemDealX},!{BXnY_Zoff__Suspend_itemDealY},!{returnRC},!{returnComment}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X AND Y, get Z at % (or $, or New Price) off deal is correctly applied to the suspended sale transaction-->	
+    <TestCase name="DEAL-LI-MIX-2-SR-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXnY_Zoff__Suspend_itemDealX}" />
+		<SequenceRef name="SCAN_ITEM" values="!{BXnY_Zoff__Suspend_itemDealY}" />
+		<SequenceRef name="SCAN_ITEM" values="!{BXnY_Zoff__Suspend_itemDealZ}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+    </TestCase>
+
+	<!--Verify that the Buy X AND Y, get Z at % (or $, or New Price) off deal is correctly applied to the transaction that is resumed from a suspended sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-2-SR-002" applicationKey="REGISTER" >
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SUSPEND_SALE_MULTI_ITM_>_3" values="!{BXnY_Zoff__Suspend_itemDealX}, !{BXnY_Zoff__Suspend_itemDealY}, !{BXnY_Zoff__Suspend_itemDealZ}"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransaction.getTransactionSequence" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SCAN_ITEM" values="!{BXnY_Zoff__Suspend_itemDealX}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!-- Buy 2 (or more) of X and get Z at % off -->
+	<!--Verify that the Buy 2 (or more) of X and get Z at % off cannot be applied to the sale transaction if the business date is outside of the deal effective date.-->	
+	<TestCase name="DEAL-LI-MIX-4-S-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{B2X_%Z_dealExpiredItem}" iterations="2"/>
+		<SequenceRef name="SCAN_ITEM" values="!{B2X_%Z_itemDealZ}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy 2 (or more) of X and get Z at % off deal is correctly applied only to qualifying items in the sale transaction.-->
+   <TestCase name="DEAL-LI-MIX-4-S-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{B2X_%Z_itemDealX}" iterations="2"/>
+		<SequenceRef name="SCAN_ITEM" values="!{B2X_%Z_itemDealZ}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy 2 (or more) of X and get Z at % off deal is NOT applied to excluded items in the sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-4-S-003" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{B2X_%Z_itemDealX}" iterations="2"/>
+		<SequenceRef name="SCAN_ITEM" values="!{B2X_%Z_itemNotDeal}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+
+	<!--Verify that the Buy 2 (or more) of X and get Z at % off cannot be applied to the exchange sale transaction if the business date is outside of the deal effective date.-->	
+    <TestCase name="DEAL-LI-MIX-4-ES-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{B2X_%Z_dealExpiredItem}" iterations="2"/>
+		<SequenceRef name="SCAN_ITEM" values="!{B2X_%Z_itemDealZ}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{B2X_%Z_itemDealZ},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy 2 (or more) of X and get Z at % off deal is correctly applied only to qualifying items in the exchange sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-4-ES-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{B2X_%Z_itemDealX}" iterations="2"/>
+		<SequenceRef name="SCAN_ITEM" values="!{B2X_%Z_itemDealZ}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{B2X_%Z_itemDealZ},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy 2 (or more) of X and get Z at % off deal is NOT applied to excluded items in the exchange sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-4-ES-003" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{B2X_%Z_itemDealX}" iterations="2"/>
+		<SequenceRef name="SCAN_ITEM" values="!{B2X_%Z_itemNotDeal}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{B2X_%Z_itemNotDeal},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied the Buy 2 (or more) of X and get Z at % off.-->	
+    <TestCase name="DEAL-LI-MIX-4-VR-001" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_MULTI_ITM_BY_CASH" values="!{B2X_%Z_itemDealX},!{B2X_%Z_itemDealZ}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),!{returnRC},!{returnComment}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied with the Buy X item quantity for $Y (or %) off the each and quantity > 1. NOT WORK-->	
+    <TestCase name="DEAL-LI-MIX-4-VR-002" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_MULTI_ITM_BY_CASH" values="!{B2X_%Z_itemDealX},!{B2X_%Z_itemDealZ}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="NEW_RETURN" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION_MULT_ITEMS" values="@getBarcode(@getLastTransactionId),!{B2X_%Z_itemDealX},!{B2X_%Z_itemDealZ},!{returnRC},!{returnComment}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	
+	<!--Verify that the Buy 2 (or more) of X and get Z at % off deal is correctly applied to the suspended sale transaction-->	
+    <TestCase name="DEAL-LI-MIX-4-SR-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{B2X_%Z_itemDealX}" iterations="2"/>
+		<SequenceRef name="SCAN_ITEM" values="!{B2X_%Z_itemDealZ}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+    </TestCase>
+
+	<!--Verify that the Buy 2 (or more) of X and get Z at % off deal is correctly applied to the transaction that is resumed from a suspended sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-4-SR-002" applicationKey="REGISTER" >
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SUSPEND_SALE_MULTI_ITM" values="!{B2X_%Z_itemDealX}, !{B2X_%Z_itemDealZ}"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransaction.getTransactionSequence" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SCAN_ITEM" values="!{B2X_%Z_itemDealX}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Buy X, get Y% off another-->
+	<!--Verify that the Buy X, get Y% off another deal cannot be applied to the sale transaction if the business date is outside of the deal effective date.-->	
+	<TestCase name="DEAL-LI-MIX-5-S-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_%Y_other_dealExpiredItem}" />
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_%Y_other_itemDealY}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X, get Y% off another deal is correctly applied only to qualifying items in the sale transaction.-->
+   <TestCase name="DEAL-LI-MIX-5-S-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_%Y_other_itemDealX}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_%Y_other_itemDealY}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X, get Y% off another deal is NOT applied to excluded items in the sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-5-S-003" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_%Y_other_itemDealX}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_%Y_other_itemNotDeal}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X, get Y% off another deal cannot be applied to the exchange sale transaction if the business date is outside of the deal effective date.-->	
+    <TestCase name="DEAL-LI-MIX-5-ES-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_%Y_other_dealExpiredItem}" />
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_%Y_other_itemDealY}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{BXG_%Y_other_itemDealY},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X, get Y% off another deal is correctly applied only to qualifying items in the exchange sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-5-ES-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_%Y_other_itemDealX}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_%Y_other_itemDealY}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{BXG_%Y_other_itemDealY},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X, get Y% off another deal is NOT applied to excluded items in the exchange sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-5-ES-003" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_%Y_other_itemDealX}" />
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_%Y_other_itemNotDeal}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{BXG_%Y_other_itemNotDeal},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied the Buy X, get Y% off another deal.-->	
+    <TestCase name="DEAL-LI-MIX-5-VR-001" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_MULTI_ITM_BY_CASH" values="!{BXG_%Y_other_itemDealX},!{BXG_%Y_other_itemDealY}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),!{returnRC},!{returnComment}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied with the Buy X, get Y% off another deal and quantity > 1.-->	
+    <TestCase name="DEAL-LI-MIX-5-VR-002" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_MULTI_ITM_BY_CASH" values="!{BXG_%Y_other_itemDealX},!{BXG_%Y_other_itemDealY}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="NEW_RETURN" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION_MULT_ITEMS" values="@getBarcode(@getLastTransactionId),!{BXG_%Y_other_itemDealX},!{BXG_%Y_other_itemDealY},!{returnRC},!{returnComment}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	
+	<!--Verify that the Buy X, get Y% off another deal is correctly applied to the suspended sale transaction-->	
+    <TestCase name="DEAL-LI-MIX-5-SR-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_%Y_other_itemDealX}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_%Y_other_itemDealY}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+    </TestCase>
+
+	<!--Verify that the Buy X, get Y% off another deal is correctly applied to the transaction that is resumed from a suspended sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-5-SR-002" applicationKey="REGISTER" >
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SUSPEND_SALE_MULTI_ITM" values="!{BXG_%Y_other_itemDealX}, !{BXG_%Y_other_itemDealY}"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransaction.getTransactionSequence" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SCAN_ITEM" values="!{BXG_%Y_other_itemDealX}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Buy X OR Y and get Z at % off-->
+	<!--Verify that the Buy X OR Y and get Z at % off cannot be applied to the sale transaction if the business date is outside of the deal effective date.-->	
+	<TestCase name="DEAL-LI-MIX-6-S-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXorY_%Z_dealExpiredItem}" />
+		<SequenceRef name="SCAN_ITEM" values="!{BXorY_%Z_itemDealZ}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X OR Y and get Z at % off deal is correctly applied only to qualifying items in the sale transaction.-->
+   <TestCase name="DEAL-LI-MIX-6-S-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXorY_%Z_itemDealX}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXorY_%Z_itemDealZ}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X OR Y and get Z at % off deal is NOT applied to excluded items in the sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-6-S-003" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXorY_%Z_itemDealX}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXorY_%Z_itemNotDeal}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X OR Y and get Z at % off cannot be applied to the exchange sale transaction if the business date is outside of the deal effective date.-->	
+    <TestCase name="DEAL-LI-MIX-6-ES-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXorY_%Z_dealExpiredItem}" />
+		<SequenceRef name="SCAN_ITEM" values="!{BXorY_%Z_itemDealZ}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{BXorY_%Z_itemDealZ},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X OR Y and get Z at % off deal is correctly applied only to qualifying items in the exchange sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-6-ES-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXorY_%Z_itemDealX}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXorY_%Z_itemDealZ}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{BXorY_%Z_itemDealZ},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the Buy X OR Y and get Z at % off deal is NOT applied to excluded items in the exchange sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-6-ES-003" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXorY_%Z_itemDealX}" />
+		<SequenceRef name="SCAN_ITEM" values="!{BXorY_%Z_itemNotDeal}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{BXorY_%Z_itemNotDeal},!{returnRC},!{returnComment},0" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied the Buy X OR Y and get Z at % off.-->	
+    <TestCase name="DEAL-LI-MIX-6-VR-001" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_MULTI_ITM_BY_CASH" values="!{BXorY_%Z_itemDealX},!{BXorY_%Z_itemDealZ}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),!{returnRC},!{returnComment}" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!--Verify that the verified return transaction can be completed for a sale that had items applied with the Buy X OR Y and get Z at % off and quantity > 1.-->	
+    <TestCase name="DEAL-LI-MIX-6-VR-002" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_MULTI_ITM_BY_CASH" values="!{BXorY_%Z_itemDealX},!{BXorY_%Z_itemDealZ}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="NEW_RETURN" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION_MULT_ITEMS" values="@getBarcode(@getLastTransactionId),!{BXorY_%Z_itemDealX},!{BXorY_%Z_itemDealZ},!{returnRC},!{returnComment}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	
+	<!--Verify that the Buy X OR Y and get Z at % off deal is correctly applied to the suspended sale transaction-->	
+    <TestCase name="DEAL-LI-MIX-6-SR-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />        
+		<SequenceRef name="SCAN_ITEM" values="!{BXorY_%Z_itemDealX}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{BXorY_%Z_itemDealZ}"/>
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+    </TestCase>
+
+	<!--Verify that the Buy X OR Y and get Z at % off deal is correctly applied to the transaction that is resumed from a suspended sale transaction.-->	
+    <TestCase name="DEAL-LI-MIX-6-SR-002" applicationKey="REGISTER" >
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SUSPEND_SALE_MULTI_ITM" values="!{BXorY_%Z_itemDealX}, !{BXorY_%Z_itemDealZ}"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransaction.getTransactionSequence" />
+		<!-- <SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" /> --> 
+		<SequenceRef name="SCAN_ITEM" values="!{BXorY_%Z_itemDealX}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+</XunitConfig>

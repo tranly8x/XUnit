@@ -1,0 +1,2 @@
+ItemId,Attached,ReturnItemId
+3006,3007,6000
