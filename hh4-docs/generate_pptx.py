@@ -9,7 +9,6 @@ from pptx import Presentation
 from pptx.util import Inches, Pt, Cm, Emu
 from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN
-from pptx.util import Pt
 from pptx.oxml.ns import qn
 from lxml import etree
 
