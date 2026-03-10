@@ -297,7 +297,7 @@
 		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-001" testName="TRAN-OPT-TAX-AMT-001" iterations="1" />
 		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-002" testName="TRAN-OPT-TAX-AMT-002" iterations="1" />
 		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-003" testName="TRAN-OPT-TAX-AMT-003" iterations="1" />
-		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-004" testName="TRAN-OPT-TAX-AMT-005" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-005" testName="TRAN-OPT-TAX-AMT-005" iterations="1" />
 		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-008" testName="TRAN-OPT-TAX-AMT-008" iterations="1" />
 		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-009" testName="TRAN-OPT-TAX-AMT-009" iterations="1" />
 		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-010" testName="TRAN-OPT-TAX-AMT-010" iterations="1" />
@@ -326,7 +326,7 @@
 		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-001" testName="TRAN-OPT-TAX-EXEM-001" iterations="1" />
 		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-002" testName="TRAN-OPT-TAX-EXEM-002" iterations="1" />
 		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-003" testName="TRAN-OPT-TAX-EXEM-003" iterations="1" />
-		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-004" testName="TRAN-OPT-TAX-EXEM-005" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-005" testName="TRAN-OPT-TAX-EXEM-005" iterations="1" />
 		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-008" testName="TRAN-OPT-TAX-EXEM-008" iterations="1" />
 		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-009" testName="TRAN-OPT-TAX-EXEM-009" iterations="1" />
 		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-010" testName="TRAN-OPT-TAX-EXEM-010" iterations="1" />
@@ -356,7 +356,7 @@
 		<RunTest description="Run Transaction Option - TRAN-OPT-CP-001" testName="TRAN-OPT-CP-001" iterations="1" />
 		<RunTest description="Run Transaction Option - TRAN-OPT-CP-009" testName="TRAN-OPT-CP-009" iterations="1" />
 		<RunTest description="Run Transaction Option - TRAN-OPT-CP-013" testName="TRAN-OPT-CP-013" iterations="1" />
-		<RunTest description="Run Transaction Option - TRAN-OPT-CP-013" testName="TRAN-OPT-CP-017" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-CP-017" testName="TRAN-OPT-CP-017" iterations="1" />
 		<RunTest description="Run Transaction Option - TRAN-OPT-CP-021" testName="TRAN-OPT-CP-021" iterations="1" />
     </TestSuite>
 	<!--Customer Maintenance-->
