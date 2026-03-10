@@ -1,0 +1,3353 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<!-- TEST CASES -->		
+	<Parameter name="GroupDiscountOpPer" value="GRP_PCT" />
+	<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+	<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+	<Parameter name="couponid" value="XUNITCOUPON" />
+	<Parameter name="custSSLastName" value="BTMSendS" />
+	<Parameter name="custSOLastName" value="BTMSO" />
+	<Parameter name="custLAYLastName" value="BTMLAY" />
+	<Parameter name="teleNumberSS" value="1111111111" />
+	<Parameter name="teleNumberSO" value="2222222222" />
+	<Parameter name="teleNumberSS" value="3333333333" />
+	<Parameter name="associateID" value="100" />
+	
+	<!-- SEND SALE -->
+	<TestCase name="EXTENDTRN-SS-ESP-001" applicationKey="REGISTER" >
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="postalCode" values="60046" />
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="171120033" />
+		<Parameter name="address1" value="HCMUS" />
+		<Parameter name="newAddress" value="KHTN" />
+		<Parameter name="city" value="HCM" />
+		<Parameter name="state" value="AK" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address1},!{postalCode},!{state},!{shipMethod}" />
+		<SequenceRef name="UPDATE_SEND_SALE_DESTINATION" values="!{newAddress}" /> 
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<TestCase name="EXTENDTRN-SS-ESP-002" applicationKey="REGISTER" >
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="postalCode" values="60046" />
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="171120033" />
+		<Parameter name="updatedPhone" value="654321" />
+		<Parameter name="address1" value="HCMUS" />
+		<Parameter name="newAddress" value="KHTN" />
+		<Parameter name="city" value="HCM" />
+		<Parameter name="state" value="AK" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address1},!{postalCode},!{state},!{shipMethod}" />
+		<SequenceRef name="UPDATE_SEND_SALE_PHONE" values="!{updatedPhone}" /> 
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<TestCase name="EXTENDTRN-SS-ESP-003" applicationKey="REGISTER" >
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="postalCode" values="60046" />
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="updatedLastName" value="BTM" />
+		<Parameter name="updatedFirstName" value="BTM" />
+		<Parameter name="phone" value="171120033" />
+		<Parameter name="address1" value="HCMUS" />
+		<Parameter name="newAddress" value="KHTN" />
+		<Parameter name="city" value="HCM" />
+		<Parameter name="state" value="AK" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address1},!{postalCode},!{state},!{shipMethod}" />
+		<SequenceRef name="UPDATE_SEND_SALE_FIRST_LAST_NAME" values="!{updatedFirstName}, !{updatedLastName}" /> 
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+
+	<TestCase name="EXTENDTRN-SS-ESP-004" applicationKey="REGISTER" >
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="updatedShipMethod" value="UPS_2DAY" />
+		<Parameter name="postalCode" values="60046" />
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="171120033" />
+		<Parameter name="address1" value="HCMUS" />
+		<Parameter name="newAddress" value="KHTN" />
+		<Parameter name="city" value="HCM" />
+		<Parameter name="state" value="AK" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address1},!{postalCode},!{state},!{shipMethod}" />
+		<SequenceRef name="UPDATE_SEND_SALE_SHIP_METHOD" values="!{updatedShipMethod}" /> 
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	
+	<TestCase name="EXTENDTRN-SS-ITM-001" applicationKey="REGISTER" >
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="1711200301" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />		
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="EXTENDTRN-SS-ITM-002" applicationKey="REGISTER" >
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="1711200301" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_WARRANTY_ITEM" values="!{witemId}"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_BTN_YES" />
+        <SequenceRef name="SELECT_SEND_SALE" />	
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />		
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	
+	<TestCase name="EXTENDTRN-SS-ITM-006" applicationKey="REGISTER" >
+		<Parameter name="sitemId" value="2003-T" />
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="1711200301" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="!{sitemId}" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+    <TestCase name="EXTENDTRN-SS-ITM-008" applicationKey="REGISTER" >
+		<Parameter name="aitemId" value="72001" />
+		<Parameter name="kitemId" value="KIT1" />
+		<Parameter name="ritemId" value="43400000" />
+		<Parameter name="sitemId" value="2003-T" />
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="1711200301" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />
+        <SequenceRef name="SCAN_WARRANTY_ITEM" values="!{witemId}"/>
+        <SequenceRef name="SELECT_BTN_YES" />
+        <SequenceRef name="SCAN_ITEM" values="!{ritemId}" />
+        <SequenceRef name="SELECT_BTN_YES" />
+        <SequenceRef name="SCAN_ITEM" values="!{sitemId}" />
+        <SequenceRef name="SCAN_ITEM" values="!{kitemId}" />
+        <SequenceRef name="SCAN_ITEM" values="!{aitemId}" />
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+    <TestCase name="EXTENDTRN-SS-IOP-001" applicationKey="REGISTER" >
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="1711200301" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />
+        <SequenceRef name="CHANGE_QTY" values="5" />
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+    <TestCase name="EXTENDTRN-SS-IOP-002" applicationKey="REGISTER" >
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="17112003" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+        <Parameter name="item1" value="6000" />
+        <Parameter name="newprice" values="171" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+        <SequenceRef name="SCAN_ITEM" values="!{item1}" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />
+        <SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+        <SequenceRef name="SELECT_AMT_DUE" />
+        <SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+
+    <TestCase name="EXTENDTRN-SS-IOP-003" applicationKey="REGISTER" >
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="1711200301" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />
+        <SequenceRef name="ADD_LINE_ITEM_DISCOUNT"/>       
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+    <TestCase name="EXTENDTRN-SS-IOP-012" applicationKey="REGISTER" >   
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="1711200301" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="shipMethod" value="UPS_1DAY" /> 
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />               
+        <SequenceRef name="VOID_LINE_ITEM_WITH_1ST_REASCODE" />                    
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+
+    <TestCase name="EXTENDTRN-SS-TOP-001" applicationKey="REGISTER" >
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="1711200301" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="discountPCT" values="5" />
+		<Parameter name="discountOpPCT" values="TRANS_PCT" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />        
+        <SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpPCT},!{discountPCT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq" />        
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+    <TestCase name="EXTENDTRN-SS-TOP-003" applicationKey="REGISTER" >
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="1711200301" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+        <Parameter name="item1" value="6000" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+        <Parameter name="item3" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item4" value="%?REGULAR_ITEMS_FILE.ItemId" />
+        <Parameter name="GroupDiscountOpPer" value="GRP_PCT" />
+		<Parameter name="reascode" values="%?DISCOUNT_REASONS.ReasonCode" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="!{item3}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item4}" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />    
+        <SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />   
+		<SequenceRef name="APPLY_GROUP_DISCOUNT" values="!{GroupDiscountOpPer},!{reascode},!{item1},!{item2}" />        
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+    <TestCase name="EXTENDTRN-SS-TOP-008" applicationKey="REGISTER" >
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="1711200301" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="newTaxAMT" values="1.20" />
+		<Parameter name="itemId" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />        
+        <SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{itemId},!{newTaxAMT}"/>    
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+    <TestCase name="EXTENDTRN-SS-TOP-009" applicationKey="REGISTER" >
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="1711200301" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="newTaxPER" values="2.5" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />        
+        <SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+    <TestCase name="EXTENDTRN-SS-TOP-010" applicationKey="REGISTER" >
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="1711200301" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+        <Parameter name="certificateHolderName" value="BTM" />
+        <Parameter name="certificateNbr" value="123" />
+        <Parameter name="reasonCode" value="TE1" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />        
+        <SequenceRef name="ADD_TRANS_TAX_1ST_REASCODE" values="!{certificateHolderName}, !{certificateNbr}, !{reasonCode}"/>
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+
+    
+    <TestCase name="EXTENDTRN-SS-TOP-011" applicationKey="REGISTER" >
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="1711200301" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />        
+        <SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+    </TestCase>
+
+    <TestCase name="EXTENDTRN-SS-TOP-012" applicationKey="REGISTER" >
+		<Parameter name="custFirstName" value="Test" />
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="1711200301" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />		
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_FULLNAME" values="!{custLastName}, !{custFirstName}" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_FULLNAME" values="!{custLastName}, !{custFirstName}" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransactionId.getTransactionSequence" />
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+
+    <TestCase name="EXTENDTRN-SS-TOP-013" applicationKey="REGISTER" >
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="1711200301" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />        
+        <SequenceRef name="CANCEL_TRANSACTION_HAS_ITEM" />
+    </TestCase>
+
+	<!-- EXTENDTRN-SS-TOP-014: Verify that a new send sale transaction can be created successfully with a non-serialized coupon. -->
+	<TestCase name="EXTENDTRN-SS-TOP-014" applicationKey="REGISTER" >
+		<Parameter name="firstName" value="Julia" />
+	    <Parameter name="lastName" value="Johnson" />
+	    <Parameter name="gender" value="" />
+	    <Parameter name="organizationName" value="" />
+	    <Parameter name="organizationTypeCode" value="" />
+	    <Parameter name="birthDate" value="" />
+	    <Parameter name="address1" value="7700 France Avenue S" />
+	    <Parameter name="city" value="Edina" />
+	    <Parameter name="postalCode" value="55435" />
+        <Parameter name="state" value="MN"/>
+	    <Parameter name="phoneNumber1" value="12402082601" />
+	    <Parameter name="email1" value="" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="couponid" values="XUNITCOUPON" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="1020" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<!--If using discount code for the coupon, enable SequenceRef name="ADD_COUPON" and disable SequenceRef name="SELECT_BTN_COUPON"
+			If using deal for the coupon, enable SequenceRef name="SELECT_BTN_COUPON" and disable SequenceRef name="ADD_COUPON"		-->
+		<!-- <SequenceRef name="ADD_COUPON" values="!{couponid},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq" /> --> 
+		<SequenceRef name="SELECT_BTN_COUPON" values="!{couponid}" /> 
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CREATE_NEW_CUSTOMER_IN_DETAILS" values="!{firstName},!{lastName},!{gender},!{organizationName},!{organizationTypeCode},!{birthDate},!{address1},!{city},!{postalCode},!{state},!{phoneNumber1},!{email1}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phoneNumber1},!{address1},!{postalCode},!{state},!{shipMethod}" />
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!-- EXTENDTRN-SS-TOP-015: Verify that a new send sale transaction can be created successfully with a serialized coupon. -->
+	<TestCase name="EXTENDTRN-SS-TOP-015" applicationKey="REGISTER" >
+		<Parameter name="firstName" value="Simpson" />
+	    <Parameter name="lastName" value="Smith" />
+	    <Parameter name="gender" value="" />
+	    <Parameter name="organizationName" value="" />
+	    <Parameter name="organizationTypeCode" value="" />
+	    <Parameter name="birthDate" value="" />
+	    <Parameter name="address1" value="7700 France Avenue S" />
+	    <Parameter name="city" value="Edina" />
+	    <Parameter name="postalCode" value="55435" />
+        <Parameter name="state" value="MN"/>
+	    <Parameter name="phoneNumber1" value="12402082602" />
+	    <Parameter name="email1" value="" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="serializedCoupon" values="SRL2002002100001I3" /> <!--Replace by a valid serialized coupon number everytime running script-->
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CREATE_NEW_CUSTOMER_IN_DETAILS" values="!{firstName},!{lastName},!{gender},!{organizationName},!{organizationTypeCode},!{birthDate},!{address1},!{city},!{postalCode},!{state},!{phoneNumber1},!{email1}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phoneNumber1},!{address1},!{postalCode},!{state},!{shipMethod}" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+		<SequenceRef name="SELECT_BTN_COUPON" values="!{serializedCoupon}" /> 
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+
+	<TestCase name="EXTENDTRN-SS-COP-001" applicationKey="REGISTER" >
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="postalCode" values="60046" />
+		<Parameter name="custLastName" value="BTMSO" />
+		<Parameter name="custFirstName" value="Test" />
+		<Parameter name="phone" value="17112003334234" />
+		<Parameter name="address1" value="HCMUS" />
+		<Parameter name="city" value="HCM" />
+		<Parameter name="state" value="AK" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SEND_SALE_TRANSACTION_CREATE_CUSTOMER" values="!{phone}, !{shipMethod}, !{custFirstName}, !{custLastName}, !{address1}, !{city}, !{state}, !{postalCode}"/>
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+
+	<TestCase name="EXTENDTRN-SS-COP-002" applicationKey="REGISTER" >
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="postalCode" values="60046" />
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="171120033" />
+		<Parameter name="address1" value="HCMUS" />
+		<Parameter name="city" value="HCM" />
+		<Parameter name="state" value="AK" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address1},!{postalCode},!{state},!{shipMethod}" />
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+
+	<TestCase name="EXTENDTRN-SS-PRM-001" applicationKey="REGISTER" >
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="postalCode" values="60046" />
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="171120033" />
+		<Parameter name="address1" value="HCMUS" />
+		<Parameter name="city" value="HCM" />
+		<Parameter name="state" value="AK" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />	
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address1},!{postalCode},!{state},!{shipMethod}" />
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<TestCase name="EXTENDTRN-SS-SPD-001" applicationKey="REGISTER" >
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="postalCode" values="60046" />
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="171120033" />
+		<Parameter name="address1" value="HCMUS" />
+		<Parameter name="city" value="HCM" />
+		<Parameter name="state" value="AK" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address1},!{postalCode},!{state},!{shipMethod}" />
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+
+	
+	<TestCase name="EXTENDTRN-SS-SPD-001" applicationKey="REGISTER" >
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="postalCode" values="60046" />
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="171120033" />
+		<Parameter name="address1" value="HCMUS" />
+		<Parameter name="city" value="HCM" />
+		<Parameter name="state" value="AK" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address1},!{postalCode},!{state},!{shipMethod}" />
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	
+
+
+	<TestCase name="EXTENDTRN-SS-SPD-002" applicationKey="REGISTER" >
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="postalCode" values="60046" />
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="2ndCustLastName" value="little" />
+		<Parameter name="phone" value="171120033" />
+		<Parameter name="address1" value="HCMUS" />
+		<Parameter name="city" value="HCM" />
+		<Parameter name="state" value="AK" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SEND_SALE_TRANSACTION_TO_ANOTHER_CUSTOMER" values="!{phone}, !{shipMethod}, !{custLastName}, !{2ndCustLastName}"/>
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+
+	
+	<TestCase name="EXTENDTRN-SS-SPD-004" applicationKey="REGISTER" >
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="postalCode" values="60046" />
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="custFirstName" value="Test" />
+		<Parameter name="phone" value="17112003" />
+		<Parameter name="address1" value="HCMUS" />
+		<Parameter name="city" value="HCM" />
+		<Parameter name="state" value="AK" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SEND_SALE_TRANSACTION_UPDATE_DESTINATION" values="!{phone}, !{shipMethod}, !{custFirstName}, !{custLastName}, !{address1}, !{city}, !{state}, !{postalCode}"/>
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<TestCase name="EXTENDTRN-SS-SPD-005" applicationKey="REGISTER" >
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="postalCode" values="60046" />
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="custFirstName" value="Test" />
+		<Parameter name="phone" value="17112003" />
+		<Parameter name="address1" value="HCMUS" />
+		<Parameter name="city" value="HCM" />
+		<Parameter name="state" value="AK" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SEND_SALE_TRANSACTION_UPDATE_DESTINATION" values="!{phone}, !{shipMethod}, !{custFirstName}, !{custLastName}, !{address1}, !{city}, !{state}, !{postalCode}"/>
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	
+	<TestCase name="EXTENDTRN-SS-SPD-008" applicationKey="REGISTER" >
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="postalCode" values="60046" />
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="custFirstName" value="Test" />
+		<Parameter name="phone" value="17112003" />
+		<Parameter name="address1" value="HCMUS" />
+		<Parameter name="city" value="HCM" />
+		<Parameter name="state" value="AK" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+        <SequenceRef name="SEND_SALE_TRANSACTION_UPDATE_DESTINATION" values="!{phone}, !{shipMethod}, !{custFirstName}, !{custLastName}, !{address1}, !{city}, !{state}, !{postalCode}"/>
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--EXTENDTRN-SS-PRM-002: Verify that a new send sale transaction can be created successfully with a store deal - transaction discount.-->
+	<TestCase name="EXTENDTRN-SS-PRM-002" applicationKey="REGISTER">
+		<Parameter name="dealId" value="THRESHOLD_AMT" />
+		<Parameter name="itemDealX" value="6000" />		
+		<Parameter name="custLastName" value="BTMSendS" />
+		<Parameter name="phone" value="1711200301" />
+		<Parameter name="state" value="TX" />
+		<Parameter name="address" value="Helios Building" />
+		<Parameter name="postalCode" value="75042" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemDealX}" iterations="12" />
+		<SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" />		
+        <SequenceRef name="SELECT_SEND_SALE" />
+        <SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+        <SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+        <SequenceRef name="SELECT_SEND_SALE_SHIPPING_METHOD" values="BTM,SendSale,!{phone},!{address},!{postalCode},!{state},!{shipMethod}" />
+        <SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>	
+	<!-- LAYAWAY -->
+		<!-- Customer Options-->
+	<!--EXTENDTRN-L-EDIT-001: Verify that a new layaway can be completed successfully with Add One Coupon.-->	 
+	 <TestCase name="EXTENDTRN-L-EDIT-001" applicationKey="REGISTER" >
+		<Parameter name="couponid" value="XUNITCOUPON" />
+	 	<Parameter name="paymentPeriods" value="4" />	
+		<Parameter name="itemid" value="1020" />	
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_LASTNAME" values="%?ENTER_CUSTOMER_FILE.lastName" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="3" />
+		<SequenceRef name="ADD_CUSTOMER_ACCOUNT_COUPON" values="!{couponid}" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />
+    </TestCase>
+
+	<!--EXTENDTRN-L-EDIT-003: Verify that a new layaway can be completed successfully with Add One Group Discount.-->	 
+	 <TestCase name="EXTENDTRN-L-EDIT-003" applicationKey="REGISTER" >
+		<Parameter name="GroupDiscountOpPer" value="GRP_PCT" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="lastName" value="BTM" />		
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />			
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="1"/>
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" iterations="1"/>
+		<SequenceRef name="APPLY_LAYAWAY_GROUP_DISCOUNT" values="!{GroupDiscountOpPer},%?DISCOUNT_REASONS.ReasonCode,!{item1},!{item2}"/>
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(LAYAWAY).getAccountBalance.divide(10)"/>
+		<SequenceRef name="ENTER_LAYAWAY_PAYMENT_PERIODS" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />	
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />
+    </TestCase>
+	<!-- Customer Options-->
+	<!--EXTENDTRN-L-COP-002: Verify that a new layaway can be completed successfully with creating a new customer.-->	 
+	 <TestCase name="EXTENDTRN-L-COP-002" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="lastName" value="BTM" />
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />		
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />			
+		<SequenceRef name="CREATE_NEW_CUSTOMER_IN_TRAN" values="!{teleNumber}, !{lastName}" />	
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />
+    </TestCase>
+	
+	<!--EXTENDTRN-L-COP-003: Verify that a new layaway can be completed successfully with the associated customer has not had any layaways-->	 
+	 <TestCase name="EXTENDTRN-L-COP-003" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="lastName" value="BTM" />
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />		
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />			
+		<SequenceRef name="CREATE_NEW_CUSTOMER_IN_TRAN" values="!{teleNumber}, !{lastName}" />	
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />
+    </TestCase>
+	
+	<!--EXTENDTRN-L-COP-004: Verify that a new layaway can be completed successfully with associated customer has had layaways -->	 
+	 <TestCase name="EXTENDTRN-L-COP-004" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />		
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />
+    </TestCase>
+	
+	<!-- Item Types -->
+	<!--EXTENDTRN-L-ITM-001: Verify that a new layaway transaction can be created successfully with merchandise items. -->	 
+	 <TestCase name="EXTENDTRN-L-ITM-001" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />		
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />
+    </TestCase>
+	
+	<!--EXTENDTRN-L-ITM-005: Verify that a new layaway transaction can be created successfully with Serialized Item. -->	 
+	 <TestCase name="EXTENDTRN-L-ITM-005" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="1009" />	
+		<Parameter name="Serial" value="888888888888" />	
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="ENTER_SERIAL_NUMBER" values="!{Serial}"/>	
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />
+    </TestCase>
+	
+	<!--EXTENDTRN-L-ITM-006: Verify that a new layaway transaction can be created successfully with Multiple Item Types. 
+		- Merchandise item
+		- Restricted item
+		- Attached item
+		- KIT item
+		- Serialized item -->	 
+	 <TestCase name="EXTENDTRN-L-ITM-006" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+		<Parameter name="nextTran" value="@getNextSequenceValue(Transaction)" />
+		<Parameter name="serial_item" value="!{rtlLocId}!{wkstnId}!{nextTran}" />
+		<Parameter name="Serial" value="888888888888" />	
+		<Parameter name="restriction_item" value="9301" />
+		<Parameter name="attached_item" value="3006" />
+		<Parameter name="kit_item" value="KIT1" />
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="SCAN_ITEM" values="!{serial_item}" iterations="1" />
+		<SequenceRef name="ENTER_SERIAL_NUMBER" values="!{Serial}"/>	
+		<SequenceRef name="SCAN_ITEM" values="!{restriction_item}" iterations="1" />
+		<Assertion promptKey="ITEM_MIN_AGE" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SCAN_ITEM" values="!{attached_item}" iterations="1" />
+		<SequenceRef name="SCAN_ITEM" values="!{kit_item}" iterations="1" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />
+    </TestCase>
+	
+	<!-- Item Options -->
+	<!--EXTENDTRN-L-IOP-001: Verify that a new layaway transaction can be created successfully with the item has quantity change.-->
+	 <TestCase name="EXTENDTRN-L-IOP-001" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />		
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="LAYAWAY_CHANGE_ITEM_QTY" values="!{itemid}, 2" />		
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/><SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />		
+    </TestCase>
+	
+	<!--EXTENDTRN-L-IOP-002: Verify that a new layaway transaction can be created successfully with the item has price change.-->
+	 <TestCase name="EXTENDTRN-L-IOP-002" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="newPrice" value="40" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="LAYAWAY_CHANGE_ITEM_PRICE" values ="!{itemid},!{newPrice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/><SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />		
+    </TestCase>
+	
+	<!--EXTENDTRN-L-IOP-003: Verify that a new layaway transaction can be created successfully with the item has an item discount.-->
+	 <TestCase name="EXTENDTRN-L-IOP-003" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="disPCT" values="ITEM_PCT_PROMPT" />
+		<Parameter name="PCT" values="10" />
+		<Parameter name="reascode" values="%?DISCOUNT_REASONS.ReasonCode" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="LAYAWAY_ADD_ITEM_DISCOUNT" values ="!{itemid},!{disPCT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq,!{PCT}"/>
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />		
+    </TestCase>
+	
+	
+	<!--EXTENDTRN-L-IOP-004: Verify that a new layaway transaction can be created successfully with the item has multiple item discounts.-->
+	 <TestCase name="EXTENDTRN-L-IOP-004" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="disPCT" values="ITEM_PCT_PROMPT" />
+		<Parameter name="PCT" values="10" />
+		<Parameter name="disAMT" values="ITEM_AMT_PROMPT" />
+		<Parameter name="AMT" values="2" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<Parameter name="reascode" values="%?DISCOUNT_REASONS.ReasonCode" />				
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="LAYAWAY_ADD_ITEM_DISCOUNT" values ="!{itemid},!{disPCT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq,!{PCT}"/>
+		<SequenceRef name="LAYAWAY_ADD_ITEM_DISCOUNT" values ="!{itemid},!{disAMT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq,!{AMT}"/>
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />		
+    </TestCase>
+	
+	<!--EXTENDTRN-L-IOP-005: Verify that a new layaway transaction can be created successfully with multiple item discounts applied to multiple line items in the transaction.-->
+	 <TestCase name="EXTENDTRN-L-IOP-005" applicationKey="REGISTER" >
+		<Parameter name="itemid_01" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+		<Parameter name="itemid_02" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="disPCT" values="ITEM_PCT_PROMPT" />
+		<Parameter name="PCT" values="10" />
+		<Parameter name="disAMT" values="ITEM_AMT_PROMPT" />
+		<Parameter name="AMT" values="2" />
+		<Parameter name="reascode" values="%?DISCOUNT_REASONS.ReasonCode" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid_01}" iterations="1" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid_02}" iterations="1" />
+		<SequenceRef name="LAYAWAY_ADD_ITEM_DISCOUNT" values ="!{itemid_01},!{disPCT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq,!{PCT}"/>
+		<SequenceRef name="LAYAWAY_ADD_ITEM_DISCOUNT" values ="!{itemid_02},!{disAMT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq,!{AMT}"/>
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />		
+    </TestCase>
+		<!--EXTENDTRN-L-DTL-001: Verify user can view Layaway Payment Schedule.
+		Precondition:
+		One or more layaway transactions exist in Xstore.
+
+		Steps:
+		1. Log in to Xstore
+		2. Start transaction
+		3. Selected Extended Transaction
+		4. Select layaway
+		5. Select any layaway from the list
+		6. Select Overflow > View Payment Schedule-->	
+	
+	 <TestCase name="EXTENDTRN-L-DTL-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_LASTNAME" values="%?OPEN_LAYAWAYS_DB.LastName" />	
+		<SequenceRef name="LAYAWAY_SCHEDULE" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANDE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />
+    </TestCase>
+	
+	<!--EXTENDTRN-L-DTL-002: Verify user can view Layaway is recently created via Layaway Payment History
+		Precondition:
+		One or more layaway transactions exist in Xstore with recently created
+
+		Steps:
+		1. Log in to Xstore
+		2. Start transaction
+		3. Selected Extended Transaction
+		4. Select layaway
+		5. Select any layaway from the list
+		6. Select Overflow > View Payment History-->	
+	
+	 <TestCase name="EXTENDTRN-L-DTL-002" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_LASTNAME" values="%?OPEN_LAYAWAYS_DB.LastName" />	
+		<SequenceRef name="LAYAWAY_PAYMENT_ACTIVITY" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANDE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />
+    </TestCase>
+	
+	<!--EXTENDTRN-L-DTL-003: Verify user can view Layaway is partially picked up via Layaway Payment History
+		Precondition:
+		One or more layaway transactions exist in Xstore with partially picked up.
+
+		Steps:
+		1. Log in to Xstore
+		2. Start transaction
+		3. Selected Extended Transaction
+		4. Select layaway
+		5. Select any layaway from the list
+		6. Select Overflow > View Payment History-->	
+	
+	 <TestCase name="EXTENDTRN-L-DTL-003" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_LASTNAME" values="%?OPEN_LAYAWAYS_DB.LastName" />	
+		<SequenceRef name="LAYAWAY_PAYMENT_ACTIVITY" />
+    </TestCase>
+
+	<!--EXTENDTRN-L-DTL-004: Verify user can view Layaway has payments but has not been completed via Layaway Payment History
+		Precondition:
+		One or more layaway transactions exist in Xstore with partially picked up.
+
+		Steps:
+		1. Log in to Xstore
+		2. Start transaction
+		3. Selected Extended Transaction
+		4. Select layaway
+		5. Select any layaway from the list
+		6. Select Overflow > View Payment History-->	
+	
+	 <TestCase name="EXTENDTRN-L-DTL-004" applicationKey="REGISTER" >	
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_LASTNAME" values="%?OPEN_LAYAWAYS_DB.LastName" />	
+		<SequenceRef name="LAYAWAY_PAYMENT_ACTIVITY" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+    </TestCase>
+
+	<!--EXTENDTRN-L-DTL-005: Verify user can view Layaway Activity History
+		Precondition:
+		One or more layaway transactions exist in Xstore with partially picked up.
+
+		Steps:
+		1. Log in to Xstore
+		2. Start transaction
+		3. Selected Extended Transaction
+		4. Select layaway
+		5. Select any layaway from the list
+		6. Select Overflow > View Activity History-->	
+	
+	 <TestCase name="EXTENDTRN-L-DTL-005" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_LASTNAME" values="%?OPEN_LAYAWAYS_DB.LastName" />	
+		<SequenceRef name="LAYAWAY_ACTIVITY" />
+    </TestCase>
+
+	<!--EXTENDTRN-L-CST-001: Verify the user can view detailed customer in layaway transaction
+		Precondition:
+		One or more layaway transactions exist in Xstore with partially picked up.
+
+		Steps:
+		1. Log in to Xstore
+		2. Start transaction
+		3. Selected Extended Transaction
+		4. Select layaway
+		5. Select any layaway from the list
+		6. Select Overflow > Customer Dashboard-->
+			
+	 <TestCase name="EXTENDTRN-L-CST-001" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_LASTNAME" values="%?OPEN_LAYAWAYS_DB.LastName" />	
+		<SequenceRef name="VIEW_CUSTOMER_IN_TRANSACTION" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANDE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />
+    </TestCase>
+	<!--EXTENDTRN-L-IOP-006: Verify that a new layaway transaction can be created successfully with the item has a line item discount which is modified.-->
+	<!--<SequenceRef name="LAYAWAY_MODIFY_ITEM_DISCOUNT" values ="!{itemid},!{disPCT},!{disPCT},!{newPCT},!{reascode}"/>-->
+	 <TestCase name="EXTENDTRN-L-IOP-006" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="disPCT" values="ITEM_PCT_PROMPT" />
+		<Parameter name="PCT" values="10" />
+		<Parameter name="newPCT" values="15" />
+		<Parameter name="reascode" values="%?DISCOUNT_REASONS.ReasonCode" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="LAYAWAY_ADD_ITEM_DISCOUNT" values ="!{itemid},!{disPCT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq,!{PCT}"/>
+		<!--<TestStep action="SELECT_LAYAWAY_DISCOUNT_TO_CHANGE" description="SELECT_LAYAWAY_DISCOUNT_TO_CHANGE (PromptItemScanOp)">
+            <ListSelect method="getItemId" value="!{itemid}" modelKey="LAYAWAY" />
+        </TestStep>
+		<TestStep action="ACCEPT" description="ACCEPT (PromptDiscountsForSaleLineOp)">
+            <ListSelect method="getDiscountCode" value="!{disPCT}"/>
+        </TestStep>
+		<SequenceRef name="SELECT_DISCOUNT_OPTION" values="!{disPCT},!{reascode}" />
+		<TestStep action="ACCEPT" data="!{percentAMT}" description="Enter !{percentAMT}%"/>	-->
+		<SequenceRef name="LAYAWAY_MODIFY_ITEM_DISCOUNT" values ="!{itemid},!{disPCT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq,!{newPCT}"/>
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />
+    </TestCase>
+	
+	<!--Pick Up Items-->
+	<!--EXTENDTRN-L-PICKUP-001: Verify that a layaway transaction can be successfully completed by picking up all items.-->
+	<TestCase name="EXTENDTRN-L-PICKUP-001" applicationKey="REGISTER" >
+		<Parameter name="item1" value="6000" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="lastName" value="BTMLAY" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber}, !{lastName}" />	
+		<SequenceRef name="START_LAYAWAY_CREATE" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="1" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" iterations="1" />
+		<SequenceRef name="COMPLETE_LAYAWAY_CREATE" values="!{paymentPeriods}" />		
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="LAYAWAY" />			
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_ID" values="%^GET_LAYAWAYS_DB.CustAcctId!" />
+		<SequenceRef name="SELECT_BTN_LAYAWAY_PICKUP" />		
+		<SequenceRef name="SELECT_TWO_ITEM_PICKUP" values="!{item1}, !{item2}" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_STATUS" values="CLOSED" />		
+	</TestCase>
+	
+	<!--EXTENDTRN-L-PICKUP-002: Verify that a layaway transaction can be successfully completed by picking up one item.-->
+	<TestCase name="EXTENDTRN-L-PICKUP-002" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="teleNumber" value="096767528" />
+		<Parameter name="lastName" value="BTMLAY" />
+		<Parameter name="paymentPeriods" value="4" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber}, !{lastName}" />	
+		<SequenceRef name="START_LAYAWAY_CREATE" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="1" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" iterations="1" />
+		<SequenceRef name="COMPLETE_LAYAWAY_CREATE" values="!{paymentPeriods}" />		
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="LAYAWAY" />			
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_ID" values="%^GET_LAYAWAYS_DB.CustAcctId!" />
+		<SequenceRef name="SELECT_BTN_LAYAWAY_PICKUP" />		
+		<SequenceRef name="SELECT_ONE_ITEM_PICKUP" values="!{item1}" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_STATUS" values="OPEN" />		
+	</TestCase>
+	<!--EXTENDTRN-L-PICKUP-003: Verify that a layaway transaction can be successfully completed by picking up several items.-->
+	<TestCase name="EXTENDTRN-L-PICKUP-003" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item3" value="6000" />
+		<Parameter name="item4" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="teleNumber" value="096767528" />
+		<Parameter name="lastName" value="BTMLAY" />
+		<Parameter name="paymentPeriods" value="4" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber}, !{lastName}" />	
+		<SequenceRef name="START_LAYAWAY_CREATE" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="1" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" iterations="1" />
+		<SequenceRef name="SCAN_ITEM" values="!{item3}" iterations="1" />
+		<SequenceRef name="SCAN_ITEM" values="!{item4}" iterations="1" />
+		<SequenceRef name="COMPLETE_LAYAWAY_CREATE" values="!{paymentPeriods}" />		
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="LAYAWAY" />			
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_ID" values="%^GET_LAYAWAYS_DB.CustAcctId!" />
+		<SequenceRef name="SELECT_BTN_LAYAWAY_PICKUP" />		
+		<SequenceRef name="SELECT_TWO_ITEM_PICKUP" values="!{item1}, !{item2}" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_STATUS" values="OPEN" />		
+	</TestCase>
+	<!--EXTENDTRN-L-PICKUP-004: Verify that a layaway transaction can be successfully completed by picking up  items from a layaway which has not been completed payment.-->
+	<TestCase name="EXTENDTRN-L-PICKUP-004" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="teleNumber" value="@getNextSequenceValue(Transaction)" />
+		<Parameter name="lastName" value="BTMLAY" />
+		<Parameter name="paymentPeriods" value="4" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber}, !{lastName}" />	
+		<SequenceRef name="START_LAYAWAY_CREATE" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="1" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" iterations="1" />
+		<SequenceRef name="COMPLETE_LAYAWAY_CREATE" values="!{paymentPeriods}" />		
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="LAYAWAY" />			
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_LASTNAME" values="!{lastName}" />
+		<SequenceRef name="SELECT_BTN_LAYAWAY_PICKUP" />		
+		<SequenceRef name="SELECT_TWO_ITEM_PICKUP" values="!{item1}, !{item2}" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_STATUS" values="CLOSED" />		
+	</TestCase>
+	<!--EXTENDTRN-L-PICKUP-005: Verify that a layaway transaction can be successfully completed by picking up  items from a layaway which has already been completed payment.-->
+	<TestCase name="EXTENDTRN-L-PICKUP-005" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="teleNumber" value="@getNextSequenceValue(Transaction)" />
+		<Parameter name="lastName" value="BTMLAY" />
+		<Parameter name="paymentPeriods" values="4" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber}, !{lastName}" />	
+		<SequenceRef name="START_LAYAWAY_CREATE" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="1" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" iterations="1" />
+		<SequenceRef name="COMPLETE_LAYAWAY_CREATE" values="!{paymentPeriods}" />		
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="LAYAWAY" />			
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_ID" values="%^GET_LAYAWAYS_DB.CustAcctId!" />
+		<SequenceRef name="LAYAWAY_ENTER_PAYMENT" values="@getCurrentCustomerAccount(LAYAWAY).getAccountBalance.multiply(0.25).divide(100)" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase>
+	<!--EXTENDTRN-L-DPS-001: Verify that a new layaway transaction can be created successfully with use the recommended deposit amount.-->
+	<TestCase name="EXTENDTRN-L-DPS-001" applicationKey="REGISTER" >	
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" iterations="3" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />		
+    </TestCase>
+
+	<!--EXTENDTRN-L-DPS-002: Verify that a new layaway transaction cannot be created successfully with entered deposit amount is less than the minimum deposit amount.-->
+	<TestCase name="EXTENDTRN-L-DPS-002" applicationKey="REGISTER" >	
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="3" />
+		<SequenceRef name="ACCEPT_LAYAWAY_DEPOSIT_RECOMMENDATION" />
+		<!--<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(LAYAWAY).getAccountBalance.multiply(5).divide(100)"/>-->
+		<SequenceRef name="ENTER_LAYAWAY_PAYMENT_PERIODS" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<!--<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(LAYAWAY).getAccountBalance.multiply(5).divide(100)"/>-->
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />			
+    </TestCase>
+	
+	<!--EXTENDTRN-L-DPS-003: Verify that a new layaway transaction can be created successfully with entered deposit amount is greater than the recommended amount and less than the transaction total.-->
+	<TestCase name="EXTENDTRN-L-DPS-003" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" iterations="3" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(LAYAWAY).getAccountBalance.subtract(@getCurrentCustomerAccount(LAYAWAY).getAccountBalance.multiply(5).divide(100))"/>
+		<SequenceRef name="ENTER_LAYAWAY_PAYMENT_PERIODS" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />		
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />	    
+	</TestCase>
+
+	<!--EXTENDTRN-L-DPS-004: Verify that a new layaway transaction can be created successfully with the entered deposit amount is equal to the transaction total.-->
+	<TestCase name="EXTENDTRN-L-DPS-004" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />		
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" iterations="3" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(LAYAWAY).getAccountTotal"/>	
+		<SequenceRef name="SELECT_AMT_DUE" />			
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />		
+    </TestCase>
+	
+		<!--EXTENDTRN-L-PP-001: Verify that a new layaway transaction can be created successfully with use the recommended payment periods.-->
+	<TestCase name="EXTENDTRN-L-PP-001" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" iterations="2" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(LAYAWAY).getAccountBalance.multiply(5).divide(10)"/>
+		<SequenceRef name="ENTER_LAYAWAY_PAYMENT_PERIODS" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />				
+    </TestCase>	
+	
+		<!--EXTENDTRN-L-PP-002: Verify that a new layaway transaction cannot be created with zero payment periods.-->
+	<TestCase name="EXTENDTRN-L-PP-002" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="0" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" iterations="3" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(LAYAWAY).getAccountBalance.divide(10)"/>
+		<SequenceRef name="ENTER_LAYAWAY_PAYMENT_PERIODS" values="!{paymentPeriods}"/>
+		<Assertion promptKey="ENTER_LAYAWAY_PAYMENT_PERIOD_COUNT" />
+    </TestCase>
+
+		<!--EXTENDTRN-L-PP-003: Verify that a new layaway transaction cannot be created with the entered payment period is less than the minimum payment periods.-->
+	<TestCase name="EXTENDTRN-L-PP-003" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="3" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" iterations="3" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(LAYAWAY).getAccountBalance.divide(10)"/>
+		<SequenceRef name="ENTER_LAYAWAY_PAYMENT_PERIODS" values="!{paymentPeriods}"/>		
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />			
+    </TestCase>	
+
+		<!--EXTENDTRN-L-PP-004: Verify that a new layaway transaction can be created successfully with the entered payment period is greater than the minimum payment periods and less than the recommended value.-->
+	<TestCase name="EXTENDTRN-L-PP-004" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="2" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" iterations="3" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(LAYAWAY).getAccountBalance.divide(10)"/>
+		<SequenceRef name="ENTER_LAYAWAY_PAYMENT_PERIODS" values="!{paymentPeriods}"/>		
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />			
+    </TestCase>	
+
+		<!--EXTENDTRN-L-PP-005: Verify that a new layaway transaction cannot be created with the entered payment period is greater than the recommended value.-->
+	<TestCase name="EXTENDTRN-L-PP-005" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="5" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" iterations="3" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<Assertion promptKey="ENTER_LAYAWAY_PAYMENT_PERIOD_COUNT" />		
+    </TestCase>		
+		
+		<!--EXTENDTRN-L-MPM-001: Verify that users can make layaway payments correctly with the recommended amount-->
+	<TestCase name="EXTENDTRN-L-MPM-001" applicationKey="REGISTER" >
+		<Parameter name="lastName" value="%?OPEN_LAYAWAYS_DB.LastName" />	
+		<Parameter name="acctId" value="%?OPEN_LAYAWAYS_DB.CustAcctId" />			
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_LASTNAME" values="!{lastName}" />	
+		<SequenceRef name="LAYAWAY_ENTER_PAYMENT" values="@getCurrentCustomerAccount(LAYAWAY).getAccountBalance.multiply(0.25).divide(100)" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />		
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" />		
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="ASSERT_LAYAWAY_STATUS" values="OPEN" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />	
+    </TestCase>	
+
+		<!--EXTENDTRN-L-MPM-002: Verify that users can make layaway payments correctly with entered amount is equal to the minimum payment amount-->
+	<TestCase name="EXTENDTRN-L-MPM-002" applicationKey="REGISTER" >
+		<Parameter name="lastName" value="%?GET_LAYAWAYS_DB.LastName!" />	
+		<Parameter name="acctId" value="%?GET_LAYAWAYS_DB.CustAcctId!" />			
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_LASTNAME" values="!{lastName}" />
+		<SequenceRef name="LAYAWAY_ENTER_PAYMENT" values="5" />	
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />		
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" />		
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />	
+		<SequenceRef name="ASSERT_LAYAWAY_STATUS" values="OPEN" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />		
+    </TestCase>		
+
+		<!--EXTENDTRN-L-MPM-003: Verify that users cannot make layaway payments correctly with entered amount is less than the recommended amount and greater than the minimum payment amount.-->
+	<TestCase name="EXTENDTRN-L-MPM-003" applicationKey="REGISTER" >
+		<Parameter name="lastName" value="%?GET_LAYAWAYS_DB.LastName!" />	
+		<Parameter name="acctId" value="%?GET_LAYAWAYS_DB.CustAcctId!" />			
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_LASTNAME" values="!{lastName}" />
+		<SequenceRef name="LAYAWAY_ENTER_PAYMENT" values="6" />	
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />		
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" />		
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />	
+		<SequenceRef name="ASSERT_LAYAWAY_STATUS" values="OPEN" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />		
+    </TestCase>	
+
+		<!--EXTENDTRN-L-MPM-004: Verify that users can make layaway payments correctly with entered amount is greater than the recommended amount and less than the balance due.-->
+	<TestCase name="EXTENDTRN-L-MPM-004" applicationKey="REGISTER" >
+		<Parameter name="lastName" value="%?GET_LAYAWAYS_DB.LastName!" />			
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_LASTNAME" values="!{lastName}" />
+		<SequenceRef name="LAYAWAY_ENTER_PAYMENT" values="@getCurrentCustomerAccount(LAYAWAY).getAccountBalance.multiply(75).divide(100)" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="ACCEPT_LAYAWAY_DEPOSIT_RECOMMENDATION" />
+		<SequenceRef name="SELECT_AMT_DUE" />	
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />			
+    </TestCase>				
+
+		<!--EXTENDTRN-L-MPM-005: Verify that users can make layaway payments correctly with entered amount is equal to the balance due-->
+	<TestCase name="EXTENDTRN-L-MPM-005" applicationKey="REGISTER" >
+		<Parameter name="lastName" value="%?OPEN_LAYAWAYS_DB.LastName!" />			
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_LASTNAME" values="!{lastName}" />
+		<SequenceRef name="LAYAWAY_ENTER_PAYMENT" values="@getCurrentCustomerAccount(LAYAWAY).getAccountBalance.multiply(100).divide(100)" />	
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />		
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" />		
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />	
+		<SequenceRef name="ASSERT_LAYAWAY_STATUS" values="OPEN" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />		
+    </TestCase>		
+
+		<!--EXTENDTRN-L-MPM-006: Verify that users can make layaway payments correctly with entered amount is greater than the balance due if Xstore allows Overpayment.-->
+	<TestCase name="EXTENDTRN-L-MPM-006" applicationKey="REGISTER" >
+		<Parameter name="CustAcctId" value="%?OPEN_LAYAWAYS_DB.CustAcctId!" />			
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_ID" values="!{CustAcctId}" />
+		<SequenceRef name="LAYAWAY_ENTER_PAYMENT" values="@getCurrentCustomerAccount(LAYAWAY).getAccountBalance.multiply(125).divide(100)" />	
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />		
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" />		
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />	
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />		
+    </TestCase>
+<!--EXTENDTRN-L-IOP-007: Verify that a new layaway transaction can be created successfully with the item has line item discount which is removed.-->
+	<TestCase name="EXTENDTRN-L-IOP-007" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+		<Parameter name="disPCT" values="ITEM_PCT_PROMPT" />
+		<Parameter name="PCT" values="10" />			
+		<Parameter name="teleNumber" values="096767526" />
+		<Parameter name="paymentPeriods" values="4" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="LAYAWAY_ADD_ITEM_DISCOUNT" values ="!{itemid},!{disPCT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq,!{PCT}"/>
+		<SequenceRef name="LAYAWAY_REMOVE_ITEM_DISCOUNT" values ="!{itemid},!{disPCT}"/>		
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>		
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />
+    </TestCase>
+	
+	<!--EXTENDTRN-L-IOP-012: Verify that a new layaway transaction can be created successfully with voided item.-->
+	 <TestCase name="EXTENDTRN-L-IOP-012" applicationKey="REGISTER" >
+		<Parameter name="itemid_01" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+		<Parameter name="itemid_02" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="paymentPeriods" values="4" />
+		<Parameter name="teleNumber" values="096767526" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="SCAN_ITEM" values="!{itemid_01}" iterations="1" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid_02}" iterations="1" />
+		<SequenceRef name="VOID_LAYAWAY_ITEM" values ="!{itemid_02},VL1,%?VOID_LINE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />
+    </TestCase>
+	
+	<!-- Transaction Options -->
+	
+	<!--EXTENDTRN-L-TOP-001: Verify that a new layaway transaction can be created successfully with a group discount.-->
+	 <TestCase name="EXTENDTRN-L-TOP-001" applicationKey="REGISTER" >
+		<Parameter name="itemid_01" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+		<Parameter name="itemid_02" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="disPCT" values="GRP_PCT_PROMPT" />
+		<Parameter name="PCT" values="10" />
+		<Parameter name="teleNumber" values="096767526" />
+		<Parameter name="paymentPeriods" values="4" />
+		<Parameter name="reasoncode" values="%?DISCOUNT_REASONS.ReasonCode" />	
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />		
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />		
+		<SequenceRef name="SCAN_ITEM" values="!{itemid_01}" iterations="1" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid_02}" iterations="1" />
+		<SequenceRef name="ADD_LAYAWAY_GROUP_DISCOUNT" values ="!{disPCT},!{reasoncode},!{itemid_01},!{itemid_02},!{PCT}"/>
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />
+    </TestCase>
+
+	<!--EXTENDTRN-L-TOP-005: Verify that a new layaway transaction can be created successfully with a transaction tax amount change.-->
+	<TestCase name="EXTENDTRN-L-TOP-005" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+		<Parameter name="TaxAmt" value="2" />
+		<Parameter name="reasoncode" values="%?TAX_CHANGE_REASONS.ReasonCode" />	
+		<Parameter name="paymentPeriods" values="4" />
+		<Parameter name="teleNumber" values="096767526" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<!--<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />-->
+		<SequenceRef name="ACCEPT_LAYAWAY_DEPOSIT_RECOMMENDATION" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="LAYAWAY_TAX_TRAN_CHANGE_AMOUNT" values="!{TaxAmt}, !{reasoncode}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />
+    </TestCase>
+	
+	<!--EXTENDTRN-L-TOP-007: Verify that a new layaway transaction can be created successfully with transaction tax exempt.-->
+
+	<TestCase name="EXTENDTRN-L-TOP-007" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="certificateHolderName" value="1234" />
+		<Parameter name="certificateNbr" value="567" />
+		<Parameter name="reasoncode" values="%?TAX_EXEMPT_REASONS.ReasonCode" />	
+		<Parameter name="lastName" value="BTMLAY" />
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" values="4" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber}, !{lastName}" />	
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />		
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="LAYAWAY_TAX_TRAN_EXEMPT" values="!{certificateHolderName},!{certificateNbr}, !{reasoncode}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />
+    </TestCase>
+
+
+	<!--EXTENDTRN-L-TOP-008: Verify that a new layaway transaction can be suspended. -->
+	<TestCase name="EXTENDTRN-L-TOP-008" applicationKey="REGISTER" > 
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />	
+		<Parameter name="paymentPeriods" values="4" />
+		<Parameter name="teleNumber" values="096767526" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+    </TestCase>
+
+
+	<!--EXTENDTRN-L-TOP-009: Verify that a new layaway transaction that was suspended can be resumed.-->
+	<TestCase name="EXTENDTRN-L-TOP-009" applicationKey="REGISTER" > 
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="paymentPeriods" values="4" />
+		<Parameter name="teleNumber" value="@getNextSequenceValue(Transaction)" />
+		<Parameter name="lastName" value="BTMLayaway" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber}, !{lastName}" />	
+		<SequenceRef name="LAYAWAY" />			
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_PHONE" values="!{teleNumber}" />
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransactionId.getTransactionSequence" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />		
+    </TestCase>
+	<!--EXTENDTRN-L-TOP-010: Verify that a new layaway transaction can be canceled.-->
+	<TestCase name="EXTENDTRN-L-TOP-010" applicationKey="REGISTER" >
+		<Parameter name="lastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />	
+		<SequenceRef name="LAYAWAY" />		
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_LASTNAME" values="!{lastName}" />
+		<SequenceRef name="LAYAWAY_CANCEL_REGISTER"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="ASSERT_LAYAWAY_STATUS" values="CLOSED" />
+		<!--<SequenceRef name="ASSERT_LAYAWAY_CANCEL_RECEIPTS" />	-->	
+    </TestCase>
+
+	<!--EXTENDTRN-L-TOP-011: Verify that a new layaway transaction can be created successfully with a non-serialized coupon.-->
+	<TestCase name="EXTENDTRN-L-TOP-011" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="1020" />
+		<Parameter name="couponid" values="XUNITCOUPON" />
+		<Parameter name="paymentPeriods" values="4" />
+		<Parameter name="teleNumber" values="096767526" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="LAYAWAY" />			
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />			
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="ADD_CUSTOMER_ACCOUNT_COUPON" values="!{couponid}" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>		
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>	
+		<!--EXTENDTRN-L-OPEN-EXT-001: Verify that an existing layaway transaction can be successfully retrieved by selecting the layaway from the Layaway Lookup screen.-->
+	<TestCase name="EXTENDTRN-L-OPEN-EXT-001" applicationKey="REGISTER" >
+		<Parameter name="lastName" value="%?OPEN_LAYAWAYS_DB.LastName" />			
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_LASTNAME" values="!{lastName}" />
+		<SequenceRef name="ASSERT_LAYAWAY_STATUS" values="OPEN" />
+		<Assertion promptKey="LAYAWAY_MAINTENANCE_PROMPT" />		
+    </TestCase>	
+	
+<!--EXTENDTRN-L-ADD-ITM-002: Verify that items can be successfully added to an existing layaway transaction via enter item ID.-->
+	<TestCase name="EXTENDTRN-L-ADD-ITM-002" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />		
+		<Parameter name="lastName" value="%?OPEN_LAYAWAYS_DB.LastName" />	
+		<Parameter name="depositAmt" value="35.54" />		
+		<Parameter name="paymentPeriods" value="4" />			
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_LASTNAME" values="!{lastName}" />	
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="ACCEPT_LAYAWAY_DEPOSIT_RECOMMENDATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="SELECT_AMT_DUE" />	
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />			
+    </TestCase> 	
+
+	<!--EXTENDTRN-L-OPEN-EXT-003: Verify that an existing layaway transaction can be successfully retrieved by searching for a layaway by entering search criteria.-->
+	<TestCase name="EXTENDTRN-L-OPEN-EXT-003" applicationKey="REGISTER" >
+		<Parameter name="lastName" value="%?GET_LAYAWAYS_DB.LastName!" />			
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_LASTNAME" values="!{lastName}" />
+		<SequenceRef name="ASSERT_LAYAWAY_STATUS" values="OPEN" />
+		<Assertion promptKey="LAYAWAY_MAINTENANCE_PROMPT" />			
+    </TestCase>
+
+	<!--EXTENDTRN-L-PRM-001: Verify that a new layaway transaction can be created successfully with a store deal - line item discount.-->
+	<TestCase name="EXTENDTRN-L-PRM-001" applicationKey="REGISTER">
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="dealId" value="ITEM_SKU_PCT" />
+		<Parameter name="itemDealX" value="6000" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>	
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemDealX}" iterations="10" />
+		<SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" />	
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />	
+	</TestCase>	
+	
+	<!--EXTENDTRN-L-PRM-002: Verify that a new layaway transaction can be created successfully with a store deal - transaction discount.-->
+	<TestCase name="EXTENDTRN-L-PRM-002" applicationKey="REGISTER">
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="paymentPeriods" value="4" />
+		<Parameter name="dealId" value="THRESHOLD_AMT" />
+		<Parameter name="itemDealX" value="6000" />			
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="SKIP_CUST" />		
+		<SequenceRef name="LAYAWAY" />	
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />		
+		<SequenceRef name="SCAN_ITEM" values="!{itemDealX}" iterations="10" />
+		<SequenceRef name="CHECK_DEAL_ID" values="!{dealId}" />	
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="!{paymentPeriods}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="ASSERT_LAYAWAY_SETUP_RECEIPTS" />	
+	</TestCase>
+	
+		<!--EXTENDTRN-L-CANCEL-001: Verify cancel a layaway that was recently created when the customer is present.-->
+	<TestCase name="EXTENDTRN-L-CANCEL-001" applicationKey="REGISTER" >
+		<Parameter name="item1" value="70002" />
+		<Parameter name="item2" value="70003" />
+		<Parameter name="teleNumber" value="0902030911" />
+		<Parameter name="lastName" value="TEST02010911" />
+		<Parameter name="paymentPeriods" value="4" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber}, !{lastName}" />	
+		<SequenceRef name="START_LAYAWAY_CREATE" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="1" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" iterations="1" />
+		<SequenceRef name="COMPLETE_LAYAWAY_CREATE" values="!{paymentPeriods}" />	
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="LAYAWAY" />			
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_ID" values="%^GET_LAYAWAYS_DB.CustAcctId!" />
+		<SequenceRef name="LAYAWAY_CANCEL_REGISTER" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="ASSERT_LAYAWAY_STATUS" values="CLOSED" />
+		<SequenceRef name="ASSERT_LAYAWAY_CANCEL_RECEIPTS" />
+	</TestCase>
+	
+	<!--EXTENDTRN-L-CANCEL-002: Cancel a layaway which is partially picked up and customer is present-->
+	<TestCase name="EXTENDTRN-L-CANCEL-002" applicationKey="REGISTER" >
+		<Parameter name="item1" value="70002" />
+		<Parameter name="item2" value="70003" />
+		<Parameter name="teleNumber" value="@getNextSequenceValue(Transaction)" />
+		<Parameter name="lastName" value="TEST02010907" />
+		<Parameter name="paymentPeriods" value="4" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber}, !{lastName}" />	
+		<SequenceRef name="START_LAYAWAY_CREATE" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="1" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" iterations="1" />
+		<SequenceRef name="COMPLETE_LAYAWAY_CREATE" values="!{paymentPeriods}" />		
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="LAYAWAY" />			
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_ID" values="%^GET_LAYAWAYS_DB.CustAcctId!" />
+		<SequenceRef name="SELECT_BTN_LAYAWAY_PICKUP" />		
+		<SequenceRef name="SELECT_ONE_ITEM_PICKUP" values="!{item1}" />
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_STATUS" values="OPEN" />		
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="LAYAWAY" />		
+		<SequenceRef name="ACCESS_OPEN_LAYAWAY_ID" values="%^GET_LAYAWAYS_DB.CustAcctId!" />
+		<SequenceRef name="LAYAWAY_CANCEL_REGISTER" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANDE_DUE" />
+		<SequenceRef name="ASSERT_LAYAWAY_STATUS" values="CLOSED" />
+		<SequenceRef name="ASSERT_LAYAWAY_CANCEL_RECEIPTS" />
+	</TestCase>
+
+	<!-- SPECIAL ORDERS -->
+	<TestCase name="EXTENDTRN-SO-CUSTOMER-002" applicationKey="REGISTER" >
+        <Parameter name="firstName" value="Test" />
+	    <Parameter name="lastName" value="BTMSO" />
+	    <Parameter name="gender" value="" />
+	    <Parameter name="organizationName" value="" />
+	    <Parameter name="organizationTypeCode" value="" />
+	    <Parameter name="birthDate" value="" />
+	    <Parameter name="address1" value="Testing address" />
+	    <Parameter name="city" value="HCM" />
+	    <Parameter name="postalCode" value="75040" />
+        <Parameter name="state" value="TX"/>
+	    <Parameter name="phoneNumber1" value="1234567891" />
+	    <Parameter name="email1" value="" />
+		
+        <SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SPECIAL_ORDER_TRANS"/>
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+        <SequenceRef name="CREATE_NEW_CUSTOMER_IN_DETAILS" values="!{firstName},!{lastName},!{gender},!{organizationName},!{organizationTypeCode},!{birthDate},!{address1},!{city},!{postalCode},!{state},!{phoneNumber1},!{email1}"/>
+		<SequenceRef name="SELECT_BTN_DIRECT_TO_CUSTOMER" />
+		<SequenceRef name="SELECT_SHIPPING_METHOD" values="%?SHIPPING_METHOD_FILE.shippingMethod"/>
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!-- Create a Special Order with existing customer -->
+	<TestCase name="EXTENDTRN-SO-CUSTOMER-003" applicationKey="REGISTER" >
+
+		<Parameter name="custLastName" value="BTMSO" />
+		<Parameter name="custFirstName" value="Test" />
+
+        <SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS"/>
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_FULLNAME" values="!{custLastName}, !{custFirstName}" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SELECT_BTN_DIRECT_TO_CUSTOMER" />
+		<SequenceRef name="SELECT_SHIPPING_METHOD" values="%?SHIPPING_METHOD_FILE.shippingMethod"/>
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+    </TestCase>
+
+	<!-- Create a Special Order with existing customer but has no valid address -->
+    <TestCase name="EXTENDTRN-SO-CUSTOMER-005" applicationKey="REGISTER" >
+		<Parameter name="shippingMethod" value="%?SHIPPING_METHOD_FILE.shippingMethod" />
+	    <Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+	    <Parameter name="newAddress" value="Updated Customer Address" />
+	    <Parameter name="custLastName" value="BTMSO" />
+	    <Parameter name="city" value="Dallas" />
+	    <Parameter name="apartment" value="P202" />
+		<Parameter name="postalCode" value="75040" />
+		<Parameter name="phoneNumber1" value="0906767529" />
+        <Parameter name="state" value="TX"/>
+		<Parameter name="firstName" value="Test" />
+	    <Parameter name="lastName" value="BTM" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS"/>
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SELECT_BTN_DIRECT_TO_CUSTOMER" />
+		<SequenceRef name="FILL_SO_SHIPPING_INFO" values="!{newAddress},!{newAddress},!{apartment},!{city},!{postalCode},!{firstName},!{lastName},!{phoneNumber1},!{state},!{shippingMethod}" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!-- Create a Special Order with existing customer but has no valid telephone -->
+	<TestCase name="EXTENDTRN-SO-CUSTOMER-006" applicationKey="REGISTER" >
+		<Parameter name="shippingMethod" value="%?SHIPPING_METHOD_FILE.shippingMethod" />
+	    <Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+	    <Parameter name="newAddress" value="Updated Customer Address" />
+	    <Parameter name="custLastName" value="BTMSO" />
+		<Parameter name="custFirstName" value="Test" />
+	    <Parameter name="city" value="Dallas" />
+		<Parameter name="postalCode" value="75042" />
+        <Parameter name="state" value="TX"/>
+        <Parameter name="newPhone" value="0903195496"/>
+        <Parameter name="apartment" value="P202"/>
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+
+        <SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SPECIAL_ORDER_TRANS"/>
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SELECT_BTN_DIRECT_TO_CUSTOMER" />
+		<SequenceRef name="FILL_SO_SHIPPING_INFO" values="!{newAddress},!{newAddress},!{apartment},!{city},!{postalCode},!{custFirstName},!{custLastName},!{newPhone},!{state},!{shippingMethod}" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!-- Create a Special Order with existing customer then update first name + last name in Shipto Screen -->
+	<TestCase name="EXTENDTRN-SO-CUSTOMER-009" applicationKey="REGISTER" >
+		<Parameter name="shippingMethod" value="%?SHIPPING_METHOD_FILE.shippingMethod" />
+	    <Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="shippingMethod" value="%?SHIPPING_METHOD_FILE.shippingMethod" />
+	    <Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+	    <Parameter name="newAddress" value="Updated Customer Address" />
+		<Parameter name="city" value="Dallas" />
+		<Parameter name="postalCode" value="75042" />
+        <Parameter name="state" value="TX"/>
+        <Parameter name="newPhone" value="0903195496"/>
+        <Parameter name="apartment" value="P202"/>
+	    <Parameter name="custLastName" value="BTMSO" />
+		<Parameter name="custFirstName" value="Test" />
+
+        <SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SPECIAL_ORDER_TRANS"/>
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_LASTNAME" values="BTMSO"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SELECT_BTN_DIRECT_TO_CUSTOMER" />
+		<SequenceRef name="FILL_SO_SHIPPING_INFO" values="!{newAddress},!{newAddress},!{apartment},!{city},!{postalCode},!{custFirstName},!{custLastName},!{newPhone},!{state},!{shippingMethod}" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!-- Create a Special Order with merchandise item -->
+	<TestCase name="EXTENDTRN-SO-ITM-001" applicationKey="REGISTER" >
+		<Parameter name="shippingMethod" value="%?SHIPPING_METHOD_FILE.shippingMethod" />
+	    <Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+	    <Parameter name="newAddress" value="Updated Customer Address" />
+	    <Parameter name="custLastName" value="BTMSO" />
+		<Parameter name="custFirstName" value="Test" />
+	    <Parameter name="city" value="Dallas" />
+		<Parameter name="postalCode" value="75042" />
+        <Parameter name="state" value="TX"/>
+        <Parameter name="newPhone" value="0903195496"/>
+        <Parameter name="apartment" value="P202"/>
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+
+        <SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SPECIAL_ORDER_TRANS"/>
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SELECT_BTN_DIRECT_TO_CUSTOMER" />
+		<SequenceRef name="FILL_SO_SHIPPING_INFO" values="!{newAddress},!{newAddress},!{apartment},!{city},!{postalCode},!{custFirstName},!{custLastName},!{newPhone},!{state},!{shippingMethod}" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!-- Create a Special Order with Non-merchandise item -->
+	<TestCase name="EXTENDTRN-SO-ITM-002" applicationKey="REGISTER" >
+		<Parameter name="shippingMethod" value="%?SHIPPING_METHOD_FILE.shippingMethod" />
+	    <Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+	    <Parameter name="newAddress" value="Updated Customer Address" />
+	    <Parameter name="custLastName" value="BTMSO" />
+		<Parameter name="custFirstName" value="Test" />
+	    <Parameter name="city" value="Dallas" />
+		<Parameter name="postalCode" value="75042" />
+        <Parameter name="state" value="TX"/>
+        <Parameter name="newPhone" value="0903195496"/>
+        <Parameter name="apartment" value="P202"/>
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+
+        <SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SPECIAL_ORDER_TRANS"/>
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SELECT_BTN_DIRECT_TO_CUSTOMER" />
+		<SequenceRef name="FILL_SO_SHIPPING_INFO" values="!{newAddress},!{newAddress},!{apartment},!{city},!{postalCode},!{custFirstName},!{custLastName},!{newPhone},!{state},!{shippingMethod}" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEM_FEE_DB.ItemId" />
+		<Assertion promptKey="VALIDATION_ERROR_MESSAGE" />
+    </TestCase>
+
+	<!-- Create a Special Order with Serizalized item -->
+	<TestCase name="EXTENDTRN-SO-ITM-006" applicationKey="REGISTER" >
+		<Parameter name="shippingMethod" value="%?SHIPPING_METHOD_FILE.shippingMethod" />
+	    <Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+	    <Parameter name="newAddress" value="Updated Customer Address" />
+	    <Parameter name="custLastName" value="BTMSO" />
+		<Parameter name="custFirstName" value="Test" />
+	    <Parameter name="city" value="Dallas" />
+		<Parameter name="postalCode" value="75042" />
+        <Parameter name="state" value="TX"/>
+        <Parameter name="newPhone" value="0903195496"/>
+        <Parameter name="apartment" value="P202"/>
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+
+        <SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SPECIAL_ORDER_TRANS"/>
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SELECT_BTN_DIRECT_TO_CUSTOMER" />
+		<SequenceRef name="FILL_SO_SHIPPING_INFO" values="!{newAddress},!{newAddress},!{apartment},!{city},!{postalCode},!{custFirstName},!{custLastName},!{newPhone},!{state},!{shippingMethod}" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_SERIAL_DB.ItemId" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!-- Create a Special Order with Multiple item -->
+	<TestCase name="EXTENDTRN-SO-ITM-007" applicationKey="REGISTER" >
+		<Parameter name="shippingMethod" value="%?SHIPPING_METHOD_FILE.shippingMethod" />
+	    <Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+	    <Parameter name="newAddress" value="Updated Customer Address" />
+	    <Parameter name="custLastName" value="BTMSO" />
+		<Parameter name="custFirstName" value="Test" />
+	    <Parameter name="city" value="Dallas" />
+		<Parameter name="postalCode" value="75042" />
+        <Parameter name="state" value="TX"/>
+        <Parameter name="newPhone" value="0903195496"/>
+        <Parameter name="apartment" value="P202"/>
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+
+        <SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SPECIAL_ORDER_TRANS"/>
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SELECT_BTN_DIRECT_TO_CUSTOMER" />
+		<SequenceRef name="FILL_SO_SHIPPING_INFO" values="!{newAddress},!{newAddress},!{apartment},!{city},!{postalCode},!{custFirstName},!{custLastName},!{newPhone},!{state},!{shippingMethod}" />
+		<SequenceRef name="SCAN_ITEM" values="KIT1" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<TestCase name="EXTENDTRN-SO-IOP-001" applicationKey="REGISTER" >
+        <Parameter name="shippingMethod" value="%?SHIPPING_METHOD_FILE.shippingMethod" />
+	    <Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+	    <Parameter name="newAddress" value="Updated Customer Address" />
+	    <Parameter name="custLastName" value="BTMSO" />
+		<Parameter name="custFirstName" value="Test" />
+	    <Parameter name="city" value="Dallas" />
+		<Parameter name="postalCode" value="75042" />
+        <Parameter name="state" value="TX"/>
+        <Parameter name="newPhone" value="0903195496"/>
+        <Parameter name="apartment" value="P202"/>
+        <Parameter name="itemId" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+
+        <SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SPECIAL_ORDER_TRANS"/>
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SELECT_BTN_DIRECT_TO_CUSTOMER" />
+		<SequenceRef name="FILL_SO_SHIPPING_INFO" values="!{newAddress},!{newAddress},!{apartment},!{city},!{postalCode},!{custFirstName},!{custLastName},!{newPhone},!{state},!{shippingMethod}" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SPECIAL_ORDER_CHANGE_ITEM_QTY" values="!{itemId},2"/>
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		
+    </TestCase>
+
+	<TestCase name="EXTENDTRN-SO-IOP-002" applicationKey="REGISTER" >
+		 <Parameter name="shippingMethod" value="%?SHIPPING_METHOD_FILE.shippingMethod" />
+	    <Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+	    <Parameter name="newAddress" value="Updated Customer Address" />
+	    <Parameter name="custLastName" value="BTMSO" />
+		<Parameter name="custFirstName" value="BTM" />
+	    <Parameter name="city" value="Dallas" />
+		<Parameter name="postalCode" value="75042" />
+        <Parameter name="state" value="TX"/>
+        <Parameter name="newPhone" value="0903195496"/>
+        <Parameter name="apartment" value="P202"/>
+        <Parameter name="itemId" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+
+        <SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SPECIAL_ORDER_TRANS"/>
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SELECT_BTN_DIRECT_TO_CUSTOMER" />
+		<SequenceRef name="FILL_SO_SHIPPING_INFO" values="!{newAddress},!{newAddress},!{apartment},!{city},!{postalCode},!{custFirstName},!{custLastName},!{newPhone},!{state},!{shippingMethod}" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SPECIAL_ORDER_CHANGE_ITEM_PRICE" values="!{itemId},19.99,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<TestCase name="EXTENDTRN-SO-IOP-003" applicationKey="REGISTER" >
+		<Parameter name="shippingMethod" value="%?SHIPPING_METHOD_FILE.shippingMethod" />
+	    <Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+	    <Parameter name="newAddress" value="Updated Customer Address" />
+	    <Parameter name="custLastName" value="BTMSO" />
+		<Parameter name="custFirstName" value="Test" />
+	    <Parameter name="city" value="Dallas" />
+		<Parameter name="postalCode" value="75042" />
+        <Parameter name="state" value="TX"/>
+        <Parameter name="newPhone" value="0903195496"/>
+        <Parameter name="apartment" value="P202"/>
+        <Parameter name="itemId" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+
+        <SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SPECIAL_ORDER_TRANS"/>
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SELECT_BTN_DIRECT_TO_CUSTOMER" />
+		<SequenceRef name="FILL_SO_SHIPPING_INFO" values="!{newAddress},!{newAddress},!{apartment},!{city},!{postalCode},!{custFirstName},!{custLastName},!{newPhone},!{state},!{shippingMethod}" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="VOID_SPECIAL_ORDER_ITEM" values="!{itemId},VL1,BTM Test"/>
+		<!--<SequenceRef name="VOID_SPECIAL_ORDER_ITEM" values="!{itemId},%?VOID_LINE_REASONS.ReasonCode,%?VOID_LINE_REASONS.CommentReq"/>-->
+		<SequenceRef name="SCAN_ITEM" values="%+ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	
+	<!--EXTENDTRN-SO-IOP-012: Verify that a new special order transaction can be created successfully with voided item. -->
+	 <TestCase name="EXTENDTRN-SO-IOP-012" applicationKey="REGISTER" >
+		<Parameter name="itemid_1" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="itemid_2" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="lastName" value="Test" />
+		<Parameter name="firstName" value="Xunit" />
+		<Parameter name="teleNumber" value="0902020507" />
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<Parameter name="state" value="CA" />
+		<Parameter name="address1" value="Helios Building" />
+		<Parameter name="address2" value="" />
+		<Parameter name="apartment" value="" />
+		<Parameter name="postalCode" value="90000" />
+		<Parameter name="city" value="Los Angeles" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_BTN_DIRECT_TO_CUSTOMER" />
+		<SequenceRef name="FILL_SO_SHIPPING_INFO" values="!{address1},!{address2},!{apartment},!{city},!{postalCode},!{firstName},!{lastName},!{teleNumber},!{state},!{shipMethod}" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid_1}" iterations="1" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid_2}" iterations="1" />
+		<SequenceRef name="VOID_SPECIAL_ORDER_ITEM" values ="!{itemid_2},%?VOID_LINE_REASONS.ReasonCode,%?VOID_LINE_REASONS.CommentReq"/>
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SP_ORDER_DEFAULT_AMOUNT" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANDE_DUE" />
+    </TestCase>
+		<!--EXTENDTRN-SO-TOP-001: Verify that a new special order transaction can be created successfully with a group discount. -->
+	 <TestCase name="EXTENDTRN-SO-TOP-001" applicationKey="REGISTER" >
+		<Parameter name="itemid_1" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="itemid_2" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="disPCT" values="GRP_PCT_PROMPT" />
+		<Parameter name="PCT" values="10" />
+		<Parameter name="reasoncode" values="%?DISCOUNT_REASONS.ReasonCode" />	
+		<Parameter name="lastName" value="Test" />
+		<Parameter name="firstName" value="Xunit" />
+		<Parameter name="teleNumber" value="0902020507" />
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<Parameter name="state" value="CA" />
+		<Parameter name="address1" value="Helios Building" />
+		<Parameter name="address2" value="" />
+		<Parameter name="apartment" value="" />
+		<Parameter name="postalCode" value="90000" />
+		<Parameter name="city" value="Los Angeles" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />					
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber}, !{lastName}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_BTN_DIRECT_TO_CUSTOMER" />
+		<SequenceRef name="FILL_SO_SHIPPING_INFO" values="!{address1},!{address2},!{apartment},!{city},!{postalCode},!{firstName},!{lastName},!{teleNumber},!{state},!{shipMethod}" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid_1}" iterations="1" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid_2}" iterations="1" />
+		<SequenceRef name="APPLY_SO_GROUP_DISCOUNT" values ="!{disPCT},!{reasoncode},!{itemid_1},!{itemid_2},!{PCT}"/>
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SP_ORDER_DEFAULT_AMOUNT" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANDE_DUE" />
+    </TestCase>
+	<!--EXTENDTRN-SO-TOP-008: Verify that a new special order transaction can be suspended. -->
+	<TestCase name="EXTENDTRN-SO-TOP-008" applicationKey="REGISTER" > 
+		<Parameter name="itemid" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="lastName" value="Test" />
+		<Parameter name="firstName" value="Xunit" />
+		<Parameter name="teleNumber" value="0902020507" />
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<Parameter name="state" value="CA" />
+		<Parameter name="address1" value="Helios Building" />
+		<Parameter name="address2" value="" />
+		<Parameter name="apartment" value="" />
+		<Parameter name="postalCode" value="90000" />
+		<Parameter name="city" value="Los Angeles" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />					
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber}, !{lastName}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_BTN_DIRECT_TO_CUSTOMER" />
+		<SequenceRef name="FILL_SO_SHIPPING_INFO" values="!{address1},!{address2},!{apartment},!{city},!{postalCode},!{firstName},!{lastName},!{teleNumber},!{state},!{shipMethod}" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+    </TestCase>
+	<!--EXTENDTRN-SO-TOP-009: Verify that a new special order transaction that was suspended can be resumed.-->
+	<TestCase name="EXTENDTRN-SO-TOP-009" applicationKey="REGISTER" > 
+		<Parameter name="itemid" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="lastName" value="BTMSO" />
+		<Parameter name="firstName" value="Test" />
+		<Parameter name="teleNumber" value="111111111" />
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<Parameter name="state" value="CA" />
+		<Parameter name="address1" value="Helios Building" />
+		<Parameter name="address2" value="" />
+		<Parameter name="apartment" value="" />
+		<Parameter name="postalCode" value="90000" />
+		<Parameter name="city" value="Los Angeles" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />	
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />		
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_BTN_DIRECT_TO_CUSTOMER" />
+		<SequenceRef name="FILL_SO_SHIPPING_INFO" values="!{address1},!{address2},!{apartment},!{city},!{postalCode},!{firstName},!{lastName},!{teleNumber},!{state},!{shipMethod}" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />	
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>	
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransactionId.getTransactionSequence" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANDE_DUE" />	
+    </TestCase>
+	<!--EXTENDTRN-SO-TOP-010: Verify that a new special order transaction can be canceled. -->
+	<TestCase name="EXTENDTRN-SO-TOP-010" applicationKey="REGISTER" > 
+		<Parameter name="itemid" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="lastName" value="Test" />
+		<Parameter name="firstName" value="Xunit" />
+		<Parameter name="teleNumber" value="0902030225" />
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<Parameter name="state" value="CA" />
+		<Parameter name="address1" value="Helios Building" />
+		<Parameter name="address2" value="" />
+		<Parameter name="apartment" value="" />
+		<Parameter name="postalCode" value="90000" />
+		<Parameter name="city" value="Los Angeles" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />					
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber}, !{lastName}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_BTN_DIRECT_TO_CUSTOMER" />
+		<SequenceRef name="FILL_SO_SHIPPING_INFO" values="!{address1},!{address2},!{apartment},!{city},!{postalCode},!{firstName},!{lastName},!{teleNumber},!{state},!{shipMethod}" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_CANCEL" />		
+		<SequenceRef name="SELECT_BTN_YES" />	
+    </TestCase>
+	
+	<TestCase name="EXTENDTRN-SO-PRM-001" applicationKey="REGISTER" >
+		<Parameter name="shippingMethod" value="%?SHIPPING_METHOD_FILE.shippingMethod" />
+	    <Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+	    <Parameter name="newAddress" value="Updated Customer Address" />
+	    <Parameter name="custLastName" value="BTMSO" />
+		<Parameter name="custFirstName" value="Test" />
+	    <Parameter name="city" value="Dallas" />
+		<Parameter name="postalCode" value="75042" />
+        <Parameter name="state" value="TX"/>
+        <Parameter name="newPhone" value="0903195496"/>
+        <Parameter name="apartment" value="P202"/>
+        <Parameter name="itemId" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="disOpt" values="ITEM_PCT_PROMPT" />
+		<Parameter name="disPCT" values="2" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+
+        <SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SPECIAL_ORDER_TRANS"/>
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SELECT_BTN_DIRECT_TO_CUSTOMER" />
+		<SequenceRef name="FILL_SO_SHIPPING_INFO" values="!{newAddress},!{newAddress},!{apartment},!{city},!{postalCode},!{custFirstName},!{custLastName},!{newPhone},!{state},!{shippingMethod}" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="SPECIAL_ORDER_ADD_ITEM_DISCOUNT" values="!{itemId},!{disOpt},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq,!{disPCT}"/>
+		<SequenceRef name="SCAN_ITEM" values="%+ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+	<!-- SPECIAL ORDER -->
+	<!-- EXTENDTRN-SO-STORE-002: Verify that a new Special Order with To Store can be created successfully with creating a new customer. -->
+	<TestCase name="EXTENDTRN-SO-STORE-002" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="096767528" />
+		<Parameter name="lastName" value="BTMLAY" />
+		<Parameter name="regularItemId" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber}, !{lastName}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_BTN_SHIP_TO_STORE" />
+		<SequenceRef name="SCAN_ITEM" values="!{regularItemId}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(SPECIAL_ORDER).getAccountBalance.divide(10)" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase>
+	<!-- EXTENDTRN-SO-STORE-003: Verify that a new special order with Ship Direct To Store can be created successfully with associated customer has not had any special orders -->
+	<TestCase name="EXTENDTRN-SO-STORE-003" applicationKey="REGISTER" >
+		<Parameter name="regularItemId" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_BTN_SHIP_TO_STORE" />
+		<SequenceRef name="SCAN_ITEM" values="!{regularItemId}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(SPECIAL_ORDER).getAccountBalance.divide(10)" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase>
+	<!-- EXTENDTRN-SO-STORE-004: Verify that a new special order with Ship Direct To Store can be created successfully with associated customer has had special orders -->
+	<TestCase name="EXTENDTRN-SO-STORE-004" applicationKey="REGISTER" >
+		<Parameter name="regularItemId" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_LASTNAME" values="%?CUSTOMERS_US_DB.LastName"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_BTN_SHIP_TO_STORE" />
+		<SequenceRef name="SCAN_ITEM" values="!{regularItemId}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(SPECIAL_ORDER).getAccountBalance.divide(10)" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase>
+	<!-- EXTENDTRN-SO-OPEN-EXT-001: Verify that an existing Special Order can be opened by searching for a special order by entering search criteria. -->
+	<TestCase name="EXTENDTRN-SO-OPEN-EXT-001" applicationKey="REGISTER" >
+		<Parameter name="regularItemId" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<!-- <Parameter name="custAccountId" value="" /> -->
+		<Parameter name="firstName" value="" />
+		<Parameter name="lastName" value="" />
+		<Parameter name="telephone" value="" />
+		<Parameter name="customerId" value="" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_LASTNAME" values="%?CUSTOMERS_US_DB.LastName"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_BTN_SHIP_TO_STORE" />
+		<SequenceRef name="SCAN_ITEM" values="!{regularItemId}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(SPECIAL_ORDER).getAccountBalance.divide(10)" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SPECIAL_ORDER_SEARCH" values="%^SPECIAL_ORDER_ACCOUNT_DB.CustAcctId!,!{firstName},!{lastName},!{telephone},!{customerId}" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="CANCEL_SALE_TRANSACTION_WITHOUT_ITEM" />
+		
+	</TestCase>
+	<!-- EXTENDTRN-SO-ED-002: Verify that an existing Special Order can be modified to change the Item Expected Date when the current expected date is the same as business date. -->
+	<TestCase name="EXTENDTRN-SO-ED-002" applicationKey="REGISTER" >
+		<Parameter name="regularItemId" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_BTN_SHIP_TO_STORE" />
+		<SequenceRef name="SCAN_ITEM" values="!{regularItemId}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="@getXDaysFromNow(365)" />
+		<SequenceRef name="CHANGE_SP_ORDER_EXPECTED_DATE" values="!{regularItemId}" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="@getCurrentBusinessDate" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(SPECIAL_ORDER).getAccountBalance.divide(10)" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase>
+	<!-- EXTENDTRN-SO-ED-003: Verify that an existing Special Order can be modified to change the Item Expected Date when the current expected date is in the future. -->
+	<TestCase name="EXTENDTRN-SO-ED-003" applicationKey="REGISTER" >
+		<Parameter name="regularItemId" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_BTN_SHIP_TO_STORE" />
+		<SequenceRef name="SCAN_ITEM" values="!{regularItemId}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="@getCurrentBusinessDate" />
+		<SequenceRef name="CHANGE_SP_ORDER_EXPECTED_DATE" values="!{regularItemId}" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="@getXDaysFromNow(30)" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(SPECIAL_ORDER).getAccountBalance.divide(10)" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase>
+	<!-- EXTENDTRN-SO-HST-003: Verify that an existing Special Order can be viewed in the Special Order History for a transaction that was recently created. -->
+	<TestCase name="EXTENDTRN-SO-HST-003" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<Parameter name="item1" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="item2" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<Parameter name="documentId" value="" />
+		<Parameter name="custAcctId" value="" />
+		<Parameter name="documentSubtypeCode" value="SPECIAL_ORDER" />
+		<Parameter name="statusCode" value="OPEN" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_BTN_SHIP_TO_STORE" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(SPECIAL_ORDER).getAccountBalance.divide(10)" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="VIEW_SPECIAL_ORDER_HISTORY" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="CANCEL_SALE_TRANSACTION_WITHOUT_ITEM" />
+	</TestCase>
+	<!-- EXTENDTRN-SO-HST-004: Verify that an existing Special Order can be viewed in the Special Order History for a transaction that was partially picked up. -->
+	<TestCase name="EXTENDTRN-SO-HST-004" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<Parameter name="item1" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="item2" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<Parameter name="documentId" value="" />
+		<Parameter name="custAcctId" value="" />
+		<Parameter name="documentSubtypeCode" value="SPECIAL_ORDER" />
+		<Parameter name="statusCode" value="OPEN" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_BTN_SHIP_TO_STORE" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(SPECIAL_ORDER).getAccountBalance.divide(10)" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="INVENTORY_RECEIVING" />
+		<SequenceRef name="SKIP_OLD_INVENTORY_DOCUMENT" />
+		<SequenceRef name="SEARCH_RECEIVING_DOCUMENT" values="!{documentId},%^SPECIAL_ORDER_ACCOUNT_DB.CustAcctId!,!{documentSubtypeCode},!{statusCode}" />
+		<SequenceRef name="SELECT_CARTON" />
+		<SequenceRef name="RECEIVE_ENTIRE_CARTON_CHAIN" />
+		<SequenceRef name="CLOSE_AND_EXIT_RECEIVING" />
+		<SequenceRef name="CANCEL_OLD_INVENTORY_DOCUMENT" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_PICKUP_ITEM" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="VIEW_SPECIAL_ORDER_HISTORY" />
+		<SequenceRef name="SELECT_BTN_PICKUP_ITEM" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="VERIFY_SPECIAL_ORDER_STATUS" values="%^SPECIAL_ORDER_ACCOUNT_DB.CustAcctStatcode!,CLOSED" />
+	</TestCase>
+	<!-- EXTENDTRN-SO-RECEIVE-001: Verify that a special order is ready to pickup after receiving all items in the special order document. -->
+	<TestCase name="EXTENDTRN-SO-RECEIVE-001" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<Parameter name="item1" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="item2" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<Parameter name="documentId" value="" />
+		<Parameter name="custAcctId" value="" />
+		<Parameter name="documentSubtypeCode" value="SPECIAL_ORDER" />
+		<Parameter name="statusCode" value="OPEN" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_BTN_SHIP_TO_STORE" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(SPECIAL_ORDER).getAccountBalance.divide(10)" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="INVENTORY_RECEIVING" />
+		<SequenceRef name="SKIP_OLD_INVENTORY_DOCUMENT" />
+		<SequenceRef name="SEARCH_RECEIVING_DOCUMENT" values="!{documentId},%^SPECIAL_ORDER_ACCOUNT_DB.CustAcctId!,!{documentSubtypeCode},!{statusCode}" />
+		<SequenceRef name="SELECT_CARTON" />
+		<SequenceRef name="RECEIVE_ENTIRE_CARTON_CHAIN" />
+		<SequenceRef name="CLOSE_AND_EXIT_RECEIVING" />
+		<SequenceRef name="CANCEL_OLD_INVENTORY_DOCUMENT" />
+		<SequenceRef name="VERIFY_SPECIAL_ORDER_STATUS" values="%^SPECIAL_ORDER_ACCOUNT_DB.CustAcctStatcode!,READY_TO_PICKUP" />
+	</TestCase>
+	<!-- EXTENDTRN-SO-PICKUP-001: Verify that a special order transaction can be successfully completed by picking up all items. -->
+	<TestCase name="EXTENDTRN-SO-PICKUP-001" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<Parameter name="item1" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="item2" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<Parameter name="documentId" value="" />
+		<Parameter name="custAcctId" value="" />
+		<Parameter name="documentSubtypeCode" value="SPECIAL_ORDER" />
+		<Parameter name="statusCode" value="OPEN" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_BTN_SHIP_TO_STORE" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(SPECIAL_ORDER).getAccountBalance.divide(10)" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="INVENTORY_RECEIVING" />
+		<SequenceRef name="SKIP_OLD_INVENTORY_DOCUMENT" />
+		<SequenceRef name="SEARCH_RECEIVING_DOCUMENT" values="!{documentId},%^SPECIAL_ORDER_ACCOUNT_DB.CustAcctId!,!{documentSubtypeCode},!{statusCode}" />
+		<SequenceRef name="SELECT_CARTON" />
+		<SequenceRef name="RECEIVE_ENTIRE_CARTON_CHAIN" />
+		<SequenceRef name="CLOSE_AND_EXIT_RECEIVING" />
+		<SequenceRef name="CANCEL_OLD_INVENTORY_DOCUMENT" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_PICKUP_ITEM" />
+		<SequenceRef name="SELECT_TWO_ITEMS" values="!{item1},!{item2}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="VERIFY_SPECIAL_ORDER_STATUS" values="%^SPECIAL_ORDER_ACCOUNT_DB.CustAcctStatcode!,CLOSED" />
+	</TestCase>
+	<!-- EXTENDTRN-SO-PICKUP-003: Verify that a special order transaction can be successfully completed by partially picking up items. -->
+	<TestCase name="EXTENDTRN-SO-PICKUP-003" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<Parameter name="item1" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="item2" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<Parameter name="documentId" value="" />
+		<Parameter name="custAcctId" value="" />
+		<Parameter name="documentSubtypeCode" value="SPECIAL_ORDER" />
+		<Parameter name="statusCode" value="OPEN" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_BTN_SHIP_TO_STORE" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(SPECIAL_ORDER).getAccountBalance.divide(10)" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="INVENTORY_RECEIVING" />
+		<SequenceRef name="SKIP_OLD_INVENTORY_DOCUMENT" />
+		<SequenceRef name="SEARCH_RECEIVING_DOCUMENT" values="!{documentId},%^SPECIAL_ORDER_ACCOUNT_DB.CustAcctId!,!{documentSubtypeCode},!{statusCode}" />
+		<SequenceRef name="SELECT_CARTON" />
+		<SequenceRef name="RECEIVE_ENTIRE_CARTON_CHAIN" />
+		<SequenceRef name="CLOSE_AND_EXIT_RECEIVING" />
+		<SequenceRef name="CANCEL_OLD_INVENTORY_DOCUMENT" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_PICKUP_ITEM" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase>
+	<!-- EXTENDTRN-SO-PICKUP-005: Verify that a special order transaction can be successfully completed by picking up all items from a Special Order which has already been completed payment. -->
+	<TestCase name="EXTENDTRN-SO-PICKUP-005" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<Parameter name="item1" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="item2" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<Parameter name="documentId" value="" />
+		<Parameter name="custAcctId" value="" />
+		<Parameter name="documentSubtypeCode" value="SPECIAL_ORDER" />
+		<Parameter name="statusCode" value="OPEN" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_BTN_SHIP_TO_STORE" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(SPECIAL_ORDER).getAccountBalance" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="INVENTORY_RECEIVING" />
+		<SequenceRef name="SKIP_OLD_INVENTORY_DOCUMENT" />
+		<SequenceRef name="SEARCH_RECEIVING_DOCUMENT" values="!{documentId},%^SPECIAL_ORDER_ACCOUNT_DB.CustAcctId!,!{documentSubtypeCode},!{statusCode}" />
+		<SequenceRef name="SELECT_CARTON" />
+		<SequenceRef name="RECEIVE_ENTIRE_CARTON_CHAIN" />
+		<SequenceRef name="CLOSE_AND_EXIT_RECEIVING" />
+		<SequenceRef name="CANCEL_OLD_INVENTORY_DOCUMENT" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_PICKUP_ITEM" />
+		<SequenceRef name="SELECT_TWO_ITEMS" values="!{item1},!{item2}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="VERIFY_SPECIAL_ORDER_STATUS" values="%^SPECIAL_ORDER_ACCOUNT_DB.CustAcctStatcode!,CLOSED" />
+	</TestCase>
+	<!-- EXTENDTRN-SO-CANCEL-001: Verify cancel a special order that was recently created when the customer is present. -->
+	<TestCase name="EXTENDTRN-SO-CANCEL-001" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<Parameter name="regularItemId" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_BTN_SHIP_TO_STORE" />
+		<SequenceRef name="SCAN_ITEM" values="!{regularItemId}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(SPECIAL_ORDER).getAccountBalance.divide(10)" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_CANCEL_SPECIAL_ORDER" />
+		<SequenceRef name="CONFIRM_CUSTOMER_IS_PRESENT_FOR_CANCEL" />
+		<SequenceRef name="CONFIRM_CANCEL_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs" />
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="VERIFY_SPECIAL_ORDER_STATUS" values="%^SPECIAL_ORDER_ACCOUNT_DB.CustAcctStatcode!,CLOSED" />
+	</TestCase>
+	<!-- EXTENDTRN-SO-CANCEL-002: Verify cancel a special order that was partially picked up when the customer is present. -->
+	<TestCase name="EXTENDTRN-SO-CANCEL-002" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_US_DB.CustId" />
+		<Parameter name="item1" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="item2" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<Parameter name="documentId" value="" />
+		<Parameter name="custAcctId" value="" />
+		<Parameter name="documentSubtypeCode" value="SPECIAL_ORDER" />
+		<Parameter name="statusCode" value="OPEN" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_BTN_SHIP_TO_STORE" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(SPECIAL_ORDER).getAccountBalance.divide(10)" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="INVENTORY_RECEIVING" />
+		<SequenceRef name="SKIP_OLD_INVENTORY_DOCUMENT" />
+		<SequenceRef name="SEARCH_RECEIVING_DOCUMENT" values="!{documentId},%^SPECIAL_ORDER_ACCOUNT_DB.CustAcctId!,!{documentSubtypeCode},!{statusCode}" />
+		<SequenceRef name="SELECT_CARTON" />
+		<SequenceRef name="RECEIVE_ENTIRE_CARTON_CHAIN" />
+		<SequenceRef name="CLOSE_AND_EXIT_RECEIVING" />
+		<SequenceRef name="CANCEL_OLD_INVENTORY_DOCUMENT" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_PICKUP_ITEM" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_CANCEL_SPECIAL_ORDER" />
+		<SequenceRef name="CONFIRM_CUSTOMER_IS_PRESENT_FOR_CANCEL" />
+		<SequenceRef name="CONFIRM_CANCEL_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs" />
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="VERIFY_SPECIAL_ORDER_STATUS" values="%^SPECIAL_ORDER_ACCOUNT_DB.CustAcctStatcode!,CLOSED" />
+	</TestCase>
+	
+</XunitConfig>

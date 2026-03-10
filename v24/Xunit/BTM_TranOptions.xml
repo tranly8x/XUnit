@@ -1,0 +1,2340 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<Parameter name="discountOpAMT" values="TRANS_AMT" />
+	<Parameter name="discountOpPCT" values="TRANS_PCT" />
+	<Parameter name="discountAMT" values="5" />
+	<Parameter name="discountPCT" values="5" />
+	<Parameter name="reascode" values="%?DISCOUNT_REASONS.ReasonCode" />
+	<Parameter name="tranBarcode" values="T3HH1IP117111G34C1443" />
+	<Parameter name="tranBarcodeNOTcorrect" values="T3HH1IP117111G34C1445" />
+	<Parameter name="returnRC" values="%?RETURN_REASONS.ReasonCode" />
+	<Parameter name="returnComment" values="%?RETURN_REASONS.CommentReq" />
+	<Parameter name="newPostalCode" values="60046" />
+	<Parameter name="newTaxAMT" values="1.20" />
+	<Parameter name="origTransSeq" values="120" />
+	<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+	<Parameter name="origLocationId" values="1005" />
+	<Parameter name="origWorkStationId" values="1" />
+	<Parameter name="newprice" values="10" />
+	<Parameter name="priceChangereascode" values="%?PRICE_CHANGE_REASONS.ReasonCode" />
+	<Parameter name="certificateHolderName" values="Test Tax Exempt" />
+	<Parameter name="certificateNbr" values="123456" />
+	<Parameter name="TaxExemptReasonCode" values="%?TAX_EXEMPT_REASONS.ReasonCode" />
+	<Parameter name="newTaxPER" values="2.5" />
+	<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+	<Parameter name="associateID" value="100" />
+	<!--Complete a sale transaction-->
+	<TestCase name="SALE_COMPLETE_TENDER_BY_CASH" applicationKey="REGISTER" >
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--TRAN-OPT-CP-003: 
+Verify that user can add non-serialized coupon into transaction by manual enter when performing sale transaction.
+	<TestCase name="TRAN-OPT-CP-003" applicationKey="REGISTER" >
+		<Parameter name="couponid" values="LC10P" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_LASTNAME" values="%?CUSTOMERS_DB.LastName"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" iterations="3" />
+		<SequenceRef name="SELECT_BTN_COUPON" values="!{couponid}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>-->
+
+		<!--TRAN-OPT-CP-019: 
+Verify that user can add non-serialized coupon into transaction by manual enter when performing sale exchange transaction.
+	<TestCase name="TRAN-OPT-CP-019" applicationKey="REGISTER">
+		<Parameter name="newReturnPrice" value="0" />
+		<Parameter name="couponid" values="LC10P" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_LASTNAME" values="%?CUSTOMERS_DB.LastName"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" iterations="4" />	
+		<SequenceRef name="SELECT_BTN_COUPON" values="!{couponid}" />	
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?ITEMS_DB.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newReturnPrice}" />      
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />  
+	</TestCase>-->
+
+		<!--TRAN-OPT-CP-023: 
+Verify that user can add non-serialized coupon into transaction by manual enter when performing return exchange transaction.
+	<TestCase name="TRAN-OPT-CP-023" applicationKey="REGISTER">
+		<Parameter name="custLastName" value="%?CUSTOMERS_DB.LastName" />
+		<Parameter name="couponid" value="LC10P" />
+		<Parameter name="newReturnPrice" value="0" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_LASTNAME" values="!{custLastName}" />
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" iterations="1" />
+		<SequenceRef name="SELECT_BTN_COUPON" values="!{couponid}" />	
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?ITEMS_DB.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newReturnPrice}" iterations="4" /> 
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase>-->
+	<!--Transaction Discount-->
+	<TestCase name="TRAN-OPT-DISC-001" applicationKey="REGISTER" >
+		<Parameter name="discountOp" value="TRANS_PCT" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="reascode" value="DC1" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpPCT},!{discountPCT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-DISC-002" applicationKey="REGISTER" >
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-DISC-003" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="T3HH1IP117111G34C1443" />
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="custFirstName" value="Stuart" />
+		<Parameter name="custLastName" value="Little" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="!{itemid}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--<TestCase name="TRAN-OPT-DISC-004" applicationKey="REGISTER" >
+		<Parameter name="tranBarcode" value="T3HH1IP117111G34C1443" />
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="T3HH1IP117111G34C1443" />
+		<Parameter name="discountOp" value="TRANS_PCT" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="reascode" value="DC1" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="10"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpPCT},!{discountPCT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-DISC-005" applicationKey="REGISTER" >		
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="10"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-DISC-006" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpPCT},!{discountPCT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-DISC-007" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-DISC-008" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpPCT},!{discountPCT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-DISC-009" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-DISC-010" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="6" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpPCT},!{discountPCT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-DISC-011" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="5" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpPCT},!{discountPCT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-DISC-012" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpPCT},!{discountPCT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-DISC-013" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT}, %?DISCOUNT_REASONS.ReasonCode, %?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>-->
+<!--Group Discount-->
+	<TestCase name="TRAN-OPT-GR-DISC-001" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="GroupDiscountOpPer" value="GRP_PCT" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="APPLY_GROUP_DISCOUNT" values="!{GroupDiscountOpPer},!{reascode},!{item1},!{item2}" />
+		<SequenceRef name="SELECT_AMT_DUE" /> 
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-GR-DISC-002" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="GroupDiscountOpAMT" value="GRP_AMT" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="APPLY_GROUP_DISCOUNT" values="!{GroupDiscountOpAMT},!{reascode},!{item1},!{item2}" />
+		<SequenceRef name="SELECT_AMT_DUE" /> 
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--<TestCase name="TRAN-OPT-GR-DISC-003" applicationKey="REGISTER" >
+		<Parameter name="transbarcode" value="T3HH1IP117111G34C1443" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="VERIFIED_RETURN_TRANSACTION" values="!{transbarcode}" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-GR-DISC-004" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="GroupDiscountOpPer" value="GRP_PCT" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="APPLY_GROUP_DISCOUNT" values="!{GroupDiscountOpPer},!{reascode},!{item1},!{item2}" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-GR-DISC-005" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="GroupDiscountOpAMT" value="GRP_AMT" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="APPLY_GROUP_DISCOUNT" values="!{GroupDiscountOpAMT},!{reascode},!{item1},!{item2}" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-GR-DISC-006" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="GroupDiscountOpPer" value="GRP_PCT" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="APPLY_GROUP_DISCOUNT" values="!{GroupDiscountOpPer},!{reascode},!{item1},!{item2}" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-GR-DISC-007" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="GroupDiscountOpAMT" value="GRP_AMT" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="APPLY_GROUP_DISCOUNT" values="!{GroupDiscountOpAMT},!{reascode},!{item1},!{item2}" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-GR-DISC-008" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="GroupDiscountOpPer" value="GRP_PCT" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="2" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="CHANGE_PRICE" values ="!{item2},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="APPLY_GROUP_DISCOUNT" values="!{GroupDiscountOpPer},!{reascode},!{item1},!{item2}" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-GR-DISC-009" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="GroupDiscountOpAMT" value="GRP_AMT" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="2" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="CHANGE_PRICE" values ="!{item2},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="APPLY_GROUP_DISCOUNT" values="!{GroupDiscountOpAMT},!{reascode},!{item1},!{item2}" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-GR-DISC-010" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="GroupDiscountOpPer" value="GRP_PCT" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="6" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="APPLY_GROUP_DISCOUNT" values="!{GroupDiscountOpPer},!{reascode},!{item1},!{item2}" />
+		<SequenceRef name="SELECT_AMT_DUE" /> 
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-GR-DISC-011" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="GroupDiscountOpAMT" value="GRP_AMT" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="6" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="APPLY_GROUP_DISCOUNT" values="!{GroupDiscountOpAMT},!{reascode},!{item1},!{item2}" />
+		<SequenceRef name="SELECT_AMT_DUE" /> 
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-GR-DISC-012" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="GroupDiscountOpPer" value="GRP_PCT" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="5" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="APPLY_GROUP_DISCOUNT" values="!{GroupDiscountOpPer},!{reascode},!{item1},!{item2}" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-GR-DISC-013" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="GroupDiscountOpAMT" value="GRP_AMT" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}"  />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="5" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="APPLY_GROUP_DISCOUNT" values="!{GroupDiscountOpAMT},!{reascode},!{item1},!{item2}" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>-->
+<!--Change Transaction Tax Location-->
+	<TestCase name="TRAN-OPT-TAX-LOC-001" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{itemid},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE"/>
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-002" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}"  />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{itemid},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-003" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}"  />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{item1},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{item2},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-004" applicationKey="REGISTER" >
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--<TestCase name="TRAN-OPT-TAX-LOC-005" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{itemid},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-006" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{itemid},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-007" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{item1},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{item2},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>-->
+	<TestCase name="TRAN-OPT-TAX-LOC-008" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%^RETURN_REASONS.ReasonCode,%^RETURN_REASONS.CommentReq,19.99" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{itemid},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-009" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,19.99" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{itemid},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-010" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,19.99" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{item1},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,19.99" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{item2},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-011" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="3" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,6.99" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{itemid},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-012" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="3" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,6.99" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{itemid},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-013" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}"/>
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},9.99,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{item1},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,19.99" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{item2},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-014" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="3" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{item1}, !{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,19.99" />
+		<!--<SequenceRef name="CHANGE_TAX_LOC" values ="!{item2}, !{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq"/>-->
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-015" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}"  />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{item1},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+			<SequenceRef name="SCAN_ITEM" values="!{item1}"  />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<!--<SequenceRef name="CHANGE_TAX_LOC" values ="!{item2},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />-->
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-016" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" iterations="4" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{item1},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,9.99" />
+		<!--<SequenceRef name="CHANGE_TAX_LOC" values ="!{item1},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />-->
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-017" applicationKey="REGISTER" >
+		<Parameter name="saleItem" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="returnItem" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{saleItem}" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{saleItem},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?ITEMS_DB.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,6.99" iterations="3"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{returnItem},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{returnItem},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-018" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="1" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{item1},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?ITEMS_DB.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,9.99" iterations="3"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{item2},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-019" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{item1},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+<!--P2 does not use at this time-->
+	<!--<TestCase name="TRAN-OPT-TAX-LOC-020" applicationKey="REGISTER" >
+		<Parameter name="newPostalCode" value="TL-2000" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+		<SequenceRef name="SEND_SALE_TRANSACTION" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{newPostalCode}" iterations="1"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-021" applicationKey="REGISTER" >
+		<Parameter name="newPostalCode" value="TL-2000" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_NO_TAX_FILE.ItemId" iterations="1" />
+		<SequenceRef name="SEND_SALE_TRANSACTION" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{newPostalCode}" iterations="1"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-022" applicationKey="REGISTER" >
+		<Parameter name="newPostalCode" value="TL-2000" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_NO_TAX_FILE.ItemId" iterations="1" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="1" />
+		<SequenceRef name="SEND_SALE_TRANSACTION" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{newPostalCode}" iterations="2"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-023" applicationKey="REGISTER" >
+		<Parameter name="newPostalCode" value="TL-2000" />
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="LAYAWAY_TRANSACTION_CHANGE_TAX_LOC" values="!{itemid}, !{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-024" applicationKey="REGISTER" >
+		<Parameter name="newPostalCode" value="TL-2000" />
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="LAYAWAY_TRANSACTION_CHANGE_TAX_LOC" values="!{itemid}, !{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-025" applicationKey="REGISTER" >
+		<Parameter name="newPostalCode" value="TL-2000" />
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="LAYAWAY_TRANSACTION_CHANGE_TAX_LOC" values="!{itemid}, !{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-026" applicationKey="REGISTER" >
+		<Parameter name="newPostalCode" value="TL-2000" />
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SPECIAL_ORDER_TRANSACTION_CHANGE_TAX_LOC" values="!{itemid}, !{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-027" applicationKey="REGISTER" >
+		<Parameter name="newPostalCode" value="TL-2000" />
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SPECIAL_ORDER_TRANSACTION_CHANGE_TAX_LOC" values="!{itemid}, !{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-LOC-028" applicationKey="REGISTER" >
+		<Parameter name="newPostalCode" value="TL-2000" />
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SPECIAL_ORDER_TRANSACTION_CHANGE_TAX_LOC" values="!{itemid}, !{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>-->
+	
+<!--Change Transaction Tax Location-->
+	<TestCase name="TRAN-OPT-TAX-AMT-001" applicationKey="REGISTER" >
+		<Parameter name="itemid" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{itemid},!{newTaxAMT}"/>
+		<SequenceRef name="SELECT_AMT_DUE"/>
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-AMT-002" applicationKey="REGISTER" >
+		<Parameter name="itemid" values="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{itemid},!{newTaxAMT}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-AMT-003" applicationKey="REGISTER" >
+		<Parameter name="item1" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" values="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item1},!{newTaxAMT}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item2},!{newTaxAMT}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-AMT-004" applicationKey="REGISTER" >
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="T3HH1IP117111G34C1443" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	<!--<TestCase name="TRAN-OPT-TAX-AMT-005" applicationKey="REGISTER" >
+		<Parameter name="itemid" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="origTransSeq" values="120" />
+		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origLocationId" values="1005" />
+		<Parameter name="origWorkStationId" values="1" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{newTaxAMT}"/>
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-AMT-006" applicationKey="REGISTER" >
+		<Parameter name="origTransSeq" values="120" />
+		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origLocationId" values="1005" />
+		<Parameter name="origWorkStationId" values="1" />
+		<Parameter name="itemid" values="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{newTaxAMT}"/>
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-AMT-007" applicationKey="REGISTER" >
+		<Parameter name="origTransSeq" values="120" />
+		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origLocationId" values="1005" />
+		<Parameter name="origWorkStationId" values="1" />
+		<Parameter name="item1" values="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{newTaxAMT}"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{newTaxAMT}"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>-->
+	<TestCase name="TRAN-OPT-TAX-AMT-008" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,19.99" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{itemid},!{newTaxAMT}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-AMT-009" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{itemid},!{newTaxAMT}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-AMT-010" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,6.99" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item1},!{newTaxAMT}"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,6.99" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item2},!{newTaxAMT}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-AMT-011" applicationKey="REGISTER" >
+		<Parameter name="saleItem" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="returnItem" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{saleItem}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{saleItem},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{saleItem},!{newTaxAMT}" />		
+		<SequenceRef name="SCAN_ITEM" values="!{returnItem}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{returnItem},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,19.99" />
+		<!--<SequenceRef name="CHANGE_PRICE" values ="!{returnItem},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{returnItem},!{newTaxAMT}"/>-->
+		<SequenceRef name="GO_SALE_SCREEN" /> 
+		<SequenceRef name="SELECT_AMT_DUE" /> 
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-AMT-012" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item1},!{newTaxAMT}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,6.99" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item2},6.99,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item2},!{newTaxAMT}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-AMT-013" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item1},!{newTaxAMT}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item1},!{newTaxAMT}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-AMT-014" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="3"/>
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item1},!{newTaxAMT}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,9.99" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item2},!{newTaxAMT}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-AMT-015" applicationKey="REGISTER" >
+		<Parameter name="item1" value="100150057" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="5"/>
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item1},!{newTaxAMT}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,6.99" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item2},!{newTaxAMT}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-AMT-016" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="1"/>
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item1},!{newTaxAMT}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="3"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,9.99" />
+		<!--<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item2},!{newTaxAMT}"/>-->
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-AMT-017" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item1},!{newTaxAMT}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?ITEMS_DB.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,9.99" iterations="5" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,9.99"  />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item2},!{newTaxAMT}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-AMT-018" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="returnItem" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item1},!{newTaxAMT}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?ITEMS_DB.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,9.99" iterations="2" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{returnItem},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,9.99" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{returnItem},!{newTaxAMT}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-AMT-019" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item1},!{newTaxAMT}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,9.99" iterations="5" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item2},!{newTaxAMT}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-PER-001" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}" />
+		<SequenceRef name="SELECT_AMT_DUE"/>
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-PER-002" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-PER-003" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{item1},!{newTaxPER}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-PER-004" applicationKey="REGISTER" >
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="T3HH1IP117111G34C1443" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	<!--<TestCase name="TRAN-OPT-TAX-PER-005" applicationKey="REGISTER" >
+		<Parameter name="itemid" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="origTransSeq" values="120" />
+		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origLocationId" values="1005" />
+		<Parameter name="origWorkStationId" values="1" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-PER-006" applicationKey="REGISTER" >
+		<Parameter name="origTransSeq" values="120" />
+		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origLocationId" values="1005" />
+		<Parameter name="origWorkStationId" values="1" />
+		<Parameter name="itemid" values="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-PER-007" applicationKey="REGISTER" >
+		<Parameter name="origTransSeq" values="120" />
+		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origLocationId" values="1005" />
+		<Parameter name="origWorkStationId" values="1" />
+		<Parameter name="item1" values="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>-->
+	<TestCase name="TRAN-OPT-TAX-PER-008" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,6.99" />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-PER-009" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,19.99" />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	
+	<TestCase name="TRAN-OPT-TAX-PER-010" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,6.99" />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,6.99" />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--<TestCase name="TRAN-OPT-TAX-PER-011" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="GO_SALE_SCREEN" /> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>-->
+	<TestCase name="TRAN-OPT-TAX-PER-012" applicationKey="REGISTER" >
+		<Parameter name="item1" value="100150057" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item2},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-PER-013" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item2},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="GO_SALE_SCREEN" /> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-PER-014" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="3"/>
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,9.99" />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-PER-015" applicationKey="REGISTER" >
+		<Parameter name="item1" value="100150057" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="3"/>
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,6.99" />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-PER-016" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="5"/>
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,6.99" />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-PER-017" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},9.99,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,19.99" iterations="2" />
+		<!--<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>-->
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-PER-018" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},1.99,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,6.99"  />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-PER-019" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,6.99" iterations="3" />
+		<!--<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}"/>-->
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-EXEM-001" applicationKey="REGISTER" >
+		<Parameter name="itemid" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{itemid}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="SELECT_AMT_DUE"/>
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-EXEM-002" applicationKey="REGISTER" >
+		<Parameter name="itemid" values="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{itemid}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-EXEM-003" applicationKey="REGISTER" >
+		<Parameter name="item1" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" values="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item2}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-EXEM-004" applicationKey="REGISTER" >
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="T3HH1IP117111G34C1443" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	<!--<TestCase name="TRAN-OPT-TAX-EXEM-005" applicationKey="REGISTER" >
+		<Parameter name="itemid" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="origTransSeq" values="120" />
+		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origLocationId" values="1005" />
+		<Parameter name="origWorkStationId" values="1" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{itemid}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-EXEM-006" applicationKey="REGISTER" >
+		<Parameter name="itemid" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="origTransSeq" values="120" />
+		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origLocationId" values="1005" />
+		<Parameter name="origWorkStationId" values="1" />
+		<Parameter name="itemid" values="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{itemid}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-EXEM-007" applicationKey="REGISTER" >
+		<Parameter name="origTransSeq" values="120" />
+		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origLocationId" values="1005" />
+		<Parameter name="origWorkStationId" values="1" />
+		<Parameter name="item1" values="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item2}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>-->
+	<TestCase name="TRAN-OPT-TAX-EXEM-008" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,6.99" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{itemid}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-EXEM-009" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,19.99" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{itemid}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-EXEM-010" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,19.99" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,19.99" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item2}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<!--<TestCase name="TRAN-OPT-TAX-EXEM-011" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="GO_SALE_SCREEN" /> 
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-EXEM-012" applicationKey="REGISTER" >
+		<Parameter name="item1" value="100150057" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-EXEM-013" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>-->
+	<TestCase name="TRAN-OPT-TAX-EXEM-014" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="4"/>
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,19.99" />
+		<!--<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>-->
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-EXEM-015" applicationKey="REGISTER" >
+		<Parameter name="item1" value="100150057" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="3"/>
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,19.99" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item2}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-EXEM-016" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="5"/>
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,9.99" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-EXEM-017" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},6.99,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,6.99" iterations="3" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-EXEM-018" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="100150057" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,6.99" iterations="5" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item2}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-TAX-EXEM-019" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,6.99" iterations="5" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item2}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+<!--Choose Suspend Transaction-->
+	<TestCase name="TRAN-OPT-SUSPEND-001" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+	</TestCase>
+	<TestCase name="TRAN-OPT-SUSPEND-003" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+	</TestCase>
+	<TestCase name="TRAN-OPT-SUSPEND-004" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+	</TestCase>
+	<TestCase name="TRAN-OPT-SUSPEND-005" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item2},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+	</TestCase>
+	<TestCase name="TRAN-OPT-SUSPEND-006" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="3"/>
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item2},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" />
+	</TestCase>
+	<TestCase name="TRAN-OPT-SUSPEND-007" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item2},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_SUSPEND_TRANSACTION" values="!{itemid}" />
+	</TestCase>
+	<!--Choose Resume Transaction-->
+	<TestCase name="TRAN-OPT-RESUME-001" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="custFirstName" value="Stuart" />
+		<Parameter name="custLastName" value="Little" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SUSPEND_SALE" values="!{itemid}"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransactionId.getTransactionSequence" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	<!--
+	<TestCase name="TRAN-OPT-RESUME-002" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="custFirstName" value="Stuart" />
+		<Parameter name="custLastName" value="Little" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_RESUME_TRANS"/>
+		<SequenceRef name="CREATE_SUSPEND_UNVERIFIED_RETURN" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId},!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransactionId.getTransactionSequence" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>-->
+	<TestCase name="TRAN-OPT-RESUME-003" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="custFirstName" value="Stuart" />
+		<Parameter name="custLastName" value="Little" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="CREATE_SUSPEND_BLIND_RETURN" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransactionId.getTransactionSequence" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	<TestCase name="TRAN-OPT-RESUME-004" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="custFirstName" value="Stuart" />
+		<Parameter name="custLastName" value="Little" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="CREATE_SUSPEND_EVEN_EXCHANGE" values="!{item1},!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransactionId.getTransactionSequence" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	<TestCase name="TRAN-OPT-RESUME-005" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="custFirstName" value="Stuart" />
+		<Parameter name="custLastName" value="Little" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="CREATE_SUSPEND_SALE_EXCHANGE" values="!{item1},!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransactionId.getTransactionSequence" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	<TestCase name="TRAN-OPT-RESUME-006" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="custFirstName" value="Stuart" />
+		<Parameter name="custLastName" value="Little" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="CREATE_SUSPEND_RETURN_EXCHANGE" values="!{item1},!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CHOOSE_RESUME_TRANS" values="@getLastTransactionId.getTransactionSequence" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	<!--Choose Cancel Transaction-->
+	<TestCase name="TRAN-OPT-CANCEL-001" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CANCEL_SALE_TRANSACTION_WITHOUT_ITEM" />
+	</TestCase>
+	<TestCase name="TRAN-OPT-CANCEL-002" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="CANCEL_TRANSACTION" />
+	</TestCase>
+	<TestCase name="TRAN-OPT-CANCEL-003" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="CANCEL_TRANSACTION" />
+	</TestCase>
+	<TestCase name="TRAN-OPT-CANCEL-004" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item2},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="CANCEL_TRANSACTION" />
+	</TestCase>
+	<TestCase name="TRAN-OPT-CANCEL-005" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="5" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="CANCEL_TRANSACTION" />
+	</TestCase>
+	<TestCase name="TRAN-OPT-CANCEL-006" applicationKey="REGISTER" >
+		<Parameter name="item1" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="item2" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="5"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="CANCEL_TRANSACTION" />
+	</TestCase>
+	<!--Add Coupon-->
+	<TestCase name="TRAN-OPT-CP-001" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="1020" />
+		<Parameter name="couponid" values="XUNITCOUPON" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1" />
+		<SequenceRef name="SELECT_BTN_COUPON" values="!{couponid}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>
+	<!--<TestCase name="TRAN-OPT-CP-005" applicationKey="REGISTER" >
+		<Parameter name="itemid" values="1020" />
+		<Parameter name="couponid" values="XUNITCOUPON" />
+		<Parameter name="origTransSeq" values="120" />
+		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origLocationId" values="1005" />
+		<Parameter name="origWorkStationId" values="1" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_BTN_COUPON" values="!{couponid}" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase>-->
+	<TestCase name="TRAN-OPT-CP-009" applicationKey="REGISTER" >
+		<Parameter name="item1" value="1020" />
+		<Parameter name="returnItem" value="%?ITEMS_NO_TAX_FILE.ItemId" />
+		<Parameter name="couponid" values="XUNITCOUPON" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{returnItem},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newprice}" />
+		<!--<SequenceRef name="CHANGE_PRICE" values ="!{returnItem},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>-->
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_BTN_COUPON" values="!{couponid}" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-CP-013" applicationKey="REGISTER" >
+		<Parameter name="item1" value="1020" />
+		<Parameter name="returnItem" value="%?ITEMS_NO_TAX_FILE.ItemId" />
+		<Parameter name="couponid" values="XUNITCOUPON" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="3"/>
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{returnItem},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,!{newprice}" />
+		<!--<SequenceRef name="CHANGE_PRICE" values ="!{returnItem},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>-->
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_BTN_COUPON" values="!{couponid}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-CP-017" applicationKey="REGISTER" >
+		<Parameter name="item1" value="1020" />
+		<Parameter name="item2" value="%?ITEMS_NO_TAX_FILE.ItemId" />
+		<Parameter name="couponid" values="XUNITCOUPON" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="4"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_BTN_COUPON" values="!{couponid}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+	<TestCase name="TRAN-OPT-CP-021" applicationKey="REGISTER" >
+		<Parameter name="item1" value="1020" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="couponid" values="XUNITCOUPON" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="4"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_BTN_COUPON" values="!{couponid}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="EXCHANGE_TENDER_BY_CASH" values="@getTransaction.getTotal,@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>
+
+</XunitConfig>

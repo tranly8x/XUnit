@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<!-- Global exceptions -->
+	<Exception name="APPLY_TRANS_TAX_EXEMPTION" action="NO" />
+	<Exception name="BELOW_MIN_CASH_AMOUNT" action="ACCEPT" />
+	<Exception name="DISCOUNT_AUTO_REMOVE" action="ACCEPT" />
+	<Exception name="EMAIL_RECEIPTS" action="PRINT_ONLY" />
+	<Exception name="EXCEED_MAX_CASH_AMOUNT" action="ACCEPT" />
+	<Exception name="FORCE_PICKUP_ALL" action="YES" />
+	<Exception name="IMPRINT_CREDIT_CARD" action="ACCEPT" />
+	<Exception name="LAYAWAY_DEPOSIT_OVERRIDE" action="YES" />
+	<Exception name="LOYALTY_CARD" action="CONTINUE" />
+	<Exception name="JOIN_LOYALTY_CUSTOMER_CENTRIC" action="NO" />
+	<Exception name="NO_CHALLENGE_QUESTIONS" action="NO" />
+	<Exception name="OLD_RECEIVING_DOCUMENTS" action="CONTINUE" />
+	<Exception name="RECEIVED_SP_ORDER_ACCOUNT_LIST" action="ACCEPT" />
+	<Exception name="RECOMMENDED_LAYAWAY_PAYMENT_CHECK" action="YES" />
+	<Exception name="RETURN_PRICE_HISTORY_EMPTY" action="ACCEPT" />
+	<Exception name="SIGNATURE_REQUIRED" action="ACCEPT" />
+	<Exception name="SP_ORDER_CONFIRM_ONHAND" action="YES" />
+	<Exception name="WARNING_WITH_INFO" action="ACCEPT" />
+	<!-- This exception is needed to support register open with the "noreceipts" flag set. Base ops 
+				don't skip register open receipt functionality when no receipt printer is available. -->
+	<Exception name="PRINTER_ERROR" action="EXIT" />
+</XunitConfig>

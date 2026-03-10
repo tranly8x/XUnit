@@ -1,0 +1,1443 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<Parameter name="discountOpAMT" value="TRANS_AMT" />
+	<Parameter name="discountOpPCT" value="TRANS_PCT" />
+	<Parameter name="discountAMT" value="5" />
+	<Parameter name="discountPCT" value="5" />
+	<Parameter name="reascode" value="DC1" />
+	<Parameter name="tranBarcode" value="T3HH1IP117111G34C1443" />
+	<Parameter name="tranBarcodeNOTcorrect" value="T3HH1IP117111G34C1445" />
+	<Parameter name="returnRC" value="RET41" />
+	<Parameter name="returnComment" value="Test" />
+	<Parameter name="newPostalCode" value="60046" />
+	<Parameter name="newTaxAMT" value="1.20" />
+	<Parameter name="origTransSeq" value="120" />
+	<Parameter name="origTransBusinessDate" value="Tue Jul 01 00:00:00 ICT 2025" />
+	<Parameter name="origLocationId" value="1005" />
+	<Parameter name="origWorkStationId" value="1" />
+	<Parameter name="newprice" value="10" />
+	<Parameter name="priceChangereascode" value="PC2" />
+	<Parameter name="certificateHolderName" value="Test Tax Exempt" />
+	<Parameter name="certificateNbr" value="123456" />
+	<Parameter name="TaxExemptReasonCode" value="TE3" />
+	<Parameter name="newTaxPER" value="2.5" />
+	<Parameter name="SELECT_BTN_COUPON" value="XUNITCOUPON" />
+	<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+	<Parameter name="associateID" value="100" />
+	<!-- TEST CASES -->
+	<Parameter name="returnComment" values="Test" />
+	<!--Item Options - Add Items - Sale transaction- Add single item -->	
+	 <TestCase name="ITM-OPT-ADD-002" applicationKey="REGISTER" ><!--
+	Add multiple item type - Complete sale transaction with any tender type"
+	-->
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="SCAN_ITEM_PROMPT" values="9999999,10" />
+		<!-- <SequenceRef name="SCAN_STYLE_ITEM" values="%?STYLE_ITEM_DB.ItemId" />-->
+		<SequenceRef name="SCAN_ITEM_SERIAL" values="%?ITEMS_SERIAL_DB.ItemId,12345678" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-ADD-004" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start verified return transaction
+	4. Add multiple item type by manual enter
+	5. Complete verified return transaction with any tender type"
+	-->
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<Parameter name="returnComment" value="BTM" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />		
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />		
+	</TestCase> 
+	 <!--<TestCase name="ITM-OPT-ADD-005" applicationKey="REGISTER" >
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start unverified return transaction
+	4. Add single item type by manual enter
+	5. Complete unverified return transaction with any tender type"
+	
+		<Parameter name="returnComment" value="T3HH1IP117111G34C1443" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="1234,Tue Jul 01 00:00:00 ICT 2025,!{rtlLocId},!{wkstnId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> -->
+	 <TestCase name="ITM-OPT-ADD-008" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start blind return transaction
+	4. Add multiple item type by manual enter
+	5. Complete blind return transaction with any tender type"
+	-->
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-ADD-010" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start even exchange transaction
+	4. Add multiple item type by manual enter
+	5. Complete even exchange transaction with any tender type"
+	-->
+		<Parameter name="itemId" value="1025" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemId}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-ADD-012" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale exchange transaction
+	4. Add multiple item type by manual enter
+	5. Complete sale exchange transaction with any tender type"-->
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" iterations="6" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%?ITEMS_DB.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,9.99" iterations="2"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-QTY-002" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale transaction
+	4. Add multiple item type by manual enter
+	5. Change quantity < stock available
+	6. Complete sale transaction with any tender type"
+	-->
+		<Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="2"/>
+		<SequenceRef name="CHANGE_ITEM_QTY" values="!{itemId},2"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase> 
+	
+	 <TestCase name="ITM-OPT-QTY-003" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale transaction
+	4. Add single item type by manual enter
+	5. Change quantity > stock available
+	6. Observe the results"
+	-->
+		<Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="2"/>
+		<SequenceRef name="CHANGE_ITEM_QTY" values="!{itemId},99999"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase> 
+	
+	 <!--<TestCase name="ITM-OPT-QTY-006" applicationKey="REGISTER" >
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start unverified return transaction
+	4. Add multiple item type by manual enter
+	5. Change quantity < stock available
+	6. Complete unverified return transaction with any tender type"
+	
+		<Parameter name="itemId" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>        
+        <SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="1234,Tue Jul 01 00:00:00 ICT 2025,!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="CHANGE_ITEM_QTY" values="!{itemId},2"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase> -->
+	<!-- <TestCase name="ITM-OPT-QTY-007" applicationKey="REGISTER" >
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start unverified return transaction
+	4. Add single item type by manual enter
+	5. Change quantity > stock available
+	6. Observe the results"
+	
+	
+	</TestCase> -->
+	 <TestCase name="ITM-OPT-QTY-014" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start even exchange transaction
+	4. Add multiple item type by manual enter
+	5. Change quantity < stock available
+	6. Complete blind return transaction with any tender type"
+	-->
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemid},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <!--<TestCase name="ITM-OPT-QTY-015" applicationKey="REGISTER" >
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start even exchange transaction
+	4. Add single item type by manual enter
+	5. Change quantity > stock available
+	6. Observe the results"
+	</TestCase> -->
+	 <TestCase name="ITM-OPT-PRICE-002" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale transaction
+	4. Add multiple item type by manual enter > Change price
+	5. Complete sale transaction with any tender type"
+	-->
+		<Parameter name="itemId" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemId}" iterations="2"/>
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},99.99,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	
+	</TestCase> 
+	<!-- <TestCase name="ITM-OPT-PRICE-004" applicationKey="REGISTER" >
+	Complete unverified return transaction with any tender type"
+	
+		<Parameter name="itemId" values="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>        
+        <SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="1234,Tue Jul 01 00:00:00 ICT 2025,!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},99.99,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+	</TestCase> -->
+	 <TestCase name="ITM-OPT-PRICE-006" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start blind return transaction
+	4. Add multiple item type by manual enter > Change price
+	5. Complete blind return transaction with any tender type"
+	-->
+		<Parameter name="itemId" values="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},99.99,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-PRICE-008" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start even exchange transaction
+	4. Add multiple item type by manual enter > Change price
+	5. Complete even exchange transaction with any tender type"
+	-->
+		<Parameter name="itemId" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId"  iterations="3"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{itemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="!{itemId},9.99,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-PRICE-010" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale exchange transaction
+	4. Add multiple item type by manual enter > Change price
+	5. Complete sale exchange transaction with any tender type"
+	-->
+		<Parameter name="itemId" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />		
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" iterations="5"  />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="itemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values="itemId,99.99,%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-DISC-002" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale transaction
+	4. Add multiple item type by manual enter
+	5. Add % item discount
+	6. Complete sale transaction with any tender type"
+	-->
+		<Parameter name="discountOp" value="ITEM_PCT" />
+		<Parameter name="discountPER" value="5" />
+		<Parameter name="reascode" value="DC1" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOp},!{discountPER},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-DISC-004" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale transaction
+	4. Add multiple item type by manual enter
+	5. Add $ item discount
+	6. Complete sale transaction with any tender type"
+	-->
+		<Parameter name="discountOp" value="ITEM_AMT" />
+		<Parameter name="discountAMT" value="2" />
+		<Parameter name="reascode" value="DC1" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />			
+		<SequenceRef name="SCAN_ITEM" values="%?REGULAR_ITEMS_FILE.ItemId" iterations="2" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOp},!{discountAMT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />	
+	</TestCase> 
+	<TestCase name="ITM-OPT-MOD-DISC-002" applicationKey="REGISTER" ><!--
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Item added discount before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale transaction
+	4. Add multiple item type by manual enter > Modify discount
+	5. Complete sale transaction with any tender type"
+	-->
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<Parameter name="discountCode" value="ITEM_AMT" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="discountOpPCT" value="ITEM_PCT" />
+		<Parameter name="discountPCT" value="10" />
+		<Parameter name="reascode" value="%?DISCOUNT_REASONS.ReasonCode" />
+		<Parameter name="reascode2" value="%?DISCOUNT_REASONS.ReasonCode" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}"/>
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{discountAMT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="MODIFY_DISCOUNT" values="!{item1},!{discountCode},!{discountOpPCT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-MOD-DISC-004" applicationKey="REGISTER" ><!--
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Transaction discount added before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale transaction
+	4. Add multiple item type by manual enter > Modify discount
+	5. Complete sale transaction with any tender type"
+	-->
+		<Parameter name="discountOpAMT" value="TRANS_AMT" />
+		<Parameter name="discountCode" value="TRANS_AMT" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="discountOpPCT" value="TRANS_PCT" />
+		<Parameter name="discountPCT" value="10" />
+		<Parameter name="reascode" value="DC1" />
+		<Parameter name="reascode2" value="DC2" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="2"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="MODIFY_DISCOUNT" values="!{item1},!{discountCode},!{discountOpPCT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	<!--<TestCase name="ITM-OPT-MOD-DISC-008" applicationKey="REGISTER" >
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Transaction discount added before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start unverified return transaction
+	4. Add multiple item type by manual enter > Modify discount
+	5. Complete unverified return transaction with any tender type"
+	
+		<Parameter name="discountOpAMT" value="TRANS_AMT" />
+		<Parameter name="discountCode" value="TRANS_AMT" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="discountOpPCT" value="TRANS_PCT" />
+		<Parameter name="discountPCT" value="10" />
+		<Parameter name="reascode" value="DC1" />
+		<Parameter name="reascode2" value="DC2" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2" />
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="MODIFY_DISCOUNT" values="!{item1},!{discountCode},!{discountOpPCT},!{discountPCT},!{reascode2}"/>
+		<Assertion promptKey="NO_DISCOUNTS" />
+	</TestCase>-->
+	 <!--<TestCase name="ITM-OPT-MOD-DISC-012" applicationKey="REGISTER" >
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Transaction discount added before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start blind return transaction
+	4. Add multiple item type by manual enter > Modify discount
+	5. Complete blind return transaction with any tender type"
+	
+		<Parameter name="discountOpAMT" value="TRANS_AMT" />
+		<Parameter name="discountCode" value="TRANS_AMT" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="discountOpPCT" value="TRANS_PCT" />
+		<Parameter name="discountPCT" value="10" />
+		<Parameter name="reascode" value="DC1" />
+		<Parameter name="reascode2" value="DC2" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="MODIFY_DISCOUNT" values="!{item1},!{discountCode},!{discountOpPCT},!{discountPCT},!{reascode2}"/>
+		<Assertion promptKey="NO_DISCOUNTS" />
+	</TestCase> -->
+	<!--<TestCase name="ITM-OPT-MOD-DISC-014" applicationKey="REGISTER" >
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Item added discount before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start even exchange transaction
+	4. Add multiple item type by manual enter > Modify discount
+	5. Complete even exchange transaction with any tender type"
+	
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<Parameter name="discountCode" value="ITEM_AMT" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="discountOpPCT" value="TRANS_PCT" />
+		<Parameter name="discountPCT" value="10" />
+		<Parameter name="reascode" value="DC1" />
+		<Parameter name="reascode2" value="DC2" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="2"/>
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="MODIFY_DISCOUNT" values="!{item1},!{discountCode},!{discountOpPCT},!{discountPCT},!{reascode2}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="MODIFY_DISCOUNT" values="!{item1},!{discountCode},!{discountOpPCT},!{discountPCT},!{reascode2}"/>
+		<Assertion promptKey="NO_DISCOUNTS" />
+	</TestCase>-->
+	<!-- <TestCase name="ITM-OPT-MOD-DISC-016" applicationKey="REGISTER" >
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Transaction discount added before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start even exchange transaction
+	4. Add multiple item type by manual enter > Modify discount
+	5. Complete even exchange transaction with any tender type"
+	
+		<Parameter name="discountOpAMT" value="TRANS_AMT" />
+		<Parameter name="discountCode" value="TRANS_AMT" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="discountOpPCT" value="TRANS_PCT" />
+		<Parameter name="discountPCT" value="10" />
+		<Parameter name="reascode" value="DC1" />
+		<Parameter name="reascode2" value="DC2" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="2"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="MODIFY_DISCOUNT" values="!{item1},!{discountCode},!{discountOpPCT},!{discountPCT},!{reascode2}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="MODIFY_DISCOUNT" values="!{item1},!{discountCode},!{discountOpPCT},!{discountPCT},!{reascode2}"/>
+		<Assertion promptKey="NO_DISCOUNTS" />
+	</TestCase> -->
+	 <!--<TestCase name="ITM-OPT-MOD-DISC-020" applicationKey="REGISTER" >
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Transaction discount added before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale exchange transaction
+	4. Add multiple item type by manual enter > Modify discount
+	5. Complete sale exchange transaction with any tender type"
+	
+		<Parameter name="discountOpAMT" value="TRANS_AMT" />
+		<Parameter name="discountCode" value="TRANS_AMT" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="discountOpPCT" value="TRANS_PCT" />
+		<Parameter name="discountPCT" value="10" />
+		<Parameter name="reascode" value="DC1" />
+		<Parameter name="reascode2" value="DC2" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="2"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="MODIFY_DISCOUNT" values="!{item1},!{discountCode},!{discountOpPCT},!{discountPCT},!{reascode2}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="MODIFY_DISCOUNT" values="!{item1},!{discountCode},!{discountOpPCT},!{discountPCT},!{reascode2}"/>
+		<Assertion promptKey="NO_DISCOUNTS" />
+	</TestCase> -->
+	<!-- <TestCase name="ITM-OPT-MOD-DISC-024" applicationKey="REGISTER" >
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Transaction discount added before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start return exchange transaction
+	4. Add multiple item type by manual enter > Modify discount
+	5. Complete return exchange transaction with any tender type"
+	
+		<Parameter name="discountOpAMT" value="TRANS_AMT" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="discountCode" value="TRANS_AMT" />
+		<Parameter name="discountOpPCT" value="TRANS_PCT" />
+		<Parameter name="discountPCT" value="10" />
+		<Parameter name="reascode" value="DC1" />
+		<Parameter name="reascode2" value="DC2" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="MODIFY_DISCOUNT" values="!{item1},!{discountCode},!{discountOpPCT},!{discountPCT},!{reascode2}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="MODIFY_DISCOUNT" values="!{item1},!{discountCode},!{discountOpPCT},!{discountPCT},!{reascode2}"/>
+		<Assertion promptKey="NO_DISCOUNTS" />
+	</TestCase> -->
+	 <TestCase name="ITM-OPT-REM-DISC-002" applicationKey="REGISTER" ><!--
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Item added discount before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale transaction
+	4. Add multiple item type by manual enter > Remove discount
+	5. Complete sale transaction with any tender type"
+	-->
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<Parameter name="discountCode" value="ITEM_AMT" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="discountOpPCT" value="TRANS_PCT" />
+		<Parameter name="discountPCT" value="10" />
+		<Parameter name="reascode" value="DC1" />
+		<Parameter name="reascode2" value="DC2" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}"/>
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{discountAMT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="REMOVE_ITEM_DISCOUNT" values="!{item1},!{discountCode}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-REM-DISC-004" applicationKey="REGISTER" >
+	 <!--
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Transaction discount added before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale transaction
+	4. Add multiple item type by manual enter > Remove discount
+	5. Complete sale transaction with any tender type"
+	-->
+		<Parameter name="discountOpAMT" value="TRANS_AMT" />
+		<Parameter name="discountCode" value="TRANS_AMT" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="discountOpPCT" value="TRANS_PCT" />
+		<Parameter name="discountPCT" value="10" />
+		<Parameter name="reascode" value="DC1" />
+		<Parameter name="reascode2" value="DC2" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},%?DISCOUNT_REASONS.ReasonCode,%?DISCOUNT_REASONS.CommentReq" />
+		<SequenceRef name="REMOVE_ITEM_DISCOUNT" values="!{item1},!{discountCode}"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <!--<TestCase name="ITM-OPT-REM-DISC-006" applicationKey="REGISTER" >
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Item added discount before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start unverified return transaction
+	4. Add multiple item type by manual enter > remove discount
+	5. Complete unverified return transaction with any tender type"
+	
+		<Parameter name="discountOpAMT" value="ITEM_AMT" />
+		<Parameter name="discountCode" value="ITEM_AMT" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="discountOpPCT" value="TRANS_PCT" />
+		<Parameter name="discountPCT" value="10" />
+		<Parameter name="reascode" value="DC1" />
+		<Parameter name="reascode2" value="DC2" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2" />
+		<SequenceRef name="APPLY_ITEM_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="REMOVE_DISCOUNT" values="!{item1},!{discountCode}"/>
+		<Assertion promptKey="NO_DISCOUNTS" />
+	</TestCase> -->
+	<!-- <TestCase name="ITM-OPT-REM-DISC-008" applicationKey="REGISTER" >
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Transaction discount added before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start unverified return transaction
+	4. Add multiple item type by manual enter > Remove discount
+	5. Complete unverified return transaction with any tender type"
+		<Parameter name="discountOpAMT" value="TRANS_AMT" />
+		<Parameter name="discountCode" value="TRANS_AMT" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="discountOpPCT" value="TRANS_PCT" />
+		<Parameter name="discountPCT" value="10" />
+		<Parameter name="reascode" value="DC1" />
+		<Parameter name="reascode2" value="DC2" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2" />
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="REMOVE_DISCOUNT" values="!{item1},!{discountCode}"/>
+		<Assertion promptKey="NO_DISCOUNTS" />
+	</TestCase> -->
+	<!-- <TestCase name="ITM-OPT-REM-DISC-012" applicationKey="REGISTER" >
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Transaction discount added before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start blind return transaction
+	4. Add multiple item type by manual enter > Remove discount
+	5. Complete blind return transaction with any tender type"
+	
+		<Parameter name="discountOpAMT" value="TRANS_AMT" />
+		<Parameter name="discountCode" value="TRANS_AMT" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="discountOpPCT" value="TRANS_PCT" />
+		<Parameter name="discountPCT" value="10" />
+		<Parameter name="reascode" value="DC1" />
+		<Parameter name="reascode2" value="DC2" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2" />
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="REMOVE_DISCOUNT" values="!{item1},!{discountCode}"/>
+		<Assertion promptKey="NO_DISCOUNTS" />
+	</TestCase> -->
+	 <!--<TestCase name="ITM-OPT-REM-DISC-016" applicationKey="REGISTER" >
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Transaction discount added before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start even exchange transaction
+	4. Add multiple item type by manual enter > Remove discount
+	5. Complete even exchange transaction with any tender type"
+	
+		<Parameter name="discountOpAMT" value="TRANS_AMT" />
+		<Parameter name="discountCode" value="TRANS_AMT" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="discountOpPCT" value="TRANS_PCT" />
+		<Parameter name="discountPCT" value="10" />
+		<Parameter name="reascode" value="DC1" />
+		<Parameter name="reascode2" value="DC2" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="2"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="REMOVE_DISCOUNT" values="!{item1},!{discountCode}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="REMOVE_DISCOUNT" values="!{item1},!{discountCode}"/>
+		<Assertion promptKey="NO_DISCOUNTS" />
+	</TestCase> -->
+	<!-- <TestCase name="ITM-OPT-REM-DISC-020" applicationKey="REGISTER" >
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Transaction discount added before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale exchange transaction
+	4. Add multiple item type by manual enter > Remove discount
+	5. Complete sale exchange transaction with any tender type"
+	
+		<Parameter name="discountOpAMT" value="TRANS_AMT" />
+		<Parameter name="discountCode" value="TRANS_AMT" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="discountOpPCT" value="TRANS_PCT" />
+		<Parameter name="discountPCT" value="10" />
+		<Parameter name="reascode" value="DC1" />
+		<Parameter name="reascode2" value="DC2" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" iterations="2"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="REMOVE_DISCOUNT" values="!{item1},!{discountCode}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="REMOVE_DISCOUNT" values="!{item1},!{discountCode}"/>
+		<Assertion promptKey="NO_DISCOUNTS" />
+	</TestCase> -->
+	<!-- <TestCase name="ITM-OPT-REM-DISC-024" applicationKey="REGISTER" >
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Transaction discount added before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start return exchange transaction
+	4. Add multiple item type by manual enter > Remove discount
+	5. Complete return exchange transaction with any tender type"
+	
+		<Parameter name="discountOpAMT" value="TRANS_AMT" />
+		<Parameter name="discountCode" value="TRANS_AMT" />
+		<Parameter name="discountAMT" value="5" />
+		<Parameter name="discountOpPCT" value="TRANS_PCT" />
+		<Parameter name="discountPCT" value="10" />
+		<Parameter name="reascode" value="DC1" />
+		<Parameter name="reascode2" value="DC2" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100"/>
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="REMOVE_DISCOUNT" values="!{item1},!{discountCode}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="2"/>
+		<SequenceRef name="APPLY_TRANSACTION_DISCOUNT" values="!{discountOpAMT},!{discountAMT},!{reascode}" />
+		<SequenceRef name="REMOVE_DISCOUNT" values="!{item1},!{discountCode}"/>
+		<Assertion promptKey="NO_DISCOUNTS" />
+	</TestCase>--> 
+	 <TestCase name="ITM-OPT-ITM-TAX-LOC-002" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale transaction
+	4. Add multiple item type by manual enter
+	5. Tap on an Item line 
+	6. Select Change Item Tax Location 
+	7. Enter Postal Code
+	8. Select Change Tax Location Reason
+	9. Complete sale transaction with any tender type"
+	-->
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="2" />
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{itemid},!{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE"/>
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-ITM-TAX-LOC-004" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start verified return transaction
+	4. Add/Scan multiple item type
+	5. Tap on an Item line 
+	6. Select Change Item Tax Location 
+	7. Complete verfied return transaction with any tender type"
+	-->
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="T3HH1IP117111G34C1443" />
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_CHANGE_TAX_LOC" values="!{itemid},!{newPostalCode},0,%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <!--<TestCase name="ITM-OPT-ITM-TAX-LOC-010" applicationKey="REGISTER" >
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start even exchange transaction
+	4. Add multiple item type by manual enter
+	6. Select Change Item Tax Location 
+	7. Enter Postal Code
+	8. Select Change Tax Location Reason
+	9. Complete even exchange transaction with any tender type"
+	
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="newprice" values="20" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{item1}, !{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item2},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_TAX_LOC" values ="!{item2}, !{newPostalCode},%^TAX_CHANGE_REASONS.ReasonCode,%^TAX_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> -->
+	 <TestCase name="ITM-OPT-ITM-TAX-AMT-002" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale transaction
+	4. Add multiple item type by manual enter
+	5. Tap on an Item line 
+	6. Select Change Item Tax Amount
+	7. Enter Tax Amount 
+	8. Select a Change Item Tax Amount Reason
+	9. Complete sale transaction with any tender type"
+	-->
+		<Parameter name="newTaxAMT" value="1.20" />
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" iterations="1"/>
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" iterations="1"/>
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{itemid},!{newTaxAMT}"/>
+		<SequenceRef name="SELECT_AMT_DUE"/>
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-ITM-TAX-AMT-004" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start verified return transaction
+	4. Add/Scan multiple item type
+	5. Tap on an Item line 
+	6. Select Change Item Tax Amount
+	7. Complete verfied return transaction with any tender type"
+	-->
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="T3HH1IP117111G34C1443" />
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_CHANGE_TAX_AMT" values="!{itemid}, !{newTaxAMT}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	<!-- <TestCase name="ITM-OPT-ITM-TAX-AMT-010" applicationKey="REGISTER" >
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start even exchange transaction
+	4. Add multiple item type by manual enter
+	5. Tap on an Item line 
+	6. Select Change Item Tax Amount
+	7. Enter Tax Amount 
+	8. Select a Change Item Tax Amount Reason
+	9. Complete even exchange transaction with any tender type"
+	
+		<Parameter name="newTaxAMT" value="1.20" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="newprice" values="20" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{newTaxAMT}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item2},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_ITEM_TAX_AMT" values ="!{newTaxAMT}"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> -->
+	 <TestCase name="ITM-OPT-ITM-TAX-PERCENT-002" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale transaction
+	4. Add multiple item type by manual enter
+	5. Tap on an Item line 
+	6. Select Change Item Tax Percent 
+	7. Enter the new rate percentage 
+	8. Select a Change Item Tax Percentage Reason
+	9. Complete sale transaction with any tender type"
+	-->
+		<Parameter name="newTaxPER" value="2.5" />
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{itemid}" />
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}" />
+		<SequenceRef name="SELECT_AMT_DUE"/>
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-ITM-TAX-PERCENT-004" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start verified return transaction
+	4. Add/Scan multiple item type
+	5. Tap on an Item line 
+	6. Select Change Item Tax Percent 
+	7. Complete verfied return transaction with any tender type"
+	-->
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="T3HH1IP117111G34C1443" />
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_CHANGE_TAX_PER" values="!{itemid}, !{newTaxPER}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-ITM-TAX-PERCENT-010" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start even exchange transaction
+	4. Add multiple item type by manual enter
+	5. Tap on an Item line 
+	6. Select Change Item Tax Percent 
+	7. Enter the new rate percentage 
+	8. Select a Change Item Tax Percentage Reason
+	9. Complete even exchange transaction with any tender type"
+	-->
+		<Parameter name="newTaxAMT" value="1.20" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="newprice" values="20" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}" />
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item2},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="CHANGE_TAX_PER" values ="!{newTaxPER}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-EXEMPT-ITM-TAX-002" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale transaction
+	4. Add multiple item type by manual enter
+	5. Tap on an Item line 
+	6. Select Exempt Item Tax
+	7. Enter Certificate Holder or select an existing Certificate Holder 
+	8. Complete sale transaction with any tender type"
+	-->
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item2}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="SELECT_AMT_DUE"/>
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-EXEMPT-ITM-TAX-004" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start verified return transaction
+	4. Add/Scan multiple item type
+	5. Tap on an Item line 
+	6. Select Exempt Item Tax
+	7. Complete verfied return transaction with any tender type"
+	-->
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="T3HH1IP117111G34C1443" />
+		<Parameter name="itemid" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_CHANGE_TAX_EXEMPT" values="!{itemid},!{certificateHolderName},!{certificateNbr},!{TaxExemptReasonCode}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-EXEMPT-ITM-TAX-010" applicationKey="REGISTER" ><!--
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start even exchange transaction
+	4. Add multiple item type by manual enter
+	5. Tap on an Item line 
+	6. Select Exempt Item Tax
+	7. Enter Certificate Holder or select an existing Certificate Holder 
+	8. Complete even exchange transaction with any tender type"
+	-->
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="newprice" value="20" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item1}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item2},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="ADD_ITEM_TAX_EXEMPT" values ="!{item2}, !{certificateHolderName}, !{certificateNbr}, !{TaxExemptReasonCode}"/>
+		<SequenceRef name="SELECT_AMT_DUE" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-VOID-002" applicationKey="REGISTER" ><!--
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Item added discount before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale transaction
+	4. Add multiple item type by manual enter > Choose void item
+	5. Complete sale transaction with any tender type"
+	-->
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}"/>
+		<SequenceRef name="SCAN_ITEM" values="!{item2}"/>
+		<SequenceRef name="VOID_ITEM" values ="!{item1},  %?VOID_LINE_REASONS.ReasonCode,%?VOID_LINE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_AMT_DUE"/>
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-VOID-004" applicationKey="REGISTER" ><!--
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Item added discount before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start verified return transaction
+	4. Add multiple item type by manual enter > Choose void item
+	5. Complete verified return transaction with any tender type"
+	-->
+		<Parameter name="voidReasoncode" value="VL1" />
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="T3HH1IP117111G34C1443" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="CREATE_SALE_VOID_ITEM" values="!{item1},!{item2}, %?VOID_LINE_REASONS.ReasonCode,%?VOID_LINE_REASONS.CommentReq,0" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-VOID-006" applicationKey="REGISTER" ><!--
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Item added discount before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start unverified return transaction
+	4. Add multiple item type by manual enter > Choose void item
+	5. Complete unverified return transaction with any tender type"
+	-->
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="voidReasoncode" value="VL1" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SEARCH_UNVERIFIED_RETURN_TRANSACTION_INFO" values="!{origTransSeq},!{origTransBusinessDate},!{origLocationId},!{origWorkStationId}" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item1},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" iterations="3" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="VOID_ITEM" values ="!{item2},  %?VOID_LINE_REASONS.ReasonCode,%?VOID_LINE_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-VOID-010" applicationKey="REGISTER" ><!--
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Item added discount before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start even exchange transaction
+	4. Add multiple item type by manual enter > Choose void item
+	5. Complete even exchange transaction with any tender type"
+
+	-->
+		<Parameter name="voidReasoncode" value="%?VOID_LINE_REASONS.ReasonCode" />
+		<Parameter name="item1" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="item3" value="%?ITEMS_DB.ItemId" />
+		<Parameter name="newprice" value="20" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item3}" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="VOID_ITEM" values ="!{item1}, %?VOID_LINE_REASONS.ReasonCode,%?VOID_LINE_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0"/>
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item3},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0"/>
+		<SequenceRef name="CHANGE_PRICE" values ="!{item2},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="VOID_ITEM" values ="!{item2},  %?VOID_LINE_REASONS.ReasonCode,%?VOID_LINE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN"/> 
+		<SequenceRef name="SELECT_AMT_DUE" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+	 <TestCase name="ITM-OPT-VOID-012" applicationKey="REGISTER" ><!--
+	All item type loaded into DB Xstore
+	Xstore DB should be connect with Xstore
+	Item should be config tax, price in DB xstore
+	Item added discount before
+
+	Steps:
+	1. Login into Xstore
+	2. Assign customer and associate
+	3. Start sale exchange transaction
+	4. Add multiple item type by manual enter > Choose void item
+	5. Complete sale exchange transaction with any tender type"
+	-->
+		<Parameter name="item1" value="%ITEMS_DB.ItemId" />
+		<Parameter name="item2" value="%ITEMS_DB.ItemId" />
+		<Parameter name="newprice" value="20" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+				<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="SCAN_ITEM" values="%ITEMS_DB.ItemId" iterations="4" />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item1},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="VOID_ITEM" values ="!{item1},%?VOID_LINE_REASONS.ReasonCode,%?VOID_LINE_REASONS.CommentReq"/>
+		<SequenceRef name="BLIND_RETURN_TRANSACTION" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="%ITEMS_DB.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0"  />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{item2},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,0"  />
+		<SequenceRef name="CHANGE_PRICE" values ="!{item2},!{newprice},%?PRICE_CHANGE_REASONS.ReasonCode,%?PRICE_CHANGE_REASONS.CommentReq"/>
+		<SequenceRef name="VOID_ITEM" values ="!{item2},%?VOID_LINE_REASONS.ReasonCode,%?VOID_LINE_REASONS.CommentReq"/>
+		<SequenceRef name="GO_SALE_SCREEN"/>
+		<SequenceRef name="SELECT_AMT_DUE"/>
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+	</TestCase> 
+
+</XunitConfig>

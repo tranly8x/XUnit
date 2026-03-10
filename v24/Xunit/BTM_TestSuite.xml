@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<!-- TEST SUITES -->
+	<!-- Open Store -->
+	<TestSuite name="OPEN_STORE">
+        <RunTest description="Run test case STOREOP-OPEN-STORE-001 to open Store" testName="STOREOP-OPEN-STORE-001" />
+    </TestSuite>
+	<!-- Open Register -->
+	<TestSuite name="OPEN_REGISTER"> 
+        <RunTest description="Run test case STOREOP-OPEN-REG-001 to open register" testName="STOREOP-OPEN-REG-001" />
+    </TestSuite>
+	<!-- Close Store -->
+	<TestSuite name="CHECK_DISABLED_MENU">
+		<RunTest description="Run test case check Register Open is invisible" testName="ASSERT_DISABLED_MENU_ITEM" />
+    </TestSuite>
+	
+	<!-- Check System Configurations -->
+	<TestSuite name="CHECK_CONFIGURATIONSv24" priority="-990" tags="CONFIGURATIONS">
+		<RunTest testName="CHECK_CONFIGURATIONSv24" description="Check all system configurations" />
+	</TestSuite>
+	<!--Deal Pricing-->
+	<TestSuite name="DEAL_PRICING">
+        <RunTest description="Run Deal Pricing test case DEAL-LI-PCT-S-001" testName="DEAL-LI-PCT-S-001" iterations="1" />
+        <RunTest description="Run Deal Pricing test case DEAL-LI-PCT-S-002" testName="DEAL-LI-PCT-S-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-PCT-S-003" testName="DEAL-LI-PCT-S-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-PCT-S-004" testName="DEAL-LI-PCT-S-004" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-PCT-S-005" testName="DEAL-LI-PCT-S-005" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-PCT-S-006" testName="DEAL-LI-PCT-S-006" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-PCT-S-007" testName="DEAL-LI-PCT-S-007" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-PCT-S-008" testName="DEAL-LI-PCT-S-008" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-PCT-S-009" testName="DEAL-LI-PCT-S-009" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-PCT-S-010" testName="DEAL-LI-PCT-S-010" iterations="1" />
+		<!-- <RunTest description="Run Deal Pricing test case DEAL-LI-PCT-S-012" testName="DEAL-LI-PCT-S-012" iterations="1" /> -->
+		<RunTest description="Run Deal Pricing test case DEAL-LI-PCT-S-014" testName="DEAL-LI-PCT-S-014" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-PCT-S-015" testName="DEAL-LI-PCT-S-015" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-PCT-ES-001" testName="DEAL-LI-PCT-ES-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-PCT-ES-002" testName="DEAL-LI-PCT-ES-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-PCT-ES-003" testName="DEAL-LI-PCT-ES-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-PCT-VR-001" testName="DEAL-LI-PCT-VR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-PCT-VR-002" testName="DEAL-LI-PCT-VR-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-PCT-SR-001" testName="DEAL-LI-PCT-SR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-PCT-SR-002" testName="DEAL-LI-PCT-SR-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-AMT-S-001" testName="DEAL-LI-AMT-S-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-AMT-S-002" testName="DEAL-LI-AMT-S-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-AMT-S-003" testName="DEAL-LI-AMT-S-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-AMT-ES-001" testName="DEAL-LI-AMT-ES-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-AMT-ES-002" testName="DEAL-LI-AMT-ES-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-AMT-ES-003" testName="DEAL-LI-AMT-ES-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-AMT-VR-001" testName="DEAL-LI-AMT-VR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-AMT-SR-001" testName="DEAL-LI-AMT-SR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-AMT-SR-002" testName="DEAL-LI-AMT-SR-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-FQP-S-001" testName="DEAL-LI-FQP-S-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-FQP-S-002" testName="DEAL-LI-FQP-S-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-FQP-S-003" testName="DEAL-LI-FQP-S-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-FQP-S-004" testName="DEAL-LI-FQP-S-004" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-FQP-S-005" testName="DEAL-LI-FQP-S-005" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-FQP-S-006" testName="DEAL-LI-FQP-S-006" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-FQP-ES-001" testName="DEAL-LI-FQP-ES-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-FQP-ES-002" testName="DEAL-LI-FQP-ES-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-FQP-ES-003" testName="DEAL-LI-FQP-ES-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-FQP-ES-004" testName="DEAL-LI-FQP-ES-004" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-FQP-ES-005" testName="DEAL-LI-FQP-ES-005" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-FQP-ES-006" testName="DEAL-LI-FQP-ES-006" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-FQP-VR-001" testName="DEAL-LI-FQP-VR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-FQP-VR-002" testName="DEAL-LI-FQP-VR-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-FQP-SR-001" testName="DEAL-LI-FQP-SR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-FQP-SR-002" testName="DEAL-LI-FQP-SR-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-IPA-S-001" testName="DEAL-LI-IPA-S-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-IPA-S-002" testName="DEAL-LI-IPA-S-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-IPA-S-003" testName="DEAL-LI-IPA-S-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-IPA-ES-001" testName="DEAL-LI-IPA-ES-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-IPA-ES-002" testName="DEAL-LI-IPA-ES-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-IPA-ES-003" testName="DEAL-LI-IPA-ES-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-IPA-VR-001" testName="DEAL-LI-IPA-VR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-IPA-VR-002" testName="DEAL-LI-IPA-VR-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-IPA-SR-001" testName="DEAL-LI-IPA-SR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-IPA-SR-002" testName="DEAL-LI-IPA-SR-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-QTD-S-001" testName="DEAL-LI-QTD-S-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-QTD-S-002" testName="DEAL-LI-QTD-S-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-QTD-S-003" testName="DEAL-LI-QTD-S-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-QTD-ES-001" testName="DEAL-LI-QTD-ES-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-QTD-ES-002" testName="DEAL-LI-QTD-ES-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-QTD-ES-003" testName="DEAL-LI-QTD-ES-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-QTD-VR-001" testName="DEAL-LI-QTD-VR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-QTD-VR-002" testName="DEAL-LI-QTD-VR-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-QTD-SR-001" testName="DEAL-LI-QTD-SR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-QTD-SR-002" testName="DEAL-LI-QTD-SR-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-1-S-001" testName="DEAL-LI-MIX-1-S-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-1-S-002" testName="DEAL-LI-MIX-1-S-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-1-S-003" testName="DEAL-LI-MIX-1-S-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-1-ES-001" testName="DEAL-LI-MIX-1-ES-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-1-ES-002" testName="DEAL-LI-MIX-1-ES-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-1-ES-003" testName="DEAL-LI-MIX-1-ES-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-1-VR-001" testName="DEAL-LI-MIX-1-VR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-1-VR-002" testName="DEAL-LI-MIX-1-VR-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-1-SR-001" testName="DEAL-LI-MIX-1-SR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-1-SR-002" testName="DEAL-LI-MIX-1-SR-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-2-S-001" testName="DEAL-LI-MIX-2-S-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-2-S-002" testName="DEAL-LI-MIX-2-S-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-2-S-003" testName="DEAL-LI-MIX-2-S-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-2-ES-001" testName="DEAL-LI-MIX-2-ES-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-2-ES-002" testName="DEAL-LI-MIX-2-ES-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-2-ES-003" testName="DEAL-LI-MIX-2-ES-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-2-VR-001" testName="DEAL-LI-MIX-2-VR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-2-VR-002" testName="DEAL-LI-MIX-2-VR-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-2-SR-001" testName="DEAL-LI-MIX-2-SR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-2-SR-002" testName="DEAL-LI-MIX-2-SR-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-4-S-001" testName="DEAL-LI-MIX-4-S-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-4-S-002" testName="DEAL-LI-MIX-4-S-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-4-S-003" testName="DEAL-LI-MIX-4-S-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-4-ES-001" testName="DEAL-LI-MIX-4-ES-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-4-ES-002" testName="DEAL-LI-MIX-4-ES-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-4-ES-003" testName="DEAL-LI-MIX-4-ES-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-4-VR-001" testName="DEAL-LI-MIX-4-VR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-4-VR-002" testName="DEAL-LI-MIX-4-VR-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-4-SR-001" testName="DEAL-LI-MIX-4-SR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-4-SR-002" testName="DEAL-LI-MIX-4-SR-002" iterations="1" />
+		<!--<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-5-S-001" testName="DEAL-LI-MIX-5-S-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-5-S-002" testName="DEAL-LI-MIX-5-S-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-5-S-003" testName="DEAL-LI-MIX-5-S-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-5-ES-001" testName="DEAL-LI-MIX-5-ES-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-5-ES-002" testName="DEAL-LI-MIX-5-ES-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-5-ES-003" testName="DEAL-LI-MIX-5-ES-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-5-VR-001" testName="DEAL-LI-MIX-5-VR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-5-VR-002" testName="DEAL-LI-MIX-5-VR-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-5-SR-001" testName="DEAL-LI-MIX-5-SR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-5-SR-002" testName="DEAL-LI-MIX-5-SR-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-6-S-001" testName="DEAL-LI-MIX-6-S-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-6-S-002" testName="DEAL-LI-MIX-6-S-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-6-S-003" testName="DEAL-LI-MIX-6-S-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-6-ES-001" testName="DEAL-LI-MIX-6-ES-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-6-ES-002" testName="DEAL-LI-MIX-6-ES-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-6-ES-003" testName="DEAL-LI-MIX-6-ES-003" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-6-VR-001" testName="DEAL-LI-MIX-6-VR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-6-VR-002" testName="DEAL-LI-MIX-6-VR-002" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-6-SR-001" testName="DEAL-LI-MIX-6-SR-001" iterations="1" />
+		<RunTest description="Run Deal Pricing test case DEAL-LI-MIX-6-SR-002" testName="DEAL-LI-MIX-6-SR-002" iterations="1" />-->
+    </TestSuite>
+	<!--Basic Transaction-->
+	<TestSuite name="BASIC_TRANS">
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-ITM-001" testName="BASICTRN-S-ITM-001" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-ITM-007" testName="BASICTRN-BR-ITM-007" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-IOP-001" testName="BASICTRN-S-IOP-001" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-IOP-002" testName="BASICTRN-S-IOP-002" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-IOP-003" testName="BASICTRN-S-IOP-003" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-IOP-004" testName="BASICTRN-S-IOP-004" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-IOP-006" testName="BASICTRN-S-IOP-006" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-IOP-007" testName="BASICTRN-S-IOP-007" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-IOP-009" testName="BASICTRN-S-IOP-009" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-IOP-010" testName="BASICTRN-S-IOP-010" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-IOP-011" testName="BASICTRN-S-IOP-011" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-IOP-012" testName="BASICTRN-S-IOP-012" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-TOP-001" testName="BASICTRN-S-TOP-001" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-TOP-002" testName="BASICTRN-S-TOP-002" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-TOP-003" testName="BASICTRN-S-TOP-003" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-TOP-008" testName="BASICTRN-S-TOP-008" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-TOP-009" testName="BASICTRN-S-TOP-009" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-TOP-010" testName="BASICTRN-S-TOP-010" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-TOP-011" testName="BASICTRN-S-TOP-011" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-TOP-012" testName="BASICTRN-S-TOP-012" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-TOP-013" testName="BASICTRN-S-TOP-013" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-COP-001" testName="BASICTRN-S-COP-001" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-COP-002" testName="BASICTRN-S-COP-002" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-COP-003" testName="BASICTRN-S-COP-003" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-S-COP-004" testName="BASICTRN-S-COP-004" iterations="1" />
+		<RunTest description="Run test case BASICTRN-ER-TRN-001 to perform Verified return items are added before sale items" testName="BASICTRN-ER-TRN-001" />
+        <RunTest description="Run test case BASICTRN-ER-TRN-002 to perform Sale items are added before the verified return items" testName="BASICTRN-ER-TRN-002" />
+        <RunTest description="Run test case BASICTRN-ER-TRN-003 to perform Unverified return items are added before sale items" testName="BASICTRN-ER-TRN-003" />
+        <RunTest description="Run test case BASICTRN-ER-TRN-004 to perform Sale items are added before the unverified return items" testName="BASICTRN-ER-TRN-004" />
+        <RunTest description="Run test case BASICTRN-ER-TRN-005 to perform Blind return items are added before then sale items" testName="BASICTRN-ER-TRN-005" />
+		<RunTest description="Run test case BASICTRN-ER-TRN-006 to perform Sale items are added before the blind return items" testName="BASICTRN-ER-TRN-006" />
+		<RunTest description="Run test case BASICTRN-ER-TRN-007 to perform Transaction includes items are added from verified return, unverified return, blind return, and sales" testName="BASICTRN-ER-TRN-007" />		
+		<RunTest description="Run Basic Transaction test case BASICTRN-ER-TOP-012" testName="BASICTRN-ER-TOP-012"  />
+		<RunTest description="Run Basic Transaction test case BASICTRN-ES-TRN-001" testName="BASICTRN-ES-TRN-001"  />
+        <RunTest description="Run Basic Transaction test case BASICTRN-ES-TRN-002" testName="BASICTRN-ES-TRN-002"  />
+		<RunTest description="Run Basic Transaction test case BASICTRN-ES-TRN-003" testName="BASICTRN-ES-TRN-003"  />
+        <RunTest description="Run Basic Transaction test case BASICTRN-ES-TRN-004" testName="BASICTRN-ES-TRN-004"  />
+        <RunTest description="Run Basic Transaction test case BASICTRN-ES-TRN-005" testName="BASICTRN-ES-TRN-005"  />
+		<RunTest description="Run Basic Transaction test case BASICTRN-ES-TRN-006" testName="BASICTRN-ES-TRN-006"  />		
+		<RunTest description="Run Basic Transaction test case BASICTRN-ES-TRN-007" testName="BASICTRN-ES-TRN-007"  />		
+		<RunTest description="Run Basic Transaction test case BASICTRN-ES-TOP-001" testName="BASICTRN-ES-TOP-001"  />		
+		<RunTest description="Run Basic Transaction test case BASICTRN-ES-TOP-003" testName="BASICTRN-ES-TOP-003"  />
+		<RunTest description="Run Basic Transaction test case BASICTRN-ES-TOP-008" testName="BASICTRN-ES-TOP-008"  />		
+		<RunTest description="Run Basic Transaction test case BASICTRN-ES-TOP-009" testName="BASICTRN-ES-TOP-009"  />		
+		<RunTest description="Run Basic Transaction test case BASICTRN-ES-TOP-010" testName="BASICTRN-ES-TOP-010"  />		
+		<RunTest description="Run Basic Transaction test case BASICTRN-ES-TOP-011" testName="BASICTRN-ES-TOP-011"  />
+		<RunTest description="Run Basic Transaction test case BASICTRN-ES-TOP-012" testName="BASICTRN-ES-TOP-012"  />		
+		<RunTest description="Run Basic Transaction test case BASICTRN-ES-TOP-013" testName="BASICTRN-ES-TOP-013"  />	
+		<RunTest description="Run Basic Transaction test case BASICTRN-ER-ITM-001" testName="BASICTRN-ER-ITM-001"  />		
+		<RunTest description="Run Basic Transaction test case BASICTRN-ER-ITM-002" testName="BASICTRN-ER-ITM-002"  />
+		<RunTest description="Run Basic Transaction test case BASICTRN-ER-ITM-007" testName="BASICTRN-ER-ITM-007"  />		
+		<RunTest description="Run Basic Transaction test case BASICTRN-ER-ITM-009" testName="BASICTRN-ER-ITM-009"  />		
+		<RunTest description="Run Basic Transaction test case BASICTRN-ER-ITM-010" testName="BASICTRN-ER-ITM-010"  />
+		<RunTest description="Run Basic Transaction test case BASICTRN-ER-IOP-001" testName="BASICTRN-ER-IOP-001"  />		
+		<RunTest description="Run Basic Transaction test case BASICTRN-ER-IOP-002" testName="BASICTRN-ER-IOP-002"  />	
+		<RunTest description="Run Basic Transaction test case BASICTRN-ER-IOP-003" testName="BASICTRN-ER-IOP-003"  />	
+		<RunTest description="Run Basic Transaction test case BASICTRN-ER-IOP-006" testName="BASICTRN-ER-IOP-006"  />		
+		<RunTest description="Run Basic Transaction test case BASICTRN-ER-IOP-007" testName="BASICTRN-ER-IOP-007"  />	
+		<RunTest description="Run Basic Transaction test case BASICTRN-ER-IOP-009" testName="BASICTRN-ER-IOP-009"  />			
+		<RunTest description="Run Basic Transaction test case BASICTRN-ER-IOP-010" testName="BASICTRN-ER-IOP-010"  />		
+		<RunTest description="Run Basic Transaction test case BASICTRN-ER-IOP-011" testName="BASICTRN-ER-IOP-011"  />	
+		<RunTest description="Run Basic Transaction test case BASICTRN-ER-IOP-012" testName="BASICTRN-ER-IOP-012"  />	
+		<RunTest description="Run Basic Transaction test case BASICTRN-ER-IOP-013" testName="BASICTRN-ER-IOP-013"  />
+		<RunTest description="Run Basic Transaction test case BASICTRN-ES-IOP-001" testName="BASICTRN-ES-IOP-001"  />
+        <RunTest description="Run Basic Transaction test case BASICTRN-ES-IOP-002" testName="BASICTRN-ES-IOP-002"  />
+        <RunTest description="Run Basic Transaction test case BASICTRN-ES-IOP-003" testName="BASICTRN-ES-IOP-003"  />
+        <RunTest description="Run Basic Transaction test case BASICTRN-ES-IOP-006" testName="BASICTRN-ES-IOP-006"  /> 
+        <RunTest description="Run Basic Transaction test case BASICTRN-ES-IOP-007" testName="BASICTRN-ES-IOP-007"  />
+        <RunTest description="Run Basic Transaction test case BASICTRN-ES-IOP-009" testName="BASICTRN-ES-IOP-009"  />
+        <RunTest description="Run Basic Transaction test case BASICTRN-ES-IOP-010" testName="BASICTRN-ES-IOP-010"  />
+        <RunTest description="Run Basic Transaction test case BASICTRN-ES-IOP-011" testName="BASICTRN-ES-IOP-011"  />
+        <RunTest description="Run Basic Transaction test case BASICTRN-ES-IOP-012" testName="BASICTRN-ES-IOP-012"  />
+        <RunTest description="Run Basic Transaction test case BASICTRN-ES-IOP-013" testName="BASICTRN-ES-IOP-013"  />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-IOP-003" testName="BASICTRN-BR-IOP-003"  />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-IOP-006" testName="BASICTRN-BR-IOP-006"  />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-IOP-007" testName="BASICTRN-BR-IOP-007"  />
+		<RunTest description="Run Basic Transaction test case BASICTRN-VR-ORG-007" testName="BASICTRN-VR-ORG-007" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-VR-TRN-001" testName="BASICTRN-VR-TRN-001" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-VR-TRN-003" testName="BASICTRN-VR-TRN-003" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-VR-ITM-001" testName="BASICTRN-VR-ITM-001" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-VR-ITM-002" testName="BASICTRN-VR-ITM-002" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-VR-IOP-001" testName="BASICTRN-VR-IOP-001" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-VR-TOP-001" testName="BASICTRN-VR-TOP-001" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-VR-COP-002" testName="BASICTRN-VR-COP-002" iterations="1" />	
+		<RunTest description="Run Basic Transaction test case BASICTRN-UR-TOP-011" testName="BASICTRN-UR-TOP-011" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-UR-TOP-013" testName="BASICTRN-UR-TOP-013" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-ITM-001" testName="BASICTRN-BR-ITM-001" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-IOP-001" testName="BASICTRN-BR-IOP-001" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-IOP-002" testName="BASICTRN-BR-IOP-002" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-IOP-009" testName="BASICTRN-BR-IOP-009" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-IOP-010" testName="BASICTRN-BR-IOP-010" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-IOP-011" testName="BASICTRN-BR-IOP-011" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-IOP-012" testName="BASICTRN-BR-IOP-012" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-TOP-008" testName="BASICTRN-BR-TOP-008" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-TOP-009" testName="BASICTRN-BR-TOP-009" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-TOP-010" testName="BASICTRN-BR-TOP-010" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-TOP-011" testName="BASICTRN-BR-TOP-011" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-TOP-012" testName="BASICTRN-BR-TOP-012" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-TOP-013" testName="BASICTRN-BR-TOP-013" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-COP-001" testName="BASICTRN-BR-COP-001" iterations="1" />
+		<RunTest description="Run Basic Transaction test case BASICTRN-BR-COP-002" testName="BASICTRN-BR-COP-002" iterations="1" />
+		<RunTest description="Run Basic Transaction Coupon BASICTRN-S-TOP-014" testName="BASICTRN-S-TOP-014"  />
+    </TestSuite>
+	<!--Item Options-->
+	<TestSuite name="ITEM_OPTIONS">
+		<RunTest description="Run Item Option test case ITM-OPT-ADD-002" testName="ITM-OPT-ADD-002"  />
+		<RunTest description="Run Item Option test case ITM-OPT-ADD-004" testName="ITM-OPT-ADD-004"  />
+		<RunTest description="Run Item Option test case ITM-OPT-ADD-008" testName="ITM-OPT-ADD-008"  />
+		<RunTest description="Run Item Option test case ITM-OPT-ADD-012" testName="ITM-OPT-ADD-012"  />
+		<RunTest description="Run Item Option test case ITM-OPT-QTY-002" testName="ITM-OPT-QTY-002"  />
+		<RunTest description="Run Item Option test case ITM-OPT-QTY-014" testName="ITM-OPT-QTY-014"  />
+		<RunTest description="Run Item Option test case ITM-OPT-PRICE-002" testName="ITM-OPT-PRICE-002"  />
+		<RunTest description="Run Item Option test case ITM-OPT-PRICE-004" testName="ITM-OPT-PRICE-004"  />
+		<RunTest description="Run Item Option test case ITM-OPT-PRICE-006" testName="ITM-OPT-PRICE-006"  />
+		<RunTest description="Run Item Option test case ITM-OPT-PRICE-008" testName="ITM-OPT-PRICE-008"  />
+		<RunTest description="Run Item Option test case ITM-OPT-DISC-002" testName="ITM-OPT-DISC-002"  />
+		<RunTest description="Run Item Option test case ITM-OPT-DISC-004" testName="ITM-OPT-DISC-004"  />
+		<RunTest description="Run Item Option test case ITM-OPT-MOD-DISC-002" testName="ITM-OPT-MOD-DISC-002"  />
+		<RunTest description="Run Item Option test case ITM-OPT-MOD-DISC-004" testName="ITM-OPT-MOD-DISC-004"  />
+		<RunTest description="Run Item Option test case ITM-OPT-REM-DISC-002" testName="ITM-OPT-REM-DISC-002"  />
+		<RunTest description="Run Item Option test case ITM-OPT-REM-DISC-004" testName="ITM-OPT-REM-DISC-004"  />
+		<RunTest description="Run Item Option test case ITM-OPT-ITM-TAX-LOC-002" testName="ITM-OPT-ITM-TAX-LOC-002"  />
+		<RunTest description="Run Item Option test case ITM-OPT-ITM-TAX-LOC-004" testName="ITM-OPT-ITM-TAX-LOC-004"  />
+		<RunTest description="Run Item Option test case ITM-OPT-ITM-TAX-AMT-004" testName="ITM-OPT-ITM-TAX-AMT-004"  />
+		<RunTest description="Run Item Option test case ITM-OPT-ITM-TAX-PERCENT-002" testName="ITM-OPT-ITM-TAX-PERCENT-002"  />
+		<RunTest description="Run Item Option test case ITM-OPT-ITM-TAX-PERCENT-004" testName="ITM-OPT-ITM-TAX-PERCENT-004"  />
+		<RunTest description="Run Item Option test case ITM-OPT-EXEMPT-ITM-TAX-002" testName="ITM-OPT-EXEMPT-ITM-TAX-002"  />
+		<RunTest description="Run Item Option test case ITM-OPT-EXEMPT-ITM-TAX-004" testName="ITM-OPT-EXEMPT-ITM-TAX-004"  />
+		<RunTest description="Run Item Option test case ITM-OPT-VOID-002" testName="ITM-OPT-VOID-002"  />
+		<RunTest description="Run Item Option test case ITM-OPT-VOID-004" testName="ITM-OPT-VOID-004"  />
+		<RunTest description="Run Item Option test case ITM-OPT-VOID-012" testName="ITM-OPT-VOID-012"  />
+    </TestSuite>
+	<!--Transaction Options-->
+	<TestSuite name="TRAN_OPTIONS">	
+		<RunTest description="Run Transaction Option - TRAN-OPT-DISC-001" testName="TRAN-OPT-DISC-001" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-DISC-002" testName="TRAN-OPT-DISC-002" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-DISC-003" testName="TRAN-OPT-DISC-003" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-GR-DISC-001" testName="TRAN-OPT-GR-DISC-001" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-GR-DISC-002" testName="TRAN-OPT-GR-DISC-002" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-GR-DISC-003" testName="TRAN-OPT-GR-DISC-003" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-LOC-001" testName="TRAN-OPT-TAX-LOC-001" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-LOC-002" testName="TRAN-OPT-TAX-LOC-002" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-LOC-003" testName="TRAN-OPT-TAX-LOC-003" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-LOC-004" testName="TRAN-OPT-TAX-LOC-004" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-LOC-008" testName="TRAN-OPT-TAX-LOC-008" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-LOC-009" testName="TRAN-OPT-TAX-LOC-009" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-LOC-010" testName="TRAN-OPT-TAX-LOC-010" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-LOC-011" testName="TRAN-OPT-TAX-LOC-011" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-LOC-012" testName="TRAN-OPT-TAX-LOC-012" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-LOC-013" testName="TRAN-OPT-TAX-LOC-013" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-LOC-014" testName="TRAN-OPT-TAX-LOC-014" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-LOC-015" testName="TRAN-OPT-TAX-LOC-015" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-LOC-016" testName="TRAN-OPT-TAX-LOC-016" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-LOC-017" testName="TRAN-OPT-TAX-LOC-017" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-LOC-018" testName="TRAN-OPT-TAX-LOC-018" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-LOC-019" testName="TRAN-OPT-TAX-LOC-019" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-001" testName="TRAN-OPT-TAX-AMT-001" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-002" testName="TRAN-OPT-TAX-AMT-002" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-003" testName="TRAN-OPT-TAX-AMT-003" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-004" testName="TRAN-OPT-TAX-AMT-005" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-008" testName="TRAN-OPT-TAX-AMT-008" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-009" testName="TRAN-OPT-TAX-AMT-009" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-010" testName="TRAN-OPT-TAX-AMT-010" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-011" testName="TRAN-OPT-TAX-AMT-011" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-012" testName="TRAN-OPT-TAX-AMT-012" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-014" testName="TRAN-OPT-TAX-AMT-014" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-015" testName="TRAN-OPT-TAX-AMT-015" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-016" testName="TRAN-OPT-TAX-AMT-016" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-017" testName="TRAN-OPT-TAX-AMT-017" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-018" testName="TRAN-OPT-TAX-AMT-018" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-AMT-019" testName="TRAN-OPT-TAX-AMT-019" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-PER-001" testName="TRAN-OPT-TAX-PER-001" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-PER-002" testName="TRAN-OPT-TAX-PER-002" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-PER-003" testName="TRAN-OPT-TAX-PER-003" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-PER-008" testName="TRAN-OPT-TAX-PER-008" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-PER-009" testName="TRAN-OPT-TAX-PER-009" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-PER-010" testName="TRAN-OPT-TAX-PER-010" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-PER-012" testName="TRAN-OPT-TAX-PER-012" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-PER-013" testName="TRAN-OPT-TAX-PER-013" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-PER-014" testName="TRAN-OPT-TAX-PER-014" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-PER-015" testName="TRAN-OPT-TAX-PER-015" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-PER-016" testName="TRAN-OPT-TAX-PER-016" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-PER-017" testName="TRAN-OPT-TAX-PER-017" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-PER-018" testName="TRAN-OPT-TAX-PER-018" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-PER-019" testName="TRAN-OPT-TAX-PER-019" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-001" testName="TRAN-OPT-TAX-EXEM-001" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-002" testName="TRAN-OPT-TAX-EXEM-002" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-003" testName="TRAN-OPT-TAX-EXEM-003" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-004" testName="TRAN-OPT-TAX-EXEM-005" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-008" testName="TRAN-OPT-TAX-EXEM-008" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-009" testName="TRAN-OPT-TAX-EXEM-009" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-010" testName="TRAN-OPT-TAX-EXEM-010" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-014" testName="TRAN-OPT-TAX-EXEM-014" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-015" testName="TRAN-OPT-TAX-EXEM-015" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-016" testName="TRAN-OPT-TAX-EXEM-016" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-017" testName="TRAN-OPT-TAX-EXEM-017" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-018" testName="TRAN-OPT-TAX-EXEM-018" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-TAX-EXEM-019" testName="TRAN-OPT-TAX-EXEM-019" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-SUSPEND-001" testName="TRAN-OPT-SUSPEND-001" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-SUSPEND-003" testName="TRAN-OPT-SUSPEND-003" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-SUSPEND-004" testName="TRAN-OPT-SUSPEND-004" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-SUSPEND-005" testName="TRAN-OPT-SUSPEND-005" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-SUSPEND-006" testName="TRAN-OPT-SUSPEND-006" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-SUSPEND-007" testName="TRAN-OPT-SUSPEND-007" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-CANCEL-001" testName="TRAN-OPT-CANCEL-001" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-CANCEL-002" testName="TRAN-OPT-CANCEL-002" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-CANCEL-003" testName="TRAN-OPT-CANCEL-003" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-CANCEL-004" testName="TRAN-OPT-CANCEL-004" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-CANCEL-005" testName="TRAN-OPT-CANCEL-005" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-CANCEL-006" testName="TRAN-OPT-CANCEL-006" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-RESUME-001" testName="TRAN-OPT-RESUME-001" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-RESUME-003" testName="TRAN-OPT-RESUME-003" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-RESUME-004" testName="TRAN-OPT-RESUME-004" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-RESUME-005" testName="TRAN-OPT-RESUME-005" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-RESUME-006" testName="TRAN-OPT-RESUME-006" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-CP-001" testName="TRAN-OPT-CP-001" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-CP-009" testName="TRAN-OPT-CP-009" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-CP-013" testName="TRAN-OPT-CP-013" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-CP-013" testName="TRAN-OPT-CP-017" iterations="1" />
+		<RunTest description="Run Transaction Option - TRAN-OPT-CP-021" testName="TRAN-OPT-CP-021" iterations="1" />
+    </TestSuite>
+	<!--Customer Maintenance-->
+	<TestSuite name="CUST_MAINTENANCE">		
+		<RunTest description="Run test case CustMain-Add-002 to add customer" testName="CustMain-Add-002" />
+		<RunTest description="Run test case CustMain-Add-003 to add customer" testName="CustMain-Add-003" />
+		<RunTest description="Run test case CustMain-Add-004 to add customer" testName="CustMain-Add-004" />
+		<RunTest description="Run test case CustMain-Add-005 to add customer" testName="CustMain-Add-005" />
+		<RunTest description="Run test case CustMain-Add-006 to add customer" testName="CustMain-Add-006" />
+		<RunTest description="Run test case CustMain-Add-007 to add customer" testName="CustMain-Add-007" />
+		<RunTest description="Run test case CustMain-Add-008 to add customer" testName="CustMain-Add-008" />
+		<RunTest description="Run test case CustMain-Add-009 to add customer" testName="CustMain-Add-009" />
+		<RunTest description="Run test case CustMain-Add-010 to add customer" testName="CustMain-Add-010" />
+		<RunTest description="Run test case CustMain-Add-011 to add customer" testName="CustMain-Add-011" />
+		<RunTest description="Run test case CustMain-Add-012 to add customer" testName="CustMain-Add-012" />
+		<RunTest description="Run test case CustMain-Add-013 to add customer" testName="CustMain-Add-013" />
+		<RunTest description="Run test case CustMain-Add-014 to add customer" testName="CustMain-Add-014" />
+		<RunTest description="Run test case CustMain-Add-015 to add customer" testName="CustMain-Add-015" />
+		<RunTest description="Run test case CustMain-Add-016 to add customer" testName="CustMain-Add-016" />
+		<RunTest description="Run Customer Maintenance -CustMain-Lookup-007" testName="CustMain-Lookup-007" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Lookup-008" testName="CustMain-Lookup-008" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Lookup-009" testName="CustMain-Lookup-009" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Lookup-011" testName="CustMain-Lookup-011" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Lookup-012" testName="CustMain-Lookup-012" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Lookup-013" testName="CustMain-Lookup-013" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Lookup-014" testName="CustMain-Lookup-014" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Lookup-015" testName="CustMain-Lookup-015" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Lookup-017" testName="CustMain-Lookup-017" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Lookup-018" testName="CustMain-Lookup-018" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Lookup-019" testName="CustMain-Lookup-019" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Lookup-020" testName="CustMain-Lookup-020" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Add-001" testName="CustMain-Add-001" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Edit-001" testName="CustMain-Edit-001" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Edit-002" testName="CustMain-Edit-002" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Edit-003" testName="CustMain-Edit-003" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Edit-004" testName="CustMain-Edit-004" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Edit-005" testName="CustMain-Edit-005" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Edit-006" testName="CustMain-Edit-006" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Edit-007" testName="CustMain-Edit-007" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Edit-008" testName="CustMain-Edit-008" iterations="1" />
+		<RunTest description="Run Customer Maintenance -CustMain-Edit-009" testName="CustMain-Edit-009" iterations="1" />
+		<RunTest description="Run test case CustMain-Lookup-001 to lookup customer" testName="CustMain-Lookup-001" />
+		<RunTest description="Run test case CustMain-Lookup-002 to lookup customer" testName="CustMain-Lookup-002" />
+		<RunTest description="Run test case CustMain-Lookup-003 to lookup customer" testName="CustMain-Lookup-003" />
+		<RunTest description="Run test case CustMain-Lookup-004 to lookup customer" testName="CustMain-Lookup-004" />
+		<RunTest description="Run test case CustMain-Lookup-005 to lookup customer" testName="CustMain-Lookup-005" />
+		<RunTest description="Run test case CustMain-Lookup-006 to lookup customer" testName="CustMain-Lookup-006" />
+		<RunTest description="Run test case CustMain-Lookup-010 to lookup customer" testName="CustMain-Lookup-010" />
+		<RunTest description="Run test case CustMain-Lookup-016 to lookup customer" testName="CustMain-Lookup-016" />
+    </TestSuite>
+	<!--Reprint Receipt-->
+	<TestSuite name="RECEIPT_REPRINT_OPTIONS">
+		<RunTest description="Run Basic Transaction test case REPRINT-EJ-001" testName="REPRINT-EJ-001"  />
+		<RunTest description="Run Basic Transaction test case REPRINT-EJ-002" testName="REPRINT-EJ-002"  />
+		<RunTest description="Run Basic Transaction test case REPRINT-LAST-001" testName="REPRINT-LAST-001"  />
+		<RunTest description="Run Basic Transaction test case REPRINT-LAST-030" testName="REPRINT-LAST-030"  />
+		<RunTest description="Run Basic Transaction test case REPRINT-LAST-084" testName="REPRINT-LAST-084"  />
+		<RunTest description="Run Basic Transaction test case REPRINT-LAST-097" testName="REPRINT-LAST-097"  />
+		<RunTest description="Run Basic Transaction test case REPRINT-LAST-110" testName="REPRINT-LAST-110"  />
+		<RunTest description="Run Basic Transaction test case REPRINT-LAST-122" testName="REPRINT-LAST-122"  />
+		<RunTest description="Run Basic Transaction test case REPRINT-LAST-VOID-001" testName="REPRINT-LAST-VOID-001"  />
+		<RunTest description="Run Basic Transaction test case REPRINT-LAST-015" testName="REPRINT-LAST-015"  />
+		<RunTest description="Run Basic Transaction test case REPRINT-LAST-057" testName="REPRINT-LAST-057"  />
+		<RunTest description="Run Basic Transaction test case REPRINT-LAST-109" testName="REPRINT-LAST-109"  />
+		<RunTest description="Run Basic Transaction test case REPRINT-LAST-SUSPEND-001" testName="REPRINT-LAST-SUSPEND-001"  />
+		<RunTest description="Run Basic Transaction test case REPRINT--LAST-CANCEL-001" testName="REPRINT--LAST-CANCEL-001"  />
+		<RunTest description="Run Basic Transaction test case REPRINT-LAST-044" testName="REPRINT-LAST-044"  />
+			
+    </TestSuite>
+	<!--Price Inquiry-->
+	<TestSuite name="PRICE_INQUIRY">
+        <RunTest description="Run price inquiry on Sale PRICE-INQ-SALE-001 " testName="PRICE-INQ-SALE-001"  />
+		<RunTest description="Run price inquiry on Sale PRICE-INQ-SALE-002 " testName="PRICE-INQ-SALE-002"  />
+		<RunTest description="Run price inquiry on Sale PRICE-INQ-SALE-003 " testName="PRICE-INQ-SALE-003"  />
+		<RunTest description="Run price inquiry on Sale PRICE-INQ-SALE-004 " testName="PRICE-INQ-SALE-004"  />
+		<RunTest description="Run price inquiry on Sale PRICE-INQ-SALE-007 " testName="PRICE-INQ-SALE-007"  />
+		<RunTest description="Run price inquiry on Sale PRICE-INQ-SALE-010 " testName="PRICE-INQ-SALE-010"  />
+		<RunTest description="Run price inquiry on Sale PRICE-INQ-SALE-013 " testName="PRICE-INQ-SALE-013"  />
+		<RunTest description="Run price inquiry on Sale PRICE-INQ-SALE-015 " testName="PRICE-INQ-SALE-015"  />
+		<RunTest description="Run price inquiry on Sale PRICE-INQ-SALE-016 " testName="PRICE-INQ-SALE-016"  />
+		<RunTest description="Run price inquiry on Sale PRICE-INQ-EXCH-001 " testName="PRICE-INQ-EXCH-001"  />
+		<RunTest description="Run price inquiry on Sale PRICE-INQ-EXCH-002 " testName="PRICE-INQ-EXCH-002"  />
+		<RunTest description="Run price inquiry on Sale PRICE-INQ-EXCH-003 " testName="PRICE-INQ-EXCH-003"  />
+		<RunTest description="Run price inquiry on Sale PRICE-INQ-EXCH-004 " testName="PRICE-INQ-EXCH-004"  />
+		<RunTest description="Run price inquiry on Sale PRICE-INQ-EXCH-007 " testName="PRICE-INQ-EXCH-007"  />
+		<RunTest description="Run price inquiry on Sale PRICE-INQ-EXCH-010 " testName="PRICE-INQ-EXCH-010"  />
+		<RunTest description="Run price inquiry on Sale PRICE-INQ-EXCH-013 " testName="PRICE-INQ-EXCH-013"  />
+		<RunTest description="Run price inquiry on Sale PRICE-INQ-EXCH-015 " testName="PRICE-INQ-EXCH-015"  />
+		<RunTest description="Run price inquiry on Sale PRICE-INQ-EXCH-016 " testName="PRICE-INQ-EXCH-016"  />
+    </TestSuite>
+	<!--Find Item-->
+	<TestSuite name="FIND_ITEM">
+
+        <RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-SALE-001 " testName="FIND-ITEM-LOOKUP-SALE-001"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-SALE-002 " testName="FIND-ITEM-LOOKUP-SALE-002"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-SALE-003 " testName="FIND-ITEM-LOOKUP-SALE-003"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-SALE-004 " testName="FIND-ITEM-LOOKUP-SALE-004"  />
+		<!-- There is no base data
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-SALE-005 " testName="FIND-ITEM-LOOKUP-SALE-005"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-SALE-007 " testName="FIND-ITEM-LOOKUP-SALE-007"  />
+		-->
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-SALE-006 " testName="FIND-ITEM-LOOKUP-SALE-006"  />		
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-SALE-008 " testName="FIND-ITEM-LOOKUP-SALE-008"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-WOTRN-001 " testName="FIND-ITEM-LOOKUP-WOTRN-001"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-WOTRN-002 " testName="FIND-ITEM-LOOKUP-WOTRN-002"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-WOTRN-003 " testName="FIND-ITEM-LOOKUP-WOTRN-003"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-WOTRN-004 " testName="FIND-ITEM-LOOKUP-WOTRN-004"  />
+		<!-- There is no base data
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-WOTRN-005 " testName="FIND-ITEM-LOOKUP-WOTRN-005"  />
+		-->
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-WOTRN-006 " testName="FIND-ITEM-LOOKUP-WOTRN-006"  />
+		<!--<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-WOTRN-007 " testName="FIND-ITEM-LOOKUP-WOTRN-007"  />-->
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-WOTRN-008 " testName="FIND-ITEM-LOOKUP-WOTRN-008"  />	
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-BLIND-001 " testName="FIND-ITEM-LOOKUP-BLIND-001"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-BLIND-002 " testName="FIND-ITEM-LOOKUP-BLIND-002"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-BLIND-003 " testName="FIND-ITEM-LOOKUP-BLIND-003"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-BLIND-004 " testName="FIND-ITEM-LOOKUP-BLIND-004"  />
+		<!-- There is no base data
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-BLIND-005 " testName="FIND-ITEM-LOOKUP-BLIND-005"  />
+		-->
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-BLIND-006 " testName="FIND-ITEM-LOOKUP-BLIND-006"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-BLIND-007 " testName="FIND-ITEM-LOOKUP-BLIND-007"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-BLIND-008 " testName="FIND-ITEM-LOOKUP-BLIND-008"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-UNVERIFIED-001 " testName="FIND-ITEM-LOOKUP-UNVERIFIED-001"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-UNVERIFIED-002 " testName="FIND-ITEM-LOOKUP-UNVERIFIED-002"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-UNVERIFIED-003 " testName="FIND-ITEM-LOOKUP-UNVERIFIED-003"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-UNVERIFIED-004 " testName="FIND-ITEM-LOOKUP-UNVERIFIED-004"  />
+		<!-- There is no base data
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-UNVERIFIED-005 " testName="FIND-ITEM-LOOKUP-UNVERIFIED-005"  />
+		-->
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-UNVERIFIED-006 " testName="FIND-ITEM-LOOKUP-UNVERIFIED-006"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-UNVERIFIED-007 " testName="FIND-ITEM-LOOKUP-UNVERIFIED-007"  />
+		<RunTest description="Find Item on Sale FIND-ITEM-LOOKUP-UNVERIFIED-008 " testName="FIND-ITEM-LOOKUP-UNVERIFIED-008"  />
+		<RunTest description="Find Item on Layaway FIND-ITEM-LOOKUP-LAYAWAY-001 " testName="FIND-ITEM-LOOKUP-LAYAWAY-001"  />
+		<RunTest description="Find Item on Layaway FIND-ITEM-LOOKUP-LAYAWAY-002 " testName="FIND-ITEM-LOOKUP-LAYAWAY-002"  />
+		<RunTest description="Find Item on Layaway FIND-ITEM-LOOKUP-LAYAWAY-003 " testName="FIND-ITEM-LOOKUP-LAYAWAY-004"  />
+		<RunTest description="Find Item on Layaway FIND-ITEM-LOOKUP-LAYAWAY-004 " testName="FIND-ITEM-LOOKUP-LAYAWAY-004"  />
+		<!-- There is no base data
+		<RunTest description="Find Item on Layaway FIND-ITEM-LOOKUP-LAYAWAY-005 " testName="FIND-ITEM-LOOKUP-LAYAWAY-005"  />
+		-->
+		<RunTest description="Find Item on Layaway FIND-ITEM-LOOKUP-LAYAWAY-006 " testName="FIND-ITEM-LOOKUP-LAYAWAY-006"  />
+		<RunTest description="Find Item on Layaway FIND-ITEM-LOOKUP-LAYAWAY-007 " testName="FIND-ITEM-LOOKUP-LAYAWAY-007"  />
+		<RunTest description="Find Item on Layaway FIND-ITEM-LOOKUP-LAYAWAY-008 " testName="FIND-ITEM-LOOKUP-LAYAWAY-008"  />
+		<RunTest description="Find Item on Layaway FIND-ITEM-LOOKUP-LAYAWAY-008 " testName="FIND-ITEM-LOOKUP-SO-001"  />
+		<RunTest description="Find Item on SO FIND-ITEM-LOOKUP-SO-002 " testName="FIND-ITEM-LOOKUP-SO-002"  />
+		<RunTest description="Find Item on SO FIND-ITEM-LOOKUP-SO-003 " testName="FIND-ITEM-LOOKUP-SO-004"  />
+		<!-- There is no base data
+		<RunTest description="Find Item on SO FIND-ITEM-LOOKUP-SO-005 " testName="FIND-ITEM-LOOKUP-SO-005"  />
+		-->
+		<RunTest description="Find Item on SO FIND-ITEM-LOOKUP-SO-006 " testName="FIND-ITEM-LOOKUP-SO-006"  />
+		<RunTest description="Find Item on SO FIND-ITEM-LOOKUP-SO-007 " testName="FIND-ITEM-LOOKUP-SO-007"  />
+		<RunTest description="Find Item on SO FIND-ITEM-LOOKUP-SO-008 " testName="FIND-ITEM-LOOKUP-SO-008"  />
+    </TestSuite>
+	<!--Non-Merchandise Options-->
+	<TestSuite name="NON_MERCHANIDE_OPTIONS">
+	
+		<RunTest description="Run non-merchandise options - NMERCH-WAR-001." testName="NMERCH-WAR-001"  />
+        <RunTest description="Run non-merchandise options - NMERCH-WAR-005." testName="NMERCH-WAR-005"  />
+        <RunTest description="Run non-merchandise options - NMERCH-WAR-006." testName="NMERCH-WAR-006"  />
+        <RunTest description="Run non-merchandise options - NMERCH-WAR-007." testName="NMERCH-WAR-007"  />
+        <RunTest description="Run non-merchandise options - NMERCH-WAR-037." testName="NMERCH-WAR-037"  />
+        <RunTest description="Run non-merchandise options - NMERCH-WAR-041." testName="NMERCH-WAR-041"  />
+        <RunTest description="Run non-merchandise options - NMERCH-WAR-042." testName="NMERCH-WAR-042"  />
+        <RunTest description="Run non-merchandise options - NMERCH-WAR-055." testName="NMERCH-WAR-055"  />
+        <RunTest description="Run non-merchandise options - NMERCH-WAR-059." testName="NMERCH-WAR-059"  />
+		<RunTest description="Run non-merchandise options - NMERCH-WAR-060." testName="NMERCH-WAR-060"  />
+        <RunTest description="Run non-merchandise options - NMERCH-WAR-061." testName="NMERCH-WAR-061"  />
+        <RunTest description="Run non-merchandise options - NMERCH-WAR-073." testName="NMERCH-WAR-073"  />
+        <RunTest description="Run non-merchandise options - NMERCH-WAR-077." testName="NMERCH-WAR-077"  />
+        <RunTest description="Run non-merchandise options - NMERCH-WAR-078." testName="NMERCH-WAR-078"  />
+        <RunTest description="Run non-merchandise options - NMERCH-WAR-079." testName="NMERCH-WAR-079"  />
+        <RunTest description="Run non-merchandise options - NMERCH-SELL-NM-FEE-001." testName="NMERCH-SELL-NM-FEE-001"/>
+        <RunTest description="Run non-merchandise options - NMERCH-SELL-NM-FEE-005." testName="NMERCH-SELL-NM-FEE-005"/>
+        <RunTest description="Run non-merchandise options - NMERCH-SELL-NM-FEE-006." testName="NMERCH-SELL-NM-FEE-006"/>
+        <RunTest description="Run non-merchandise options - NMERCH-SELL-NM-FEE-007." testName="NMERCH-SELL-NM-FEE-007"/>
+        <RunTest description="Run non-merchandise options - NMERCH-RESTR-001." testName="NMERCH-RESTR-001"/>
+        <RunTest description="Run non-merchandise options - NMERCH-RESTR-005." testName="NMERCH-RESTR-005"/>
+        <RunTest description="Run non-merchandise options - NMERCH-RESTR-006." testName="NMERCH-RESTR-006"/>
+        <RunTest description="Run non-merchandise options - NMERCH-RESTR-007." testName="NMERCH-RESTR-007"/>
+    </TestSuite>
+	<!--Extended Transaction-->
+	<TestSuite name="EXTENDED_TRANSACTIONS">
+		<RunTest description="Run Basic Transaction test case EXTENDTRN-SS-ITM-001" testName="EXTENDTRN-SS-ITM-001"  />
+		<RunTest description="Run Basic Transaction test case EXTENDTRN-SS-ITM-002" testName="EXTENDTRN-SS-ITM-002"  />
+		<RunTest description="Run Basic Transaction test case EXTENDTRN-SS-ITM-006" testName="EXTENDTRN-SS-ITM-006"  />
+		<RunTest description="Run Basic Transaction test case EXTENDTRN-SS-ITM-008" testName="EXTENDTRN-SS-ITM-008"  />	
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-IOP-001" testName="EXTENDTRN-SS-IOP-001"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-IOP-001" testName="EXTENDTRN-SS-IOP-002"  /> 
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-IOP-003" testName="EXTENDTRN-SS-IOP-003"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-IOP-012" testName="EXTENDTRN-SS-IOP-012"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-TOP-001" testName="EXTENDTRN-SS-TOP-001"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-TOP-003" testName="EXTENDTRN-SS-TOP-003"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-TOP-008" testName="EXTENDTRN-SS-TOP-008"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-TOP-009" testName="EXTENDTRN-SS-TOP-009"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-TOP-010" testName="EXTENDTRN-SS-TOP-010"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-TOP-011" testName="EXTENDTRN-SS-TOP-011"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-TOP-012" testName="EXTENDTRN-SS-TOP-012"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-TOP-013" testName="EXTENDTRN-SS-TOP-013"  />
+		<RunTest description="Run Extended Transaction test case  - Coupon" testName="EXTENDTRN-SS-TOP-014"  />
+		<!--<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-TOP-015 - coupon" testName="EXTENDTRN-SS-TOP-015"  />-->
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-COP-001" testName="EXTENDTRN-SS-COP-001"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-COP-002" testName="EXTENDTRN-SS-COP-002"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-SPD-001" testName="EXTENDTRN-SS-SPD-001"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-SPD-002" testName="EXTENDTRN-SS-SPD-002"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-SPD-004" testName="EXTENDTRN-SS-SPD-004"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-SPD-005" testName="EXTENDTRN-SS-SPD-005"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-SPD-005" testName="EXTENDTRN-SS-SPD-008"  />	
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-ESP-001" testName="EXTENDTRN-SS-ESP-001"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-ESP-002" testName="EXTENDTRN-SS-ESP-002"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-ESP-003" testName="EXTENDTRN-SS-ESP-003"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-ESP-004" testName="EXTENDTRN-SS-ESP-004"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-PRM-001" testName="EXTENDTRN-SS-PRM-001"  />
+		<!--<RunTest description="Run Extended Transaction test case EXTENDTRN-SS-PRM-002" testName="EXTENDTRN-SS-PRM-002"  />-->
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-ITM-001" testName="EXTENDTRN-SO-ITM-001"  /> 
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-ITM-002" testName="EXTENDTRN-SO-ITM-002"  /> 
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-ITM-006" testName="EXTENDTRN-SO-ITM-006"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-ITM-007" testName="EXTENDTRN-SO-ITM-007"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-IOP-001" testName="EXTENDTRN-SO-IOP-001"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-IOP-002" testName="EXTENDTRN-SO-IOP-002"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-IOP-003" testName="EXTENDTRN-SO-IOP-003"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-IOP-003" testName="EXTENDTRN-SO-IOP-012"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-IOP-001" testName="EXTENDTRN-SO-TOP-001"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-IOP-002" testName="EXTENDTRN-SO-TOP-008"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-IOP-003" testName="EXTENDTRN-SO-TOP-009"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-IOP-003" testName="EXTENDTRN-SO-TOP-010"  />		
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-STORE-002" testName="EXTENDTRN-SO-STORE-002"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-STORE-003" testName="EXTENDTRN-SO-STORE-003"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-STORE-004" testName="EXTENDTRN-SO-STORE-004"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-OPEN-EXT-001" testName="EXTENDTRN-SO-OPEN-EXT-001"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-ED-002" testName="EXTENDTRN-SO-ED-002"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-ED-003" testName="EXTENDTRN-SO-ED-003"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-HST-003" testName="EXTENDTRN-SO-HST-003"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-HST-004" testName="EXTENDTRN-SO-HST-004"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-RECEIVE-001" testName="EXTENDTRN-SO-RECEIVE-001"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-PICKUP-001" testName="EXTENDTRN-SO-PICKUP-001"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-PICKUP-003" testName="EXTENDTRN-SO-PICKUP-003"  />		
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-PICKUP-005" testName="EXTENDTRN-SO-PICKUP-005"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-CANCEL-001" testName="EXTENDTRN-SO-CANCEL-001"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-CANCEL-002" testName="EXTENDTRN-SO-CANCEL-002"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-CUSTOMER-002" testName="EXTENDTRN-SO-CUSTOMER-002"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-CUSTOMER-002" testName="EXTENDTRN-SO-CUSTOMER-003"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-CUSTOMER-006" testName="EXTENDTRN-SO-CUSTOMER-005"  /> 
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-CUSTOMER-005" testName="EXTENDTRN-SO-CUSTOMER-006"  /> 
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-CUSTOMER-009" testName="EXTENDTRN-SO-CUSTOMER-009"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-SO-PRM-001" testName="EXTENDTRN-SO-PRM-001"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-DPS-001" testName="EXTENDTRN-L-DPS-001"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-DPS-002" testName="EXTENDTRN-L-DPS-002"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-DPS-003" testName="EXTENDTRN-L-DPS-003"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-DPS-004" testName="EXTENDTRN-L-DPS-004"  />
+        <RunTest description="Run Extended Transaction - EXTENDTRN-L-COP-002" testName="EXTENDTRN-L-COP-002"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-COP-003" testName="EXTENDTRN-L-COP-003"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-COP-004" testName="EXTENDTRN-L-COP-004"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-ITM-001" testName="EXTENDTRN-L-ITM-001"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-ITM-005" testName="EXTENDTRN-L-ITM-005"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-ITM-006" testName="EXTENDTRN-L-ITM-006"  />		
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-IOP-001" testName="EXTENDTRN-L-IOP-001"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-IOP-002" testName="EXTENDTRN-L-IOP-002"  />		
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-IOP-003" testName="EXTENDTRN-L-IOP-003"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-IOP-004" testName="EXTENDTRN-L-IOP-004"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-IOP-005" testName="EXTENDTRN-L-IOP-005"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-IOP-006" testName="EXTENDTRN-L-IOP-006"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-IOP-007" testName="EXTENDTRN-L-IOP-007"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-IOP-012" testName="EXTENDTRN-L-IOP-012"  />		
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-TOP-001" testName="EXTENDTRN-L-TOP-001" />	
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-TOP-005" testName="EXTENDTRN-L-TOP-005" />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-TOP-007" testName="EXTENDTRN-L-TOP-007" />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-TOP-008" testName="EXTENDTRN-L-TOP-008" />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-TOP-009" testName="EXTENDTRN-L-TOP-009" />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-TOP-010" testName="EXTENDTRN-L-TOP-010" />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-DTL-001" testName="EXTENDTRN-L-DTL-001"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-DTL-002" testName="EXTENDTRN-L-DTL-002"  />		
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-DTL-003" testName="EXTENDTRN-L-DTL-003"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-DTL-004" testName="EXTENDTRN-L-DTL-004"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-DTL-005" testName="EXTENDTRN-L-DTL-005"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-PP-001" testName="EXTENDTRN-L-PP-001"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-PP-002" testName="EXTENDTRN-L-PP-002"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-PP-003" testName="EXTENDTRN-L-PP-003"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-PP-004" testName="EXTENDTRN-L-PP-004"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-PP-005" testName="EXTENDTRN-L-PP-005"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-MPM-001" testName="EXTENDTRN-L-MPM-001"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-MPM-002" testName="EXTENDTRN-L-MPM-002"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-MPM-003" testName="EXTENDTRN-L-MPM-003"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-MPM-006" testName="EXTENDTRN-L-MPM-004"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-MPM-005" testName="EXTENDTRN-L-MPM-005"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-MPM-004" testName="EXTENDTRN-L-MPM-006"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-EDIT-003" testName="EXTENDTRN-L-EDIT-003"  />
+		<!--<RunTest description="Run Extended Transaction - EXTENDTRN-L-EDIT-001 -Coupon" testName="EXTENDTRN-L-EDIT-001"  />-->
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-OPEN-EXT-001" testName="EXTENDTRN-L-OPEN-EXT-001"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-OPEN-EXT-003" testName="EXTENDTRN-L-OPEN-EXT-003"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-ADD-ITM-002" testName="EXTENDTRN-L-ADD-ITM-002"  />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-PICKUP-001" testName="EXTENDTRN-L-PICKUP-001" />			
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-PICKUP-002" testName="EXTENDTRN-L-PICKUP-002" />	
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-PICKUP-003" testName="EXTENDTRN-L-PICKUP-003" />	
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-PICKUP-004" testName="EXTENDTRN-L-PICKUP-004" />
+		<RunTest description="Run Extended Transaction - EXTENDTRN-L-PICKUP-004" testName="EXTENDTRN-L-PICKUP-005" />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-L-PRM-001" testName="EXTENDTRN-L-PRM-001"  />
+		<!--<RunTest description="Run Extended Transaction test case EXTENDTRN-L-PRM-002" testName="EXTENDTRN-L-PRM-002"  />-->
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-L-CANCEL-001" testName="EXTENDTRN-L-CANCEL-001"  />
+		<RunTest description="Run Extended Transaction test case EXTENDTRN-L-CANCEL-002" testName="EXTENDTRN-L-CANCEL-002"  />
+		
+    </TestSuite>
+	<!--Reporting-->
+	<TestSuite name="REPORTING">
+		<RunTest description="Run Reporting test case - REPORT-DASHBOARD-001" testName="REPORT-DASHBOARD-001"  />
+        <RunTest description="Run Reporting test case - REPORT-EJOURNAL-TRN-001" testName="REPORT-EJOURNAL-TRN-001"  />
+        <RunTest description="Run Reporting test case - REPORT-EJOURNAL-TNDR-009" testName="REPORT-EJOURNAL-TNDR-009"  />
+        <RunTest description="Run Reporting test case - REPORT-EJOURNAL-INFOTRN-001" testName="REPORT-EJOURNAL-INFOTRN-001"  />
+        <RunTest description="Run Reporting test case - REPORT-EJOURNAL-INFOTRN-002" testName="REPORT-EJOURNAL-INFOTRN-002"  />
+        <RunTest description="Run Reporting test case - REPORT-EJOURNAL-INFOTRN-003" testName="REPORT-EJOURNAL-INFOTRN-003"  />
+        <RunTest description="Run Reporting test case - REPORT-EJOURNAL-INFOTRN-004" testName="REPORT-EJOURNAL-INFOTRN-004"  />
+		<RunTest description="Run Reporting test case - REPORT-EJOURNAL-INFOTRN-013" testName="REPORT-EJOURNAL-INFOTRN-013"  />
+		<RunTest description="Run Reporting test case - REPORT-EJOURNAL-INFOTRN-016" testName="REPORT-EJOURNAL-INFOTRN-016"  />
+        <RunTest description="Run Reporting test case - REPORT-EJOURNAL-INFOTRN-049" testName="REPORT-EJOURNAL-INFOTRN-049"  />
+		<RunTest description="Run Reporting test case - REPORT-EJOURNAL-INFOTRN-053" testName="REPORT-EJOURNAL-INFOTRN-053"  />
+		<RunTest description="Run Reporting test case - REPORT-EJOURNAL-INFOTRN-055" testName="REPORT-EJOURNAL-INFOTRN-055"  />
+		<RunTest description="Run Reporting test case - REPORT-EJOURNAL-INFOTRN-058" testName="REPORT-EJOURNAL-INFOTRN-058"  />
+		<RunTest description="Run Reporting test case - REPORT-EJOURNAL-CUSTINFO-001" testName="REPORT-EJOURNAL-CUSTINFO-001"  />
+		<RunTest description="Run Reporting test case - REPORT-SALES-JOURNAL-RUN-001" testName="REPORT-SALES-JOURNAL-RUN-001"  />
+		<RunTest description="Run Reporting test case - REPORT-SALES-JOURNAL-RUN-015" testName="REPORT-SALES-JOURNAL-RUN-015"  />
+		<RunTest description="Run Reporting test case - REPORT-SALES-JOURNAL-RUN-025" testName="REPORT-SALES-JOURNAL-RUN-025"  />
+		<RunTest description="Run Reporting test case - REPORT-SALES-JOURNAL-RUN-056" testName="REPORT-SALES-JOURNAL-RUN-056"  />
+		<RunTest description="Run Reporting test case - REPORT-SALES-JOURNAL-RUN-060" testName="REPORT-SALES-JOURNAL-RUN-060"  />
+		<RunTest description="Run Reporting test case - REPORT-EJOURNAL-INFOTRN-031" testName="REPORT-EJOURNAL-INFOTRN-031"  />
+		<RunTest description="Run Reporting test case - REPORT-EJOURNAL-INFOTRN-032" testName="REPORT-EJOURNAL-INFOTRN-032"  /> 
+		<RunTest description="Run Reporting test case REPORT-EJOURNAL-INFOTRN-033	" testName="REPORT-EJOURNAL-INFOTRN-033"  />
+    </TestSuite>
+	<!--Till Maintenance-->
+	<TestSuite name="TILL_MAINTENACE">
+        <RunTest description="Run test case SALE_COMPLETE_TENDER_BY_CASH" testName="SALE_COMPLETE_TENDER_BY_CASH" iterations="2" />
+        <RunTest description="Run test case - TILLMAIN-CASHPICK-001" testName="TILLMAIN-CASHPICK-001"  />
+		<RunTest description="Run test case SALE_COMPLETE_TENDER_BY_CASH" testName="SALE_COMPLETE_TENDER_BY_CASH" iterations="2" />
+        <RunTest description="Run test case - TILLMAIN-CASHPICK-002" testName="TILLMAIN-CASHPICK-002"  />
+		<RunTest description="Run test case - SALE_COMPLETE_TENDER_BY_CASH" testName="SALE_COMPLETE_TENDER_BY_CASH" iterations="2" />
+        <RunTest description="Run test case - TILLMAIN-CASHTSF-001" testName="TILLMAIN-CASHTSF-001"  />
+		<RunTest description="Run test case - SALE_COMPLETE_TENDER_BY_CASH" testName="SALE_COMPLETE_TENDER_BY_CASH" iterations="2" />
+        <RunTest description="Run test case - TILLMAIN-CASHTSF-002" testName="TILLMAIN-CASHTSF-002"  />
+		<RunTest description="Run test case - SALE_COMPLETE_TENDER_BY_CASH" testName="SALE_COMPLETE_TENDER_BY_CASH" iterations="2" />
+        <RunTest description="Run test case - TILLMAIN-MIDDEPOSIT-007" testName="TILLMAIN-MIDDEPOSIT-007"  />
+        <RunTest description="Run test case - SALE_COMPLETE_TENDER_BY_CASH" testName="SALE_COMPLETE_TENDER_BY_CASH" iterations="5" />
+        <RunTest description="Run test case - TILLMAIN-MIDDEPOSIT-008" testName="TILLMAIN-MIDDEPOSIT-008"  />
+		<RunTest description="Run test case - SALE_COMPLETE_TENDER_BY_CASH" testName="SALE_COMPLETE_TENDER_BY_CASH" iterations="5" />
+        <RunTest description="Run test case - TILLMAIN-TILLAUDIT-007" testName="TILLMAIN-TILLAUDIT-007"  />
+    </TestSuite>
+	<!--Till Options-->
+	<TestSuite name="TILL_OPTIONS">
+		<RunTest description="Run test case - TILLOP-CHGFLOAT-001" testName="TILLOP-CHGFLOAT-001" />
+        <RunTest description="Run test case - TILLOP-PAIDIN-001" testName="TILLOP-PAIDIN-001" /> 
+        <RunTest description="Run test case - TILLOP-PAIDOUT-001" testName="TILLOP-PAIDOUT-001" />
+        <RunTest description="Run test case - TILLOP-POSTVOID-TRN-SALE-001" testName="TILLOP-POSTVOID-TRN-SALE-001" />
+        <RunTest description="Run test case - TILLOP-POSTVOID-TRN-RETURN-001" testName="TILLOP-POSTVOID-TRN-RETURN-001" />
+        <RunTest description="Run test case - TILLOP-POSTVOID-TRN-RETURN-043" testName="TILLOP-POSTVOID-TRN-RETURN-043" />
+		<RunTest description="Run test case - TILLOP-POSTVOID-TRN-EXCHANGE-002" testName="TILLOP-POSTVOID-TRN-EXCHANGE-002" />
+    </TestSuite>
+	<!-- Close Register -->
+	<TestSuite name="CLOSE_REGISTER">
+        <RunTest description="Run test case STOREOP-CLOSE-REG-001 to close register" testName="STOREOP-CLOSE-REG-001" />
+    </TestSuite>
+	<!-- Close Store -->
+	<TestSuite name="CLOSE_STORE">
+		<RunTest description="Run test case STOREOP-CLOSE-STORE-001 to close store" testName="STOREOP-CLOSE-STORE-001" /> 
+    </TestSuite>
+	
+</XunitConfig>

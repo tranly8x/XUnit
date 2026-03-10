@@ -1,0 +1,2262 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+	<!-- TEST CASES -->
+	<!--Reporting		
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-001" applicationKey="REGISTER" >
+		<SequenceRef name="RUN_REPORT_DEFAULT_PARAMS" values="FLASH_SALES_REPORT_VER2"/>
+    </TestCase>
+	
+	<TestCase name="REPORT-EJOURNAL-TRN-001" applicationKey="REGISTER" >
+		<Parameter name="startDate" value=""/>
+		<Parameter name="endDate" value=""/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value="1"/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="RETAIL_SALE"/> 
+		<Parameter name="tender" value=""/>
+		<SequenceRef name="LOGIN" values="100,1"/>
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},!{tranIDStart},!{tranIDEnd},!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+		
+    </TestCase>-->
+	<TestCase name="REPORT-DASHBOARD-001" applicationKey="REGISTER" > <!--Verify  that the report is automatically printed after selecting Dashboard from the menu"	"1. Login Xstore
+	2. On nagative bar, select Reporting button
+	3. Select Dashboard "-->
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_REPORT" values="SHOW_DASHBOARD"/>	
+	</TestCase>
+
+	<TestCase name="REPORT-EJOURNAL-TRN-001" applicationKey="REGISTER" > <!--Verify that Xstore will show all transaction types after pressing the 'Search' button when selecting with all Transaction Types and all tender types, along with Start Date and End Date in the current date
+
+	Search:
+	_ All Transaction Type
+	_ All tender types
+	_ Start Date and End Date: 11/14/2025 @getCurrentBusinessDate
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register end (default)
+	- Enter Ticket Start
+	- Enter Ticket End in the current date
+	- Enter Start Date: 11/14/2025
+	- Enter End Date: 11/14/2025
+	- Start Time and End Time are default
+	- Leave the Start/End field empty
+	- Leave Customer Last Name or ID
+	- TransactionType: select All transaction types
+	- Tender: All tenders <Parameter name="futureBusinessDate" value="Mon Jan 09 00:00:00 ICT 2026" />
+	"-->
+		<Parameter name="startDate" value="Wed Jan 01 00:00:00 ICT 2020"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value="1"/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="RETAIL_SALE"/> 
+		<Parameter name="tender" value=""/>
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}"/>
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},!{tranIDStart},!{tranIDEnd},!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-TNDR-009" applicationKey="REGISTER" > <!--Verify that Xstore will show the data for tender types 'Cash' after pressing the 'Search' button when selecting all Transaction Types and tender types 'Cash', along with Start Date and End Date in the current year
+
+	Search:
+	_ All Transaction Type
+	_ Tender types: Cash
+	_ Start Date: 11/14/2024
+	 and End Date: 11/14/2025
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	- Enter Ticket Start
+	- Enter Ticket End in the last date
+	- Enter Start Date: (in the current date)11/14/2024
+	- Enter End Date: (in the current date)11/14/2025
+	- Start Time and End Time are default
+	- Leave the Start/End field empty
+	- Leave Customer Last Name or ID
+	- TransactionType:  All Transaction Types
+	- Tender Types: Cash"-->
+		<Parameter name="startDate" value="Wed Jan 01 00:00:00 ICT 2020"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value="1"/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="RETAIL_SALE"/> 
+		<Parameter name="tender" value="3"/>
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}"/>
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},!{tranIDStart},!{tranIDEnd},!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-TNDR-015" applicationKey="REGISTER" > <!--Verify that Xstore will show the data for tender types 'Credit Card' after pressing the 'Search' button when selecting all Transaction Types and tender types 'Credit Card', along with Start Date and End Date in the current year
+
+	Search:
+	_ All Transaction Type
+	_ Tender types: Credit Card
+	_ Start Date: 11/14/2024
+	 and End Date: 11/14/2025
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	- Enter Ticket Start
+	- Enter Ticket End in the last date
+	- Enter Start Date: (in the current date)11/14/2024
+	- Enter End Date: (in the current date)11/14/2025
+	- Start Time and End Time are default
+	- Leave the Start/End field empty
+	- Leave Customer Last Name or ID
+	- TransactionType:  All Transaction Types
+	- Tender Types: Credit Card"-->
+		<Parameter name="startDate" value="Wed Jan 01 00:00:00 ICT 2020"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value="1"/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="RETAIL_SALE"/> 
+		<Parameter name="tender" value="CASH"/>
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}"/>
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},!{tranIDStart},!{tranIDEnd},!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-TNDR-016" applicationKey="REGISTER" > <!--Verify that Xstore will show the data for tender types 'Debit Card' after pressing the 'Search' button when selecting all Transaction Types and tender types 'Debit Card', along with Start Date and End Date in the current year
+
+	Search:
+	_ All Transaction Type
+	_ Tender types: Debit Card
+	_ Start Date: 11/14/2024
+	 and End Date: 11/14/2025
+	Search for the electronic journal of transactions with tender type ""Debit Card"""	"1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	- Enter Ticket Start
+	- Enter Ticket End in the last date
+	- Enter Start Date: (in the current date)11/14/2024
+	- Enter End Date: (in the current date)11/14/2025
+	- Start Time and End Time are default
+	- Leave the Start/End field empty
+	- Leave Customer Last Name or ID
+	- TransactionType:  All Transaction Types
+	- Tender Types: Debit Card"-->
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-TNDR-059" applicationKey="REGISTER" > <!--Verify that Xstore will show the data for all tender types after pressing the 'Search' button when selecting all Transaction Types and all tender types along with Start Date and End Date in the current year
+
+	Search:
+	_ All Transaction Type
+	_ Tender types: all tender types
+	_ Start Date: 11/14/2024
+	 and End Date: 11/14/2025
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	- Enter Ticket Start
+	- Enter Ticket End in the last date
+	- Enter Start Date: 11/14/2024
+	- Enter End Date: 11/14/2025
+	- Start Time and End Time are default
+	- Leave the Start/End field empty
+	- Leave Customer Last Name or ID
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types"-->
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-INFOTRN-001" applicationKey="REGISTER" > <!--Verify the transaction will show on the list with all required columns after searching  by register number, ticket number, start date, end date for sale transaction	"Pre_condition:
+	Complete the sale transaction and 
+	tender with Cash and take note the register #, trans#, store #
+
+	Steps:
+	1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	 - Enter Ticket Start #	"-->
+		<Parameter name="startDate" value="Wed Jan 01 00:00:00 ICT 2020"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value="1"/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="RETAIL_SALE"/> 
+		<Parameter name="tender" value=""/>
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="%?ITEMS_DB.ItemId"/>
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},1,@getLastTransaction.getTransactionSequence,!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+		<SequenceRef name="SELECT_REPRINT_RECEIPT" />
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-INFOTRN-002"  applicationKey="REGISTER" > <!--Verify the transaction will show on the list with all required columns after searching  by register number, ticket number, start date, end date for cancel transaction
+	"	"Pre_condition:
+	Do a cancel transaction and 
+	tender with Cash and take note the register #, trans#, store #
+
+	Steps:
+	1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	 - Enter Ticket Start #	"-->
+		<Parameter name="startDate" value="Wed Jan 01 00:00:00 ICT 2020"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value="1"/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="RETAIL_SALE"/> 
+		<Parameter name="tender" value=""/>
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_DB.ItemId" />
+		<SequenceRef name="CANCEL_SALE_TRANSACTION_WITHOUT_ITEM" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},1,@getLastTransaction.getTransactionSequence,!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-INFOTRN-003" applicationKey="REGISTER" > <!--Verify the post void transaction will show on the list with all required columns after searching  by register number, ticket number, start date, end date for post void  transaction
+	"	"Pre_condition:
+	Do a post void transaction and then take note the register #, trans#, store #
+
+	Steps:
+	1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	 - Enter Ticket Start #
+
+	"-->
+		<Parameter name="startDate" value="Wed Jan 01 00:00:00 ICT 2020"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value="1"/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="RETAIL_SALE"/> 
+		<Parameter name="tender" value=""/>
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="%?ITEMS_DB.ItemId"/>
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="SELECT_POST_VOID" />
+		<SequenceRef name="FILL_POST_VOID_TRAN_BARCODE" values="@getBarcode(@getLastTransactionId)"/>
+		<SequenceRef name="POST_VOID_STEPS" values="%?POST_VOID_REASONS.ReasonCode"/>		
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},1,@getLastTransaction.getTransactionSequence,!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-INFOTRN-004" applicationKey="REGISTER" > <!--Verify the verify return transaction will show on the list with all required columns after searching  by register number, ticket number, start date, end date for the return  transaction
+	"	"Pre_condition:
+	Do a return with receipt transaction and then take note the register #, trans#, store #
+
+	Steps:
+	1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	 - Enter Ticket Start #	"-->
+		<Parameter name="startDate" value="Wed Jan 01 00:00:00 ICT 2020"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value="1"/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="RETAIL_SALE"/> 
+		<Parameter name="tender" value=""/>
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="%?ITEMS_DB.ItemId"/>
+		<!--verified return-->
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>		
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq" />
+		<SequenceRef name="SELECT_REFUND" />
+		<SequenceRef name="REFUND_TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},1,@getLastTransaction.getTransactionSequence,!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-INFOTRN-013" applicationKey="REGISTER" > <!--Verify the even exchange transaction will show on the list with all required columns after searching  by register number, ticket number, start date, and end date for even exchange transaction	"Pre_condition:
+	Do an even exchange transaction and then take note of the register #, trans#, store #
+
+	Steps:
+	1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	 - Enter Ticket Start #
+	"-->
+		<Parameter name="startDate" value="Wed Jan 01 00:00:00 ICT 2020"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value="1"/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="RETAIL_SALE"/> 
+		<Parameter name="tender" value=""/>
+		<Parameter name="regularItemId" value="%?ITEMS_DB.ItemId"/>
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SELECT_RETURN_ITEM" />
+		<SequenceRef name="SELECT_BTN_NO" />
+		<SequenceRef name="SCAN_RETURN_ITEM" values="!{regularItemId},%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq,100" />		
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="SCAN_ITEM" values="!{regularItemId}"/>
+		<!--<SequenceRef name="CHANGE_PRICE" values="!{regularItemId},100,%?PRICE_CHANGE_REASONS.ReasonCode"/>-->
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},1,@getLastTransaction.getTransactionSequence,!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-INFOTRN-016" applicationKey="REGISTER" > <!--Verify the sale exchange transaction will show on the list with all required columns after searching  by register number, ticket number, start date, and end date for exchange sale transaction	"Pre_condition:
+	Do a sale exchange transaction and then take note of the register #, trans#, store #
+
+	Steps:
+	1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	 - Enter Ticket Start #-->
+		<Parameter name="startDate" value="Wed Jan 01 00:00:00 ICT 2020"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value="1"/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="RETAIL_SALE"/> 
+		<Parameter name="tender" value=""/>
+		<Parameter name="regularItemId" value="%?ITEMS_DB.ItemId"/>
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION"/>
+		<SequenceRef name="CREATE_SALE_EXCHANGE_TRANS" values="!{regularItemId},%?ITEMS_DB.ItemId,%?RETURN_REASONS.ReasonCode,%?RETURN_REASONS.CommentReq"/>
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},1,@getLastTransaction.getTransactionSequence,!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-INFOTRN-031"  applicationKey="REGISTER" > <!--Verify the SO transaction ship-to-customer will show on the list with all required columns after searching  by register number, ticket number, start date, and end date for the  transaction"	"Pre_condition:
+	Do the SO transaction ship-to-customer  and then take note of the register #, trans#, store #
+
+	Steps:
+	1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	 - Enter Ticket Start #" -->
+		<Parameter name="startDate" value="Wed Jan 01 00:00:00 ICT 2020"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value="1"/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="RETAIL_SALE"/> 
+		<Parameter name="tender" value=""/>
+		<Parameter name="lastName" value="Test" />
+		<Parameter name="firstName" value="Xunit" />
+		<Parameter name="teleNumber" value="0902020507" />
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<Parameter name="state" value="CA" />
+		<Parameter name="address1" value="Helios Building" />
+		<Parameter name="address2" value="" />
+		<Parameter name="apartment" value="" />
+		<Parameter name="postalCode" value="90000" />
+		<Parameter name="city" value="Los Angeles" />
+		<Parameter name="shipMethod" value="UPS_1DAY" />
+		<Parameter name="regularItemId" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CREATE_SPECIAL_ORDER_SHIP_TO_CUSTOMER" values="!{address1},!{address2},!{apartment},!{city},!{postalCode},!{firstName},!{lastName},!{teleNumber},!{state},%?SHIPPING_METHOD_FILE.shippingMethod,!{regularItemId},0"/>
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},1,@getLastTransaction.getTransactionSequence,!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-INFOTRN-032" applicationKey="REGISTER" > <!--Verify the SO transaction ship-to-store will show on the list with all required columns after searching  by register number, ticket number, start date, and end date for the  transaction	"Pre_condition:
+	Do the SO transaction ship-to-store  and then take note of the register #, trans#, store #
+
+	Steps:
+	1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	 - Enter Ticket Start #" -->
+		<Parameter name="startDate" value="Wed Jan 01 00:00:00 ICT 2020"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value="1"/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="RETAIL_SALE"/> 
+		<Parameter name="tender" value=""/>
+		<Parameter name="regularItemId" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<!-- <Parameter name="depositAmt" value="@getTransaction.getSubTotal.multiply(0.1)"/> -->
+		<!-- <Parameter name="depositPercent" value="0.1"/> -->
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_DELINQUENT_LAYAWAY" />		
+		<SequenceRef name="CREATE_SPECIAL_ORDER_SHIP_TO_STORE" values="!{regularItemId},@getSystemTime,-1"/>
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},1,@getLastTransaction.getTransactionSequence,!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-INFOTRN-033"		 applicationKey="REGISTER" > <!--Verify the SO Pickup transaction ship-to-store will show on the list with all required columns after searching  by register number, ticket number, start date, and end date for the  transaction"	"Pre_condition:
+	Do the SO pickup transaction ship-to-store  and then take note of the register #, trans#, store #
+
+	Steps:
+	1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	 - Enter Ticket Start #" -->
+		<Parameter name="startDate" value="Wed Jan 01 00:00:00 ICT 2020"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value="1"/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="RETAIL_SALE"/> 
+		<Parameter name="tender" value=""/>
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="item1" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="item2" value="%?ITEMS_ALLOW_SPECIAL_ORDER_DB.ItemId"/>
+		<Parameter name="expectedDate" value="@getSystemTime" />
+		<Parameter name="documentId" value="" />
+		<Parameter name="custAcctId" value="" />
+		<Parameter name="documentSubtypeCode" value="SPECIAL_ORDER" />
+		<Parameter name="statusCode" value="OPEN" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_BTN_NEW_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_BTN_SHIP_TO_STORE" />
+		<SequenceRef name="SCAN_ITEM" values="!{item1}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SCAN_ITEM" values="!{item2}" />
+		<SequenceRef name="CONFIRM_ONHAND" />
+		<SequenceRef name="ENTER_EXPECTED_DATE" values="!{expectedDate}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="FILL_DEPOSIT_AMOUNT" values="@getCurrentCustomerAccount(SPECIAL_ORDER).getAccountBalance.divide(10)" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="INVENTORY_RECEIVING" />
+		<SequenceRef name="SKIP_OLD_INVENTORY_DOCUMENT" />
+		<SequenceRef name="SEARCH_RECEIVING_DOCUMENT" values="!{documentId},%^SPECIAL_ORDER_ACCOUNT_DB.CustAcctId!,!{documentSubtypeCode},!{statusCode}" />
+		<SequenceRef name="SELECT_CARTON" />
+		<SequenceRef name="RECEIVE_ENTIRE_CARTON_CHAIN" />
+		<SequenceRef name="CLOSE_AND_EXIT_RECEIVING" />
+		<SequenceRef name="CANCEL_OLD_INVENTORY_DOCUMENT" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="SKIP_CUSTOMER_NOTIFICATION" />
+		<SequenceRef name="SPECIAL_ORDER_TRANS" />
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		<SequenceRef name="SELECT_BTN_PICKUP_ITEM" />
+		<SequenceRef name="SELECT_TWO_ITEMS" values="!{item1},!{item2}" />
+		<SequenceRef name="SELECT_BTN_DONE_SPECIAL_ORDER" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs" /> 
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANGE_DUE" />
+		<SequenceRef name="VERIFY_SPECIAL_ORDER_STATUS" values="%^SPECIAL_ORDER_ACCOUNT_DB.CustAcctStatcode!,CLOSED" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},1,@getLastTransaction.getTransactionSequence,!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-INFOTRN-049" applicationKey="REGISTER" > <!--Verify the paid in transaction will show on the list with all required columns after searching  by register number, ticket number, start date, and end date for the  transaction	"Pre_condition:
+	Complete the paid in transaction and then take note of the register #, trans#, store #
+
+	Steps:
+	1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	 - Enter Ticket Start #"-->
+		<Parameter name="startDate" value="Wed Jan 01 00:00:00 ICT 2020"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value=""/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="TENDER_CONTROL"/> 
+		<Parameter name="tender" value=""/>
+		<Parameter name="paidInAMT" value="51.28" />
+		<Parameter name="paidInRC" value="PI1" />
+		<Parameter name="paidInComment" value="BTM Xunit Testing" />
+		<SequenceRef name="LOGIN" values="!{userid},!{password}" />
+		<SequenceRef name="SELECT_PAID_IN" />
+		<SequenceRef name="PAID_IN_STEPS" values="!{paidInRC},!{paidInComment},!{paidInAMT}"/>
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},1,%+COMPLETED_TENDER_CONTROL_TRANS_DB.TransSeq!,!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+		
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-INFOTRN-053" applicationKey="REGISTER" > <!--Verify the tender exchange transaction will show on the list with all required columns after searching  by register number, ticket number, start date, and end date for the  transaction	"Pre_condition:
+	Complete the tender exchange transaction and then take note of the register #, trans#, store #
+
+	Steps:
+	1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	 - Enter Ticket Start #" -->
+		<Parameter name="startDate" value="Wed Jan 01 00:00:00 ICT 2020"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value=""/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="TENDER_EXCHANGE"/> 
+		<Parameter name="tender" value=""/>
+		<Parameter name="exAMT" value="50.00" />
+		<Parameter name="checkSerial" value="1234567123456789126" />
+		<Parameter name="checkNo" value="123" />
+		<Parameter name="stateCode" value="TX" />
+		<Parameter name="IDNo" value="11112222" />
+		<Parameter name="birthDate" value="12/15/1954" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_TENDER_EXCHANGE" />
+		<SequenceRef name="TENDER_EXCHANGE_INCOMMING_CHECK" values="!{checkSerial},!{checkNo},!{stateCode},!{IDNo},!{birthDate},!{exAMT}"/>
+		<SequenceRef name="TENDER_EXCHANGE_OUTCOMMING_CASH" values="!{exAMT}"/>
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},1,%+COMPLETED_TENDER_CONTROL_TRANS_DB.TransSeq!,!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-INFOTRN-055" applicationKey="REGISTER" > <!--Verify the register open transaction will show on the list with all required columns after searching  by register number, ticket number, start date, and end date for the  transaction
+	"	"Pre_condition:
+	Complete the register open transaction and then take note of the register #, trans#, store #
+
+	Steps:
+	1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	 - Enter Ticket Start #" -->
+		<Parameter name="startDate" value="Wed Jan 01 00:00:00 ICT 2020"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value=""/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="WORKSTATION_OPEN"/> 
+		<Parameter name="tender" value=""/>
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},!{tranIDStart},!{tranIDEnd},!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-INFOTRN-058" applicationKey="REGISTER" > <!--Verify the store close transaction will show on the list with all required columns after searching  by register number, ticket number, start date, and end date for the  transaction	"Pre_condition:
+	Complete the store close transaction and then take note of the register #, trans#, store #
+
+	Steps:
+	1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	 - Enter Ticket Start #" -->
+		<Parameter name="startDate" value="Wed Jan 01 00:00:00 ICT 2020"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value=""/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value=""/> 
+		<Parameter name="tranType" value="SYSTEM_CLOSE"/> 
+		<Parameter name="tender" value=""/>
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},!{tranIDStart},!{tranIDEnd},!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-INFOTRN-062" applicationKey="REGISTER" > <!--Verify the manual cash drawer open transaction will show on the list with all required columns after searching  by register number, ticket number, start date, and end date for the  transaction	"Pre_condition:
+	Complete manual cash drawer open transaction and then take note of the register #, trans#, store #
+
+	Steps:
+	1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	 - Enter Ticket Start #" -->
+		
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-CUSTINFO-001" applicationKey="REGISTER" > <!--Verify that Xstore will return the transaction list with all required columns after searching for a Customer ID in the Electronic Journal criteria parameters	"1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	- Enter Ticket Start
+	- Enter Ticket End in the last date
+	- Enter Start Date: 11/14/2024
+	- Enter End Date: 11/14/2025
+	- Start Time and End Time are default
+	- Leave the Start/End field empty
+	- Enter 'Customer ID' field
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types" -->
+		<Parameter name="startDate" value="Wed Jan 01 00:00:00 ICT 2020"/>
+		<Parameter name="endDate" value="@getSystemTime"/>
+		<Parameter name="regIDStart" value="1"/>
+		<Parameter name="RegIDEnd" value=""/> 
+		<Parameter name="tranIDStart" value=""/> 
+		<Parameter name="tranIDEnd" value=""/> 
+		<Parameter name="startTime" value=""/> 
+		<Parameter name="endTime" value=""/> 
+		<Parameter name="cashierStart" value=""/> 
+		<Parameter name="cashierEnd" value=""/> 
+		<Parameter name="custIdName" value="%^COMPLETED_SALE_TRANS_DB.CustomerId"/> 
+		<Parameter name="tranType" value="RETAIL_SALE"/> 
+		<Parameter name="tender" value=""/>
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		
+		<SequenceRef name="SELECT_REPORT" values="ELECTRONIC_JOURNAL"/>
+		<SequenceRef name="EJOURNAL_SEARCH_CRITERIAS" values="!{startDate},!{endDate},!{regIDStart},!{RegIDEnd},1,@getLastTransaction.getTransactionSequence,!{startTime},!{endTime},!{cashierStart},!{cashierEnd},!{custIdName},!{tranType},!{tender}"/>
+		<SequenceRef name="SELECT_FIRST_ITEM_IN_LIST" />
+	</TestCase>
+	<TestCase name="REPORT-EJOURNAL-CUSTINFO-002" applicationKey="REGISTER" > <!--Verify that Xstore will return the transaction list with all required columns after searching for a Last Name of Customer in the Electronic Journal criteria parameters	"1. On the Main Menu option
+	2. Select Reporting -> Select Electronic Journal
+	3. Fill in transaction information
+	'- Register start & Register end (default)
+	- Enter Ticket Start
+	- Enter Ticket End in the last date
+	- Enter Start Date: 11/14/2024
+	- Enter End Date: 11/14/2025
+	- Start Time and End Time are default
+	- Leave the Start/End field empty
+	- Enter 'Customer Last Name' field
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-001" 	 applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database when entering parameters with a specific date and setting "0 days in Prior Days Included," after pressing the "Save" button on the Journal Sales Report screen."	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select specific date in the combobox
+	- Select period days included: 0 Days
+	- Leave start Reg and end reg value
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+		
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-002"  applicationKey="REGISTER" > <!--Verifythe Journal Report will persist to the database when entering parameters with a specific date and setting "1 Day in Prior Days Included," after pressing the "Save" button on the Journal Sales Report screen."	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select specific date in the combobox
+	- Select period days included: 1 Day
+	- Leave start Reg and end reg value
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-003" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database when entering parameters with a specific date and setting "2 Days in Prior Days Included," after pressing the "Save" button on the Journal Sales Report screen.	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select specific date in the combobox
+	- Select period days included: 2 Days
+	- Leave start Reg and end reg value
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-004" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database when entering parameters with a specific date and setting "3 Days in Prior Days Included," after pressing the "Save" button on the Journal Sales Report screen.	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select specific date in the combobox
+	- Select period days included: 3 Days
+	- Leave start Reg and end reg value
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-005" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database when entering parameters with a specific date and setting "4 Days in Prior Days Included," after pressing the "Save" button on the Journal Sales Report screen.	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select specific date in the combobox
+	- Select period days included: 4 Days
+	- Leave start Reg and end reg value
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-006" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database when entering parameters with a specific date and setting "5 Days in Prior Days Included," after pressing the "Save" button on the Journal Sales Report screen.	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select specific date in the combobox
+	- Select period days included: 5 Days
+	- Leave start Reg and end reg value
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-007" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database when entering parameters with a specific date and setting "6 Days in Prior Days Included," after pressing the "Save" button on the Journal Sales Report screen.	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select specific date in the combobox
+	- Select period days included: 6 Days
+	- Leave start Reg and end reg value
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-008"  applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database when entering parameters with a current date and setting "0 Days in Prior Days Included," after pressing the "Save" button on the Journal Sales Report screen.
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Today date in the combobox
+	- Select period days included: 0 Days
+	- Leave start Reg and end reg value
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-009" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database when entering parameters with a current date and setting "1 Day in Prior Days Included," after pressing the "Save" button on the Journal Sales Report screen.
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Today date in the combobox
+	- Select period days included: 1 Days
+	- Leave start Reg and end reg value
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-010" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database when entering parameters with a current date and setting "2 Days in Prior Days Included," after pressing the "Save" button on the Journal Sales Report screen.
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Today date in the combobox
+	- Select period days included: 2 Days
+	- Leave start Reg and end reg value
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-011" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database when entering parameters with a current date and setting "3 Days in Prior Days Included," after pressing the "Save" button on the Journal Sales Report screen.	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Today date in the combobox
+	- Select period days included: 3 Days
+	- Leave start Reg and end reg value
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-012" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database when entering parameters with a current date and setting "4 Days in Prior Days Included," after pressing the "Save" button on the Journal Sales Report screen.	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Today date in the combobox
+	- Select period days included: 4 Days
+	- Leave start Reg and end reg value
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-013" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database when entering parameters with a current date and setting "5 Days in Prior Days Included," after pressing the "Save" button on the Journal Sales Report screen.	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Today date in the combobox
+	- Select period days included: 5 Days
+	- Leave start Reg and end reg value
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-014" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database when entering parameters with a current date and setting "6 Days in Prior Days Included," after pressing the "Save" button on the Journal Sales Report screen.	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Today date in the combobox
+	- Select period days included: 6 Days
+	- Leave start Reg and end reg value
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-023" 	 applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database  after after leaving Start Reg blank and entering End Reg value and  press 'OK' on Keypad
+
+	Note:
+	 Start Reg is null and End Reg is Not null"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Specify date in the combobox
+	- Select period days included: 6 Days
+	- Leave start Reg date blank
+	- Enter end Reg value ->  Press 'OK' on Keypad"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-024" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database after pressing 'Save' button when entering Start Reg = End date  and  press 'OK' on Keypad
+
+	Note:
+	 Start Reg = End Reg "	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Specify date in the combobox
+	- Select period days included: 6 Days
+	- Enter date on start Reg = End date
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button	"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-025" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database after pressing the 'Save' button when entering Start Reg < End Register and then pressing the 'symbol' toggle keypad 	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Specify date in the combobox
+	- Select period days included: 6 Days
+	- Enter start Reg < End Register
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-026" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database after pressing the 'Save' button when entering Start Reg > End Register and then pressing the 'symbol' toggle keypad 	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Specify date in the combobox
+	- Select period days included: 6 Days
+	- Enter value on start Reg > end Reg date
+	- TransactionType:  All Transaction Types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-056" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database after pressing the 'Save' button when selecting transaction type "Retail Sale"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Specify date in the combobox
+	- Select period days included: 6 Days
+	- Leave blank value for start Reg , end Reg date
+	- TransactionType: Retail Sale
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-073" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database after pressing the 'Save' button when entered Transaction # on the Journal report filter	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Specify date in the combobox
+	- Select period days included: 6 Days
+	- Leave blank value for start Reg , end Reg date
+	- TransactionType: All Transaction type
+	- Tender Types: All tender types
+	- Enter Transaction #  
+	- Enter Employee ID #
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-074" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database after entering Start Reg value,  leaving End Reg blank and then pressing the 'Save' button
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Specify date in the combobox
+	- Select period days included: 6 Days
+	- Enter value for start Reg, leave Reg date blank
+	- TransactionType: All Transaction type
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-078" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database after pressing the 'Save' button when searching with tender type "American Express Credit Card"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Specify date in the combobox
+	- Select period days included: 6 Days
+	- Leave blank value for start Reg , end Reg date
+	- TransactionType: All Transaction type
+	- Tender Types: American Express Credit Card
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-084" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database after pressing the 'Save' button when searching with tender type "Cash"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Specify date in the combobox
+	- Select period days included: 6 Days
+	- Leave blank value for start Reg , end Reg date
+	- TransactionType: All Transaction type
+	- Tender Types: Cash
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-090" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database after pressing the 'Save' button when searching with tender type "Credit Card"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Specify date in the combobox
+	- Select period days included: 6 Days
+	- Leave blank value for start Reg , end Reg date
+	- TransactionType: All Transaction type
+	- Tender Types: Credit Card
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-091" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database after pressing the 'Save' button when searching with tender type "Debit Card"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Specify date in the combobox
+	- Select period days included: 6 Days
+	- Leave blank value for start Reg , end Reg date
+	- TransactionType: All Transaction type
+	- Tender Types: Debit Card
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-092" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database after pressing the 'Save' button when searching with tender type "Diners Club Credit Card"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Specify date in the combobox
+	- Select period days included: 6 Days
+	- Leave blank value for start Reg , end Reg date
+	- TransactionType: All Transaction type
+	- Tender Types: Diners Club Credit Card
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-093" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database after pressing the 'Save' button when searching with tender type "Discover Credit Card"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Specify date in the combobox
+	- Select period days included: 6 Days
+	- Leave blank value for start Reg , end Reg date
+	- TransactionType: All Transaction type
+	- Tender Types: Discover Credit Card
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-108" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database after pressing the 'Save' button when searching with tender type "MasterCard Credit Card"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Specify date in the combobox
+	- Select period days included: 6 Days
+	- Leave blank value for start Reg , end Reg date
+	- TransactionType: All Transaction type
+	- Tender Types: MasterCard Credit Card
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-SAVE-132" applicationKey="REGISTER" > <!--Verify the Journal Report will persist to the database after pressing the 'Save' button when searching with tender type "Visa Credit Card"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select Specify date in the combobox
+	- Select period days included: 6 Days
+	- Leave blank value for start Reg , end Reg date
+	- TransactionType: All Transaction type
+	- Tender Types: ""Visa Credit Card""
+	- Leave the Transaction field blank
+	- Leave the Customer ID blank
+	- Show criteral: YES
+	5. Select 'Save' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-001" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions with the specific date in the past with 0 prior days included
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Specific date in the combobox
+	- Select period days included: 0 Days
+	- Leave the start Reg , end Reg date
+	- TransactionType: All Transaction type
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-002" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions with the specific date in the past with 1 prior days included
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Specific date in the combobox
+	- Select period days included: 1 Days
+	- Leave blank value for start Reg , end Reg date
+	- TransactionType: All Transaction type
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-003" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions with the specific date in the past with 2 prior days included
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Specific date in the combobox
+	- Select period days included: 2 Days
+	- Leave blank value for start Reg , end Reg date
+	- TransactionType: All Transaction type
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-004" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions with the specific date in the past with 3 prior days included
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Specific date in the combobox
+	- Select period days included: 3 Days
+	- Leave blank value for start Reg, end Reg date
+	- TransactionType: All Transaction types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-005" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions with the specific date in the past with 4 prior days included	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Specific date in the combobox
+	- Select period days included: 4 Days
+	- Leave blank value for start Reg, end Reg date
+	- TransactionType: All Transaction types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-006" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions with the specific date in the past with 5 prior days included	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Specific date in the combobox
+	- Select period days included: 5 Days
+	- Leave blank value for start Reg, end Reg date
+	- TransactionType: All Transaction types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-007" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions with the specific date in the past with 6 prior days included
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Specific date in the combobox
+	- Select period days included: 6 Days
+	- Leave blank value for start Reg, end Reg date
+	- TransactionType: All Transaction types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-008" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions with the current date with 0 prior days included	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Today date in the combobox
+	- Select period days included: 0 Days
+	- Leave blank value for start Reg, end Reg date
+	- TransactionType: All Transaction types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-009" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions with the current date with 1 prior days included	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Today date in the combobox
+	- Select period days included: 1 Day
+	- Leave blank value for start Reg, end Reg date
+	- TransactionType: All Transaction types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-010" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions with the current date with 2 prior days included	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Today date in the combobox
+	- Select period days included: 2 Days
+	- Leave blank value for start Reg, end Reg date
+	- TransactionType: All Transaction types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button" -->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-011" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions with the current date with 3 prior days included	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Today date in the combobox
+	- Select period days included: 3 Days
+	- Leave blank value for start Reg, end Reg date
+	- TransactionType: All Transaction types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-012" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions with the current date with 4 prior days included
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Today date in the combobox
+	- Select period days included: 4 Days
+	- Leave blank value for start Reg, end Reg date
+	- TransactionType: All Transaction types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-013" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions with the current date with 5 prior days included	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Today date in the combobox
+	- Select period days included:5 Days
+	- Leave blank value for start Reg, end Reg date
+	- TransactionType: All Transaction types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-014" applicationKey="REGISTER" > <!--Verifythe Journal Report will print PDF file report after pressing the 'Print' button when searching transactions with the current date with 6 prior days included
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Today date in the combobox
+	- Select period days included: 6 Days
+	- Leave blank value for start Reg, end Reg date
+	- TransactionType: All Transaction types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-056" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions  that have transaction type "Retail Sale"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Yesterday date in the combobox
+	- Select period days included: 2 Days
+	- Enter the start Reg > end Reg date
+	- TransactionType: Retail Sale
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-073" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions  that have  entered  transaction number	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Yesterday date in the combobox
+	- Select period days included: 2 Days
+	- Enter the start Reg > end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tender types
+	-  Enter Transaction field #
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-074" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions  that have  entered  customer ID	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Yesterday date in the combobox
+	- Select period days included: 2 Days
+	- Enter the start Reg = end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tender types
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Enter Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-083" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions  that  have tender type ""Cash""
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Yesterday date in the combobox
+	- Select period days included: 2 Days
+	- Enter the start Reg = end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: Cash
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-089" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions  that  have tender type "Credit Card"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Yesterday date in the combobox
+	- Select period days included: 2 Days
+	- Enter the start Reg = end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: Credit Card
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-PRINT-090" applicationKey="REGISTER" > <!--Verify the Journal Report will print PDF file report after pressing the 'Print' button when searching transactions  that  have tender type "Debit Card"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Yesterday date in the combobox
+	- Select period days included: 2 Days
+	- Enter the start Reg = end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: Debit Card
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Print' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-001"  applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report with a specific date and "0 prior days included.""	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Specific date in the combobox
+	- Select period days included: 0 Days
+	- Enter the start Reg = end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+		<Parameter name="startDate" value="Tue Aug 26 00:00:00 ICT 2025"/>
+		<Parameter name="startDateOp" value="Specific Date"/>
+		<Parameter name="displayOp" value=""/>
+		<Parameter name="showChart" value=""/> 
+		<Parameter name="showCriteria" value="YES"/> 
+		<Parameter name="priorBusinessDaysIncluded" value="0"/> 
+		<Parameter name="startReg" value="6"/> 
+		<!-- <Parameter name="endReg" value="6"/>  -->
+		<Parameter name="transactionType" value="All Transaction Types"/> 
+		<Parameter name="employeeId" value=""/> 
+		<Parameter name="transSeq" value=""/> 
+		<Parameter name="customerId" value=""/> 
+		<Parameter name="tndrId" value="All Tenders"/>
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		
+		<SequenceRef name="SELECT_REPORT" values="JOURNAL_ROLL_REPORT"/>
+		<SequenceRef name="REPORT_SEARCH_CRITERIAS" values="!{startDate},!{startDateOp},!{displayOp},!{showChart},!{showCriteria},!{priorBusinessDaysIncluded},!{startReg},!{startReg},!{transactionType},!{employeeId},!{transSeq},!{customerId},!{tndrId}"/>
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-002" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report with a specific date and "1 prior days included."	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Specific date in the combobox
+	- Select period days included: 1 Day
+	- Enter the start Reg = end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-003" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report with a specific date and "2 prior days included."
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Specific date in the combobox
+	- Select period days included: 2 Days
+	- Enter the start Reg = end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-004" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report with a specific date and "3 prior days included."	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Specific date in the combobox
+	- Select period days included: 3 Days
+	- Enter the start Reg = end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-005" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report with a specific date and "4 prior days included."	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Specific date in the combobox
+	- Select period days included: 4 Days
+	- Enter the start Reg = end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-006" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report with a specific date and "5 prior days included."	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Specific date in the combobox
+	- Select period days included: 5 Days
+	- Enter the start Reg = end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-007" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report with a specific date and "6 prior days included."	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a Specific date in the combobox
+	- Select period days included: 6 Days
+	- Enter the start Reg = end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-015" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report with the current date and "0 prior days included."
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a current date in the combobox
+	- Select period days included: 0 Day
+	- Enter the start Reg = end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+		<Parameter name="startDate" value="@getCurrentBusinessDate"/>
+		<Parameter name="startDateOp" value="Specific Date"/>
+		<Parameter name="displayOp" value=""/>
+		<Parameter name="showChart" value=""/> 
+		<Parameter name="showCriteria" value="YES"/> 
+		<Parameter name="priorBusinessDaysIncluded" value="0"/> 
+		<Parameter name="startReg" value="6"/> 
+		<!-- <Parameter name="endReg" value="6"/>  -->
+		<Parameter name="transactionType" value="All Transaction Types"/> 
+		<Parameter name="employeeId" value=""/> 
+		<Parameter name="transSeq" value=""/> 
+		<Parameter name="customerId" value=""/> 
+		<Parameter name="tndrId" value="All Tenders"/>
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		
+		<SequenceRef name="SELECT_REPORT" values="JOURNAL_ROLL_REPORT"/>
+		<SequenceRef name="REPORT_SEARCH_CRITERIAS" values="!{startDate},!{startDateOp},!{displayOp},!{showChart},!{showCriteria},!{priorBusinessDaysIncluded},!{startReg},!{startReg},!{transactionType},!{employeeId},!{transSeq},!{customerId},!{tndrId}"/>
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-016" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report with the current date and "1 prior days included."
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a current date in the combobox
+	- Select period days included: 1 Day
+	- Enter the start Reg = end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-017" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report with the current date and "2 prior days included."	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a current date in the combobox
+	- Select period days included: 2 Days
+	- Enter the start Reg = end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-018" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report with the current date and "3 prior days included."
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a current date in the combobox
+	- Select period days included: 3 Days
+	- Enter the start Reg = end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-019" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report with the current date and "4 prior days included."	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a current date in the combobox
+	- Select period days included: 4 Days
+	- Enter the start Reg = end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-020" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report with the current date and "5 prior days included."	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a current date in the combobox
+	- Select period days included: 5 Days
+	- Enter the start Reg = end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-021" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report with the current date and "6 prior days included."	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a current date in the combobox
+	- Select period days included: 6 Days
+	- Enter the start Reg = end Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-022" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report when searching transactions, has Start Reg is not null and End Reg is null	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a specific date in the combobox
+	- Select period days included: 5 Days
+	- Enter the start Reg IS NOT NULL
+	- Enter the Reg date is NULL
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-023" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report when searching transactions, has Start Reg is null and End Reg is NOT null	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a specific date in the combobox
+	- Select period days included: 5 Days
+	- Enter the start Reg IS  NULL
+	- Enter the Reg date is NOT NULL
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-024" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report when searching transactions, has Start Reg = End Reg 	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a specific date in the combobox
+	- Select period days included: 5 Days
+	- Enter the start Reg = the Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-025" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report when searching transactions, has Start Reg < End Reg 
+	"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a specific date in the combobox
+	- Select period days included: 5 Days
+	- Enter the start Reg < the End Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+		<Parameter name="startDate" value="Tue Aug 26 00:00:00 ICT 2025"/>
+		<Parameter name="startDateOp" value="Specific Date"/>
+		<Parameter name="displayOp" value=""/>
+		<Parameter name="showChart" value=""/> 
+		<Parameter name="showCriteria" value="YES"/> 
+		<Parameter name="priorBusinessDaysIncluded" value="5"/> 
+		<Parameter name="startReg" value="1"/> 
+		<Parameter name="endReg" value="6"/>
+		<Parameter name="transactionType" value="All Transaction Types"/> 
+		<Parameter name="employeeId" value=""/> 
+		<Parameter name="transSeq" value=""/> 
+		<Parameter name="customerId" value=""/> 
+		<Parameter name="tndrId" value="All Tenders"/>
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		
+		<SequenceRef name="SELECT_REPORT" values="JOURNAL_ROLL_REPORT"/>
+		<SequenceRef name="REPORT_SEARCH_CRITERIAS" values="!{startDate},!{startDateOp},!{displayOp},!{showChart},!{showCriteria},!{priorBusinessDaysIncluded},!{startReg},!{endReg},!{transactionType},!{employeeId},!{transSeq},!{customerId},!{tndrId}"/>
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-026" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report when searching transactions, has Start Reg > End Reg 	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a specific date in the combobox
+	- Select period days included: 5 Days
+	- Enter the start Reg > the End Reg date
+	- TransactionType: All transaction types
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-056" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report when searching transactions that have transaction type "Retail Sale"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a specific date in the combobox
+	- Select period days included: 5 Days
+	- Enter the start Reg = the End Reg date
+	- TransactionType: Retail Sale
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+		<Parameter name="startDate" value="Tue Aug 26 00:00:00 ICT 2025"/>
+		<Parameter name="startDateOp" value="Specific Date"/>
+		<Parameter name="displayOp" value=""/>
+		<Parameter name="showChart" value=""/> 
+		<Parameter name="showCriteria" value="YES"/> 
+		<Parameter name="priorBusinessDaysIncluded" value="5"/> 
+		<Parameter name="startReg" value="6"/> 
+		<!-- <Parameter name="endReg" value="6"/>  -->
+		<Parameter name="transactionType" value="Retail Sale"/> 
+		<Parameter name="employeeId" value=""/> 
+		<Parameter name="transSeq" value=""/> 
+		<Parameter name="customerId" value=""/> 
+		<Parameter name="tndrId" value="All Tenders"/>
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		
+		<SequenceRef name="SELECT_REPORT" values="JOURNAL_ROLL_REPORT"/>
+		<SequenceRef name="REPORT_SEARCH_CRITERIAS" values="!{startDate},!{startDateOp},!{displayOp},!{showChart},!{showCriteria},!{priorBusinessDaysIncluded},!{startReg},!{startReg},!{transactionType},!{employeeId},!{transSeq},!{customerId},!{tndrId}"/>
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-060" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report when searching transactions that have transaction type "System Open"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a specific date in the combobox
+	- Select period days included: 5 Days
+	- Enter the start Reg = the End Reg date
+	- TransactionType: System Open
+	- Tender Types: All tenders
+	- Leave the Transaction field blank
+	- Leave Employee ID #
+	- Leave Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"-->
+		<Parameter name="startDate" value="Tue Aug 26 00:00:00 ICT 2025"/>
+		<Parameter name="startDateOp" value="Specific Date"/>
+		<Parameter name="displayOp" value=""/>
+		<Parameter name="showChart" value=""/> 
+		<Parameter name="showCriteria" value="YES"/> 
+		<Parameter name="priorBusinessDaysIncluded" value="5"/> 
+		<Parameter name="startReg" value="6"/> 
+		<!-- <Parameter name="endReg" value="6"/>  -->
+		<Parameter name="transactionType" value="System Open"/> 
+		<Parameter name="employeeId" value=""/> 
+		<Parameter name="transSeq" value=""/> 
+		<Parameter name="customerId" value=""/> 
+		<Parameter name="tndrId" value="All Tenders"/>
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		
+		<SequenceRef name="SELECT_REPORT" values="JOURNAL_ROLL_REPORT"/>
+		<SequenceRef name="REPORT_SEARCH_CRITERIAS" values="!{startDate},!{startDateOp},!{displayOp},!{showChart},!{showCriteria},!{priorBusinessDaysIncluded},!{startReg},!{startReg},!{transactionType},!{employeeId},!{transSeq},!{customerId},!{tndrId}"/>
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-089" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report when searching transactions have tender type  "Credit Card"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a specific date in the combobox
+	- Select period days included: 5 Days
+	- Enter the start Reg = the End Reg date
+	- TransactionType: All transaction types
+	- Tender Types: Credit Card
+	- Leave the Transaction field blank
+	- Leave Employee ID # blank
+	- Enter Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"
+	-->
+	</TestCase>
+	<TestCase name="REPORT-SALES-JOURNAL-RUN-090" applicationKey="REGISTER" > <!--Verify the Journal Report will open in the web browser after running the report when searching transactions have tender type  "Debit Card"	"1. On the Main Menu option
+	2. Select Reporting -> Select Sale report
+	3. Select Journal report
+	4. Enter parameters to use when running this report:
+	'- Select a specific date in the combobox
+	- Select period days included: 5 Days
+	- Enter the start Reg = the End Reg date
+	- TransactionType: All transaction types
+	- Tender Types: Debit Card
+	- Leave the Transaction field blank
+	- Leave Employee ID # blank
+	- Enter Customer ID #
+	- Show criteral: Yes
+	5. Select 'Run Report' button"
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-RUN-002" applicationKey="REGISTER" > <!--Verify that user run and view a Flash Sale Summary with the following search criterias.
+	   Date: Default
+	   Date dropdown list: Select ""Today""
+	   Display By dropdown list: Select ""Summary""
+	   Show Chart = Yes
+	   Show Criteria = Yes"	"  1. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	  2.  On Date Calendar field: Default
+	  3. On Date dropdown list: Select ""Today"" 
+	  4. On Display By dropdown list: Select ""Summary"" 
+	  5. On Show Chart : Select Yes 
+	  6. On Show Criteria : Select Yes
+	  7. Select ""Run Report"" button.
+	  8. Complete some sale transactions.
+	  9. Repeat from step#2 to #7 again."
+	-->
+		<Parameter name="startDate" value="Tue Jan 20 00:00:00 CST 2026"/>
+		<Parameter name="startDateOp" value="Specific Date"/>
+		<Parameter name="displayOp" value="SUMMARY"/>
+		<Parameter name="showChart" value="YES"/> 
+		<Parameter name="showCriteria" value="YES"/>
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="FLASH_SALE"/>
+		<SequenceRef name="SEARCH_REPORTING" values="!{startDate},!{startDateOp},!{displayOp},!{showChart},!{showCriteria}"/>
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-RUN-003" applicationKey="REGISTER" > <!--Verify that user can run and view a Flash Sale Summary using the following search criteria that return some transactions
+	   Date: Default
+	   Date dropdown list: Select ""Today""
+	   Display By dropdown list: Select ""Summary""
+	   Show Chart = Yes
+	   Show Criteria = Yes"	"   1. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	  2.  On Date Calendar field: Default
+	  3. On Date dropdown list: Select ""Today"" 
+	  4. On Display By dropdown list: Select ""Summary"" 
+	   5. On Show Chart : Select Yes 
+	   6. On Show Criteria : Select Yes
+	   7. Select ""Run Report"" button.
+	   8. Complete some returns transactions.
+	   9. Repeat from step#2 to #7 again."
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-RUN-004" applicationKey="REGISTER" > <!--Verify that user run and view a Flash Sale Summary using the following search criteria that  transactions has discount
+	   Date: Default
+	   Date dropdown list: Select ""Today""
+	   Display By dropdown list: Select ""Summary""
+	   Show Chart = Yes
+	   Show Criteria = Yes"	"  1. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	  2. On Date Calendar field: Default
+	  3. On Date dropdown list: Select ""Today"" 
+	   4. On Display By dropdown list: Select ""Summary"" 
+	   5. On Show Chart : Select Yes 
+	   6. On Show Criteria : Select Yes
+	   7. Select ""Run Report"" button.
+	   8. Complete some discount transactions.
+	   9. Repeat from step#2 to #7 again."
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-RUN-007" applicationKey="REGISTER" > <!--Verify that user run and view a Flash Sale by Department with the following search criterias.
+	   Date: Default
+	   Date dropdown list: Select ""Today""
+	   Display By dropdown list: Select ""Department""
+	   Show Chart = Yes
+	   Show Criteria = Yes"	"   1. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	   2 On Date Calendar field: Default
+	  3. On Date dropdown list: Select ""Today"" 
+	   4. On Display By dropdown list: Select ""Department"" 
+	   5. On Show Chart : Select Yes 
+	   6. On Show Criteria : Select Yes
+	   7. Select ""Run Report"" button.
+	   8. Complete some sale transactions with item in many of departments
+	   9. Repeat from step#2 to #7 again."
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-RUN-010" applicationKey="REGISTER" > <!--Verify that user run and view a Flash Sale by Employee with the following search criterias.
+	   Date: Default
+	   Date dropdown list: Select ""Today""
+	   Display By dropdown list: Select ""Employee""
+	   Show Chart = Yes
+	   Show Criteria = Yes"	"   1. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	  2. On Date Calendar field: Default
+	  3. On Date dropdown list: Select ""Today"" 
+	  4. On Display By dropdown list: Select ""Employee"" 
+	  5. On Show Chart : Select Yes 
+	  6. On Show Criteria : Select Yes
+	  7. Select ""Run Report"" button.
+	  8. Complete some sale/return transactions by some cashiers and commission associates.
+	  9. Repeat from step#2 to #7 again."
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-RUN-013" applicationKey="REGISTER" > <!--Verify that user run and view a Flash Sale by Hour with the following search criterias.
+	   Date: Default
+	   Date dropdown list: Select ""Today""
+	   Display By dropdown list: Select ""Hour""
+	   Show Chart = Yes
+	   Show Criteria = Yes"	"   1. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales
+	  2. On Date Calendar field: Default
+	  3. On Date dropdown list: Select ""Today"" 
+	  4. On Display By dropdown list: Select ""Hour"" 
+	  5. On Show Chart : Select Yes 
+	  6. On Show Criteria : Select Yes
+	  7. Select ""Run Report"" button.
+	  8. Complete some sale transactions in some hours.
+	  9. Repeat from step#2 to #7 again."
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-RUN-015" applicationKey="REGISTER" > <!--Verify that user run and view a Flash Sale Summary with the following search criterias.
+	   Date: Select a date that is not a Yesterday or Today
+	   Date dropdown list: Select ""Specific Date""
+	   Display By dropdown list: Select ""Summary""
+	   Show Chart = No
+	   Show Criteria = Yes"	"  1. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales
+	  2. On Date Calendar field: Select a date that is not a Yesterday or Today
+	  3. On Date dropdown list: Select ""Specific Date"" 
+	  4. On Display By dropdown list: Select ""Summary"" 
+	  5. On Show Chart : Select No 
+	  6. On Show Criteria : Select Yes
+	  7. Select ""Run Report"" button."
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-RUN-018" applicationKey="REGISTER" > <!--Verify that user run and view a Flash Sale by Department with the following search criterias.
+	   Date: Select a date that is not a Yesterday or Today
+	   Date dropdown list: Select ""Specific Date""
+	   Display By dropdown list: Select ""Department""
+	   Show Chart = No
+	   Show Criteria = Yes"	"   1. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales
+	   2 On Date Calendar field: Select a date that is not a Yesterday or Today
+	  3. On Date dropdown list: Select ""Specific Date"" 
+	   4. On Display By dropdown list: Select ""Department"" 
+	   5. On Show Chart : Select No 
+	   6. On Show Criteria : Select Yes
+	   7. Select ""Run Report"" button."
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-RUN-021" applicationKey="REGISTER" > <!--Verify that user run and view a Flash Sale by Employee with the following search criterias.
+	   Date: Select a date that is not a Yesterday or Today
+	   Date dropdown list: Select ""Specific Date""
+	   Display By dropdown list: Select ""Employee""
+	   Show Chart = No
+	   Show Criteria = Yes"	"   1. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales
+	  2. On Date Calendar field: Select a date that is not a Yesterday or Today
+	  3. On Date dropdown list: Select ""Specific Date"" 
+	   4. On Display By dropdown list: Select ""Employee"" 
+	   5. On Show Chart : Select No 
+	   6. On Show Criteria : Select Yes
+	   7. Select ""Run Report"" button."
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-RUN-024" applicationKey="REGISTER" > <!--Verify that user run and view a Flash Sale by Hour with the following search criterias.
+	   Date: Select a date that is not a Yesterday or Today
+	   Date dropdown list: Select ""Specific Date""
+	   Display By dropdown list: Select ""Hour""
+	   Show Chart = No
+	   Show Criteria = Yes"	"   1. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales
+	  2.  On Date Calendar field: Select a date that is not a Yesterday or Today
+	  3. On Date dropdown list: Select ""Specific Date"" 
+	  4. On Display By dropdown list: Select ""Hour"" 
+	  5. On Show Chart : Select No 
+	  6. On Show Criteria : Select Yes
+	  7. Select ""Run Report"" button."
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-RUN-029" applicationKey="REGISTER" > <!--Verify that user run and view a Flash Sale Summary with the following search criterias.
+	   Date: Default
+	   Date dropdown list: Select ""Yesterday""
+	   Display By dropdown list: Select ""Summary""
+	   Show Chart = Yes
+	   Show Criteria = No"	"   1. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	  2. On Date Calendar field: Default
+	  3. On Date dropdown list: Select ""Yesterday"" 
+	  4. On Display By dropdown list: Select ""Summary"" 
+	  5. On Show Chart : Select Yes 
+	  6. On Show Criteria : Select No
+	  7. Select ""Run Report"" button."
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-RUN-032" applicationKey="REGISTER" > <!--Verify that user run and view a Flash Sale by Department with the following search criterias.
+	   Date: Default
+	   Date dropdown list: Select ""Yesterday""
+	   Display By dropdown list: Select ""Department""
+	   Show Chart = Yes
+	   Show Criteria = No"	"   1. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	  2. On Date Calendar field: Default
+	  3. On Date dropdown list: Select ""Yesterday"" 
+	   4. On Display By dropdown list: Select ""Department"" 
+	   5. On Show Chart : Select Yes 
+	   6. On Show Criteria : Select No
+	   7. Select ""Run Report"" button."
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-RUN-035" applicationKey="REGISTER" > <!--Verify that user run and view a Flash Sale by Employee with the following search criterias.
+	   Date: Default
+	   Date dropdown list: Select ""Yesterday""
+	   Display By dropdown list: Select ""Employee""
+	   Show Chart = Yes
+	   Show Criteria = No"	"   1. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	   2 On Date Calendar field: Default
+	  3. On Date dropdown list: Select ""Yesterday"" 
+	   4. On Display By dropdown list: Select ""Employee"" 
+	   5. On Show Chart : Select Yes 
+	   6. On Show Criteria : Select No
+	   7. Select ""Run Report"" button."
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-RUN-038" applicationKey="REGISTER" > <!--Verify that user run and view a Flash Sale by Hour with the following search criterias.
+	   Date: Default
+	   Date dropdown list: Select ""Yesterday""
+	   Display By dropdown list: Select ""Hour""
+	   Show Chart = Yes
+	   Show Criteria = No"	"   1. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	   2 On Date Calendar field: Default
+	  3. On Date dropdown list: Select ""Yesterday"" 
+	   4. On Display By dropdown list: Select ""Hour"" 
+	   5. On Show Chart : Select Yes 
+	   6. On Show Criteria : Select No
+	   7. Select ""Run Report"" button."
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-RUN-039" applicationKey="REGISTER" > <!--Verify that user run and view a Flash Sale Summary with the following search criterias.
+	   Date: Select a date that is not a Yesterday or Today
+	   Date dropdown list: Select ""Specific Date""
+	   Display By dropdown list: Select ""Summary""
+	   Show Chart = No
+	   Show Criteria = No"	"   1. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	   2 On Date Calendar field: Select a date that is not a Yesterday or Today
+	  3. On Date dropdown list: Select ""Specific Date"" 
+	   4. On Display By dropdown list: Select ""Summary"" 
+	   5. On Show Chart : Select No 
+	   6. On Show Criteria : Select No
+	   7. Select ""Run Report"" button."
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-RUN-042" applicationKey="REGISTER" > <!--Verify that user run and view a Flash Sale by Department with the following search criterias.
+	   Date: Select a date that is not a Yesterday or Today
+	   Date dropdown list: Select ""Specific Date""
+	   Display By dropdown list: Select ""Department""
+	   Show Chart = No
+	   Show Criteria = No"	"   1. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	   2 On Date Calendar field: Select a date that is not a Yesterday or Today
+	  3. On Date dropdown list: Select ""Specific Date"" 
+	   4. On Display By dropdown list: Select ""Department"" 
+	   5. On Show Chart : Select No 
+	   6. On Show Criteria : Select No
+	   7. Select ""Run Report"" button."
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-RUN-045" applicationKey="REGISTER" > <!--Verify that user run and view a Flash Sale by Employee with the following search criterias.
+	   Date: Select a date that is not a Yesterday or Today
+	   Date dropdown list: Select ""Specific Date""
+	   Display By dropdown list: Select ""Employee""
+	   Show Chart = No
+	   Show Criteria = No"	"   1. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	   2 On Date Calendar field: Select a date that is not a Yesterday or Today
+	  3. On Date dropdown list: Select ""Specific Date"" 
+	   4. On Display By dropdown list: Select ""Employee"" 
+	   5. On Show Chart : Select No 
+	   6. On Show Criteria : Select No
+	   7. Select ""Run Report"" button."
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-RUN-048" applicationKey="REGISTER" > <!--Verify that user run and view a Flash Sale by Hour with the following search criterias.
+	   Date: Select a date that is not a Yesterday or Today
+	   Date dropdown list: Select ""Specific Date""
+	   Display By dropdown list: Select ""Hour""
+	   Show Chart = No
+	   Show Criteria = No"	"  1.  At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	 2. On Date Calendar field: Select a date that is not a Yesterday or Today
+	 3. On Date dropdown list: Select ""Specific Date"" 
+	 4. On Display By dropdown list: Select ""Hour"" 
+	 5. On Show Chart : Select No 
+	 6. On Show Criteria : Select No
+	 7. Select ""Run Report"" button."
+	-->
+</TestCase>
+	<TestCase name="REPORT-FLASHSALE-SAVE-001" applicationKey="REGISTER" > <!--Verify that user can save Flash Sales as a personal report and open the saved report with current data.	"
+	   1. Logged-in a user 
+	   2. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	   3. On Date Calendar field: Select a date 
+	   4. On Date dropdown list: Select ""Specific Date"" or ""Yesterday"" or ""Today""
+	   5. On Display By dropdown list: Select ""Summary"" or ""Employee"" or ""Department"" or ""Hour""
+	   6. On Show Chart : Select Yes or No
+	   7. On Show Criteria : Select Yes or No
+	   8. Select ""Save"" button.
+	   9. Enter report name and select Report Save Options as Save Report with Current Data"
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-SAVE-002" applicationKey="REGISTER" > <!--Verify that user can save Flash Sales as a personal report and open the saved report with Parameters.	"   1. Logged-in user
+	   2. At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	   3. On Date Calendar field: Select a date 
+	   4. On Date dropdown list: Select ""Specific Date"" or ""Yesterday"" or ""Today""
+	   5. On Display By dropdown list: Select ""Summary"" or ""Employee"" or ""Department"" or ""Hour""
+	   6. On Show Chart : Select Yes or No
+	   7. On Show Criteria : Select Yes or No
+	   8. Select ""Save"" button.
+	   9. Enter report name and select Report Save Options as Save Report with Parameters"
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-SAVE-009" applicationKey="REGISTER" > <!--Verify that user can delete a saved personal report without errors.	"   1. Logged-in a user 
+	   2.At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales or Go to Hamburger > Reporting > Flash Sales.
+	   3. Select some search fields and Select ""Save"" button.
+	   4. Enter report name and select Report Save Options .
+	   5.  Go to Hamburger > Reporting > Operations Reports > Saved Reports.
+	   6. Select ... on a report name in step#4 row and select 'Delete"""
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-SAVE-010" applicationKey="REGISTER" > <!--Verify that user can't delete or view a saved flash sale report that created by another user.	"   1. Logged-in a user A
+	   2.At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales or Go to Hamburger > Reporting > Flash Sales.
+	   3. Select some search fields and Select ""Save"" button.
+	   4. Enter report name and select Report Save Options .
+	   5.  Logged-in a user B
+	   6. Go to Hamburger > Reporting > Operations Reports > Saved Reports."
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-SAVE-011" applicationKey="REGISTER" > 
+	<!--Verify that user can delete a saved store report without errors.	"   1.At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales or Go to Hamburger > Reporting > Flash Sales.
+	   2. Select some search fields and Select ""Save"" button.
+	   3. Enter report name and select Report Save Options .
+	   4.  Logged-in a user.
+	   5.  Go to Hamburger > Reporting > Operations Reports > Saved Reports
+	   6. Select ... on a report name in step#4 row and select 'Delete"""
+	REPORT-FLASHSALE-PRINT-001" applicationKey="REGISTER" > -->
+	<!--Verify that a Flash Sales Summary report is printered as designed.	"   1.At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	   3. On Date Calendar field: Select a date 
+	   4. On Date dropdown list: Select ""Specific Date"" or ""Yesterday"" or ""Today""
+	   5. On Display By dropdown list: Select ""Summary"" 
+	   6. On Show Chart : Select Yes or No
+	   7. On Show Criteria : Select Yes or No
+	   8. Select ""Print Report"" button.
+	   9. Enter report name and select Report Save Options as Save Report with Current Data"
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-PRINT-002" applicationKey="REGISTER" > <!--Verify that a Flash Sales By Employee report is printered as designed.	"   1.At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	   3. On Date Calendar field: Select a date 
+	   4. On Date dropdown list: Select ""Specific Date"" or ""Yesterday"" or ""Today""
+	   5. On Display By dropdown list: Select ""Department"" 
+	   6. On Show Chart : Select Yes or No
+	   7. On Show Criteria : Select Yes or No
+	   8. Select ""Print Report"" button.
+	   9. Enter report name and select Report Save Options as Save Report with Current Parameters"
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-PRINT-003" applicationKey="REGISTER" > <!--Verify that a Flash Sales By Department report is printered as designed.	"   1.At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	   3. On Date Calendar field: Select a date 
+	   4. On Date dropdown list: Select ""Specific Date"" or ""Yesterday"" or ""Today""
+	   5. On Display By dropdown list: Select ""Employee"" 
+	   6. On Show Chart : Select Yes or No
+	   7. On Show Criteria : Select Yes or No
+	   8. Select ""Print Report"" button.
+	   9. Enter report name and select Report Save Options as Save Report with Current Data"
+	-->
+	</TestCase>
+	<TestCase name="REPORT-FLASHSALE-PRINT-004" applicationKey="REGISTER" > <!--Verify that a Flash Sales By Hour report is printered as designed.	"   1.At main menu, select Report > Sale Report > Flash Sales or Go to Hamburger > Reporting > Sale Report > Flash Sales.
+	   3. On Date Calendar field: Select a date 
+	   4. On Date dropdown list: Select ""Specific Date"" or ""Yesterday"" or ""Today""
+	   5. On Display By dropdown list: Select ""Hour"" 
+	   6. On Show Chart : Select Yes or No
+	   7. On Show Criteria : Select Yes or No
+	   8. Select ""Print Report"" button.
+	   9. Enter report name and select Report Save Options as Save Report with Current Data"-->
+	</TestCase>
+
+</XunitConfig>

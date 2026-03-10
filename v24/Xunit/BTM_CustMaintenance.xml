@@ -1,0 +1,1046 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<Parameter name="custPartyId" value="!{rtlLocId}!{wkstnId}000101" />
+	<Parameter name="associateID" value="100" />
+	<!-- TEST CASES -->
+	
+	<!--CustMain-Lookup-001: Verify that there is no error occur when a customer lookup returns no results.
+		Pre-condition: Lookup by customer phone-->
+		
+	<TestCase name="CustMain-Lookup-001" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="9090909090" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_PHONE" values="!{teleNumber}" />
+		<SequenceRef name="CHECK_CUSTOMER_PHONE_NOT_IN_CUSTOMER_RESULT" values="!{teleNumber}"/>	
+	</TestCase>
+	
+	<!--CustMain-Lookup-002: Verify that there is no error occur when a customer lookup returns no results.
+		Pre-condition: Lookup by customer First / Last Name-->
+		
+	<TestCase name="CustMain-Lookup-002" applicationKey="REGISTER" >
+		<Parameter name="custLastName" value="TruongCute" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="SEARCH_CUSTOMER_BY_LASTNAME" values="!{custLastName}"/>
+		<SequenceRef name="CHECK_CUSTOMER_LASTNAME_NOT_IN_CUSTOMER_RESULT" values="!{custLastName}"/>
+	</TestCase>
+	
+	<!--CustMain-Lookup-003: Verify that there is no error occur when a customer lookup returns no results.
+		Pre-condition: Lookup by customer email -->
+		
+	<TestCase name="CustMain-Lookup-003" applicationKey="REGISTER" >
+		<Parameter name="checkCustId" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="custEmail" value="truong@gmail.com" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_EMAIL_NOT_EXIST" values="!{custEmail}"/>
+		<SequenceRef name="CHECK_CUSTOMER_ID_NOT_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>
+	</TestCase>
+	
+	<!--CustMain-Lookup-004: Verify that there is no error occur when a customer lookup returns no results.
+		Pre-condition: Lookup by customer address -->
+		
+	<TestCase name="CustMain-Lookup-004" applicationKey="REGISTER" >
+		<Parameter name="checkCustId" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="custEmail" value="truong@gmail.com" />
+		<Parameter name="custState" value="CA" />
+		<Parameter name="custCity" value="HCM" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ADDRESS_NOT_EXIST" values="!{custState},!{custCity}"/>
+		<SequenceRef name="CHECK_CUSTOMER_ID_NOT_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>
+	</TestCase>
+
+	<!--CustMain-Lookup-005: Verify that there is no error occur when a customer lookup returns no results.
+		Pre-condition: Lookup by customer number -->
+		
+	<TestCase name="CustMain-Lookup-005" applicationKey="REGISTER" >
+		<Parameter name="checkCustId" value="1685151485845" />
+		<Parameter name="custEmail" value="truong@gmail.com" />
+		<Parameter name="custState" value="CA" />
+		<Parameter name="custCity" value="HCM" />
+		<Parameter name="custID" value="1870299" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID_NOT_EXIST" values="!{custID}"/>
+		<SequenceRef name="CHECK_CUSTOMER_ID_NOT_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>
+	</TestCase>
+	
+	<!--CustMain-Lookup-006: Verify that there is no error occur when a customer lookup returns no results.
+		Pre-condition: Lookup by customer Postal code -->
+		
+	<TestCase name="CustMain-Lookup-006" applicationKey="REGISTER" >
+		<Parameter name="checkCustId" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="custEmail" value="truong@gmail.com" />
+		<Parameter name="custState" value="CA" />
+		<Parameter name="custCity" value="HCM" />
+		<Parameter name="custID" value="1870299" />
+		<Parameter name="custPostalCode" value="44151561" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_POSTAL_CODE_NOT_EXIST" values="!{custPostalCode}"/>
+		<SequenceRef name="CHECK_CUSTOMER_ID_NOT_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>
+	</TestCase>
+	
+	<!--CustMain-Add-002: Verify that customer details are captured while adding new.
+		Pre-condition: 
+		- Input all customer details such as name, phone, address...
+		- Do not modify the default country setting before executing the test.-->		
+	<TestCase name="CustMain-Add-002" applicationKey="REGISTER" >
+		<Parameter name="randomNo" value="@peekNextSequenceValue(NEXT_NUMBER)" />
+		<Parameter name="teleNumber" value="0906767552" />
+		<Parameter name="firstName" value="Truong" />
+		<Parameter name="lastName" value="Nguyen" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="Test" />
+		<Parameter name="organizationTypeCode" value="CPM" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="HCM" />
+		<Parameter name="city" value="Dallas" />
+		<Parameter name="postalCode" value="75040" />
+		<Parameter name="state" value="" />
+		<Parameter name="email1" value="btm.test@btmglobal.com" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_IN_DETAILS" values="!{firstName},!{lastName},!{gender},!{organizationName},!{organizationTypeCode},!{birthDate},!{address1},!{city},!{postalCode},!{state},!{teleNumber},!{email1}"/>
+		<SequenceRef name="CANCEL_SALE_TRANSACTION_WITHOUT_ITEM" />
+		<SequenceRef name="SELECT_BTN_YES" />
+		<SequenceRef name="SELECT_BACK_COMM_ASSOC" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN" />		
+		<SequenceRef name="CUSTOMER_SEARCH_BY_PHONE_AND_CUST_NAME" values="!{teleNumber}, !{firstName}, !{lastName}"/>
+		<Assertion promptKey="CUSTOMER_MAINTENANCE" /> <!--This action to check customer detail display-->
+	</TestCase>
+	
+	<!--CustMain-Add-003: Verify that customer details are captured while adding new.
+		Pre-condition: 
+		-Input customer name, phone
+		-Do not modify the default country setting before executing the test.-->		
+	<TestCase name="CustMain-Add-003" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="1234567890" />
+		<Parameter name="firstName" value="Truong" />
+		<Parameter name="lastName" value="Nguyen" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="" />
+		<Parameter name="email1" value="" />
+		<Parameter name="email2" value="" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER" values="!{teleNumber},!{firstName},!{lastName}, !{gender}, !{organizationName}, !{organizationTypeCode}
+		, !{birthDate}, !{address1}, !{city}, !{postalCode}, !{state}, !{phoneNumber1}, !{email1},!{email2}"/>
+	</TestCase>
+	
+	<!--CustMain-Add-004: Verify that customer details are captured while adding new.
+		Pre-condition: 
+		-Input customer last name, phone, address
+		-Do not modify the default country setting before executing the test.-->		
+	<TestCase name="CustMain-Add-004" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="1234567890" />
+		<Parameter name="firstName" value="" />
+		<Parameter name="lastName" value="Nguyen" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="" />
+		<Parameter name="email1" value="" />
+		<Parameter name="email2" value="" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER" values="!{teleNumber},!{firstName},!{lastName}, !{gender}, !{organizationName}, !{organizationTypeCode}
+		, !{birthDate}, !{address1}, !{city}, !{postalCode}, !{state}, !{phoneNumber1}, !{email1},!{email2}"/>
+	</TestCase>
+	
+	<!--CustMain-Add-005: Verify that customer details are captured while adding new.
+		Pre-condition: 
+		-Input customer last name, phone, email
+		-Do not modify the default country setting before executing the test.-->		
+	<TestCase name="CustMain-Add-005" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="1234567890" />
+		<Parameter name="firstName" value="" />
+		<Parameter name="lastName" value="Nguyen" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="" />
+		<Parameter name="email1" value="truongcutehehe@gmail.com" />
+		<Parameter name="email2" value="" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER" values="!{teleNumber},!{firstName},!{lastName}, !{gender}, !{organizationName}, !{organizationTypeCode}
+		, !{birthDate}, !{address1}, !{city}, !{postalCode}, !{state}, !{phoneNumber1}, !{email1},!{email2}"/>
+	</TestCase>
+	
+	<!--CustMain-Add-006: Verify that customer details are captured while adding new.
+		Pre-condition: 
+		- Input customer last name
+		- Input multiple customer phone
+		- Do not modify the default country setting before executing the test.-->		
+	<TestCase name="CustMain-Add-006" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="1234567890" />
+		<Parameter name="firstName" value="" />
+		<Parameter name="lastName" value="Nguyen" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="0987654321" />
+		<Parameter name="email1" value="truongcutehehe@gmail.com" />
+		<Parameter name="email2" value="" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER" values="!{teleNumber},!{firstName},!{lastName}, !{gender}, !{organizationName}, !{organizationTypeCode}
+		, !{birthDate}, !{address1}, !{city}, !{postalCode}, !{state}, !{phoneNumber1}, !{email1},!{email2}"/>
+	</TestCase>
+	
+	<!--CustMain-Add-007: Verify that customer details are captured while adding new.
+		Pre-condition: 
+		- Input customer last name, phone
+		- Input multiple customer email
+		- Do not modify the default country setting before executing the test.-->		
+	<TestCase name="CustMain-Add-007" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="1234567890" />
+		<Parameter name="firstName" value="" />
+		<Parameter name="lastName" value="Nguyen" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="" />
+		<Parameter name="email1" value="truongcutehehe@gmail.com" />
+		<Parameter name="email2" value="truongnguyen@gmail.com" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER" values="!{teleNumber},!{firstName},!{lastName}, !{gender}, !{organizationName}, !{organizationTypeCode}
+		, !{birthDate}, !{address1}, !{city}, !{postalCode}, !{state}, !{phoneNumber1}, !{email1}, !{email2}"/>
+	</TestCase>
+	
+	<!--CustMain-Add-008: Verify that customer details are captured while adding new.
+		Pre-condition: 
+		- Input customer last name, phone
+		- Input customer birthday, company
+		- Do not modify the default country setting before executing the test.-->		
+	<TestCase name="CustMain-Add-008" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="1234567890" />
+		<Parameter name="firstName" value="" />
+		<Parameter name="lastName" value="Nguyen" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="Test" />
+		<Parameter name="organizationTypeCode" value="Company" />
+		<Parameter name="birthDate" value="1999-01-01 00:00:00.0" />
+		<Parameter name="address1" value="" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="" />
+		<Parameter name="email1" value="truongcutehehe@gmail.com" />
+		<Parameter name="email2" value="" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER" values="!{teleNumber},!{firstName},!{lastName}, !{gender}, !{organizationName}, !{organizationTypeCode}
+		, !{birthDate}, !{address1}, !{city}, !{postalCode}, !{state}, !{phoneNumber1}, !{email1},!{email2}"/>
+	</TestCase>
+	
+	<!--CustMain-Add-009: Verify that an error is triggered when attempting to add a new customer without providing values for required fields
+		Pre-condition: 
+		- Change the default country setting before executing the test-->		
+	<TestCase name="CustMain-Add-009" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="1234567890" />
+		<Parameter name="firstName" value="" />
+		<Parameter name="lastName" value="" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="" />
+		<Parameter name="email1" value="" />
+		<Parameter name="email2" value="" />
+		<Parameter name="countryId" value="CA" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<!--<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber},!{lastName}"/>
+		<SequenceRef name="CHANGE_COUNTRY" values="!{countryId}"/>-->
+		<SequenceRef name="CREATE_NEW_CUSTOMER_CHANGE_COUNTRY" values="!{countryId},!{teleNumber},!{firstName},!{lastName}, !{gender}, !{organizationName}, !{organizationTypeCode}
+		, !{birthDate}, !{address1}, !{city}, !{postalCode}, !{state}, !{phoneNumber1}, !{email1},!{email2}"/>
+	</TestCase>
+	
+	<!--CustMain-Add-010: Verify that customer details are captured while adding new
+		Pre-condition: 
+		- Input all customer details such as name, phone, address...
+		- Change the default country setting before executing the test-->		
+	<TestCase name="CustMain-Add-010" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="1234567890" />
+		<Parameter name="firstName" value="Truong" />
+		<Parameter name="lastName" value="Nguyen" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="BTM Global" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="" />
+		<Parameter name="email1" value="" />
+		<Parameter name="email2" value="" />
+		<Parameter name="countryId" value="CA" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_CHANGE_COUNTRY" values="!{countryId},!{teleNumber},!{firstName},!{lastName}, !{gender}, !{organizationName}, !{organizationTypeCode}
+		, !{birthDate}, !{address1}, !{city}, !{postalCode}, !{state}, !{phoneNumber1}, !{email1},!{email2}"/>
+	</TestCase>
+	
+	<!--CustMain-Add-011: Verify that customer details are captured while adding new
+		Pre-condition: 
+		- Input customer name, phone
+		- Change the default country setting before executing the test-->		
+	<TestCase name="CustMain-Add-011" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="1234567890" />
+		<Parameter name="firstName" value="Truong" />
+		<Parameter name="lastName" value="Nguyen" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="" />
+		<Parameter name="email1" value="" />
+		<Parameter name="email2" value="" />
+		<Parameter name="countryId" value="CA" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_CHANGE_COUNTRY" values="!{countryId},!{teleNumber},!{firstName},!{lastName}, !{gender}, !{organizationName}, !{organizationTypeCode}
+		, !{birthDate}, !{address1}, !{city}, !{postalCode}, !{state}, !{phoneNumber1}, !{email1},!{email2}"/>
+	</TestCase>
+	
+	<!--CustMain-Add-012: Verify that customer details are captured while adding new
+		Pre-condition: 
+		- Input customer last name, phone, address
+		- Change the default country setting before executing the test-->		
+	<TestCase name="CustMain-Add-012" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="1234567890" />
+		<Parameter name="firstName" value="" />
+		<Parameter name="lastName" value="Nguyen" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="Helios Building" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="" />
+		<Parameter name="email1" value="" />
+		<Parameter name="email2" value="" />
+		<Parameter name="countryId" value="CA" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_CHANGE_COUNTRY" values="!{countryId},!{teleNumber},!{firstName},!{lastName}, !{gender}, !{organizationName}, !{organizationTypeCode}
+		, !{birthDate}, !{address1}, !{city}, !{postalCode}, !{state}, !{phoneNumber1}, !{email1},!{email2}"/>
+	</TestCase>
+	
+	<!--CustMain-Add-013: Verify that customer details are captured while adding new
+		Pre-condition: 
+		- Input customer last name, phone, email
+		- Change the default country setting before executing the test-->		
+	<TestCase name="CustMain-Add-013" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="1234567890" />
+		<Parameter name="firstName" value="" />
+		<Parameter name="lastName" value="Nguyen" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="" />
+		<Parameter name="email1" value="truongcutehehe@gmail.com" />
+		<Parameter name="email2" value="" />
+		<Parameter name="countryId" value="CA" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_CHANGE_COUNTRY" values="!{countryId},!{teleNumber},!{firstName},!{lastName}, !{gender}, !{organizationName}, !{organizationTypeCode}
+		, !{birthDate}, !{address1}, !{city}, !{postalCode}, !{state}, !{phoneNumber1}, !{email1},!{email2}"/>
+	</TestCase>
+	
+	<!--CustMain-Add-014: Verify that customer details are captured while adding new
+		Pre-condition: 
+		- Input customer last name
+		- Input multiple customer phone
+		- Change the default country setting before executing the test-->		
+	<TestCase name="CustMain-Add-014" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="1234567890" />
+		<Parameter name="firstName" value="" />
+		<Parameter name="lastName" value="Nguyen" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="6325485214" />
+		<Parameter name="email1" value="" />
+		<Parameter name="email2" value="" />
+		<Parameter name="countryId" value="CA" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_CHANGE_COUNTRY" values="!{countryId},!{teleNumber},!{firstName},!{lastName}, !{gender}, !{organizationName}, !{organizationTypeCode}
+		, !{birthDate}, !{address1}, !{city}, !{postalCode}, !{state}, !{phoneNumber1}, !{email1},!{email2}"/>
+	</TestCase>
+	
+	<!--CustMain-Add-015: Verify that customer details are captured while adding new
+		Pre-condition: 
+		- Input customer last name
+		- Input multiple customer email
+		- Change the default country setting before executing the test-->		
+	<TestCase name="CustMain-Add-015" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="1234567890" />
+		<Parameter name="firstName" value="" />
+		<Parameter name="lastName" value="Nguyen" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="" />
+		<Parameter name="email1" value="truongcutehehe12@gmail.com" />
+		<Parameter name="email2" value="truongcutehehe34@gmail.com" />
+		<Parameter name="countryId" value="CA" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_CHANGE_COUNTRY" values="!{countryId},!{teleNumber},!{firstName},!{lastName}, !{gender}, !{organizationName}, !{organizationTypeCode}
+		, !{birthDate}, !{address1}, !{city}, !{postalCode}, !{state}, !{phoneNumber1}, !{email1},!{email2}"/>
+	</TestCase>
+	
+	<!--CustMain-Add-016: Verify that customer details are captured while adding new
+		Pre-condition: 
+		- Input customer last name
+		- Input customer birthday, company
+		- Change the default country setting before executing the test-->		
+	<TestCase name="CustMain-Add-016" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="1234567890" />
+		<Parameter name="firstName" value="" />
+		<Parameter name="lastName" value="Nguyen" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="Test" />
+		<Parameter name="organizationTypeCode" value="Company" />
+		<Parameter name="birthDate" value="1999-01-01 00:00:00.0" />
+		<Parameter name="address1" value="" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="" />
+		<Parameter name="email1" value="" />
+		<Parameter name="email2" value="" />
+		<Parameter name="countryId" value="CA" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="!{associateID}" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_CHANGE_COUNTRY" values="!{countryId},!{teleNumber},!{firstName},!{lastName}, !{gender}, !{organizationName}, !{organizationTypeCode}
+		, !{birthDate}, !{address1}, !{city}, !{postalCode}, !{state}, !{phoneNumber1}, !{email1},!{email2}"/>
+	</TestCase>
+	
+	<!--Customer Mainteance - CustMain-Lookup-001:
+	Verify that there is no error  occur when a customer lookup returns no results.
+	Pre-condition: Lookup by customer phone -->	
+	<!--<TestCase name="CustMain-Lookup-001" applicationKey="REGISTER" >
+		<Parameter name="checkCustId" value="C01010001000014" />
+		<Parameter name="teleNumber" value="0000011" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CHECK_CUSTOMER_PHONE_NOT_IN_CUSTOMER_RESULT" values="!{teleNumber}"/>
+		<SequenceRef name="CHECK_CUSTOMER_ID_NOT_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>
+    </TestCase>-->
+	<!--Customer Mainteance - CustMain-Lookup-002:
+	Verify that there is no error  occur when a customer lookup returns no results.
+	Pre-condition: Lookup by customer First / Last Name-->
+	<!--<TestCase name="CustMain-Lookup-002" applicationKey="REGISTER" >
+		<Parameter name="checkCustId" values="C01010001000014" />
+		<Parameter name="custLastName" values="ThinDDDDD" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_LASTNAME_NOT_EXIST" values="!{custLastName}"/>
+		<SequenceRef name="CHECK_CUSTOMER_ID_NOT_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>
+    </TestCase>-->
+	<!--Customer Mainteance - CustMain-Lookup-003:
+	Verify that there is no error  occur when a customer lookup returns no results.
+	Pre-condition: Lookup by customer email-->
+	<!--<TestCase name="CustMain-Lookup-003" applicationKey="REGISTER" >
+		<Parameter name="checkCustId" values="C01010001000014" />
+		<Parameter name="custEmail" values="thinhdtest@gmail.com" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_EMAIL_NOT_EXIST" values="!{custEmail}"/>
+		<SequenceRef name="CHECK_CUSTOMER_ID_NOT_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>
+    </TestCase>-->
+	<!--Customer Mainteance - CustMain-Lookup-004:
+	Verify that there is no error  occur when a customer lookup returns no results.
+	Pre-condition: Lookup by customer address-->
+	<!--<TestCase name="CustMain-Lookup-004" applicationKey="REGISTER" >
+		<Parameter name="checkCustId" values="C01010001000014" />
+		<Parameter name="custState" values="AK" />
+		<Parameter name="custCity" values="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ADDRESS_NOT_EXIST" values="!{custState},!{custCity}"/>
+		<SequenceRef name="CHECK_CUSTOMER_ID_NOT_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>
+    </TestCase>-->
+	<!--Customer Mainteance - CustMain-Lookup-005:
+	Verify that there is no error  occur when a customer lookup returns no results.
+	Pre-condition: Lookup by customer id-->
+	<!--<TestCase name="CustMain-Lookup-005" applicationKey="REGISTER" >
+		<Parameter name="checkCustId" values="C01010001000014" />
+		<Parameter name="custID1" values="888888" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID_NOT_EXIST" values="!{custID1}"/>
+		<SequenceRef name="CHECK_CUSTOMER_ID_NOT_IN_CUSTOMER_RESULT" values="!{CheckcustId}"/>
+    </TestCase>-->
+	<!--Customer Mainteance - CustMain-Lookup-006:
+	Verify that there is no error occur when a customer lookup returns no results.
+	Pre-condition: Lookup by customer Postal code-->
+	<!--<TestCase name="CustMain-Lookup-006" applicationKey="REGISTER" >
+		<Parameter name="checkCustId" values="C01010001000014" />
+		<Parameter name="custPostalCode" values="1234567" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_POSTAL_CODE_NOT_EXIST" values="!{custPostalCode}"/>
+		<SequenceRef name="CHECK_CUSTOMER_ID_NOT_IN_CUSTOMER_RESULT" values="!{CheckcustId}"/>
+    </TestCase>-->
+	<!--Customer Mainteance - CustMain-Lookup-007:
+	Verify that there is no error  occur when a customer lookup returns a result.
+	Pre-condition: Lookup by customer phone
+	- Xstore displays a notification indicating that the customer was found.
+	- The customer is listed in the search results.
+	- The user can view the customer's details correctly.
+	- Customer details are populated accurately.
+	- No errors are encountered during the process.-->
+	<TestCase name="CustMain-Lookup-007" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="096767526" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_PHONE" values="!{teleNumber}"/>
+		<!--<SequenceRef name="CHECK_CUSTOMER_ID_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>-->
+		<Assertion promptKey="CUSTOMER_MAINTENANCE" /> <!--This action to check customer detail display-->
+    </TestCase>
+	<!--Customer Mainteance - CustMain-Lookup-008:
+	Verify that there is no error  occur when a customer lookup returns a result.
+	Pre-condition: Lookup by customer First / Last Name
+	- Xstore displays a notification indicating that the customer was found.
+	- The customer is listed in the search results.
+	- The user can view the customer's details correctly.
+	- Customer details are populated accurately.
+	- No errors are encountered during the process.-->
+	<TestCase name="CustMain-Lookup-008" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<!--<SequenceRef name="CHECK_CUSTOMER_ID_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>-->
+		<Assertion promptKey="CUSTOMER_MAINTENANCE" /> <!--This action to check customer detail display-->
+    </TestCase>
+	<!--Customer Mainteance - CustMain-Lookup-009:
+	Verify that there is no error  occur when a customer lookup returns a result.
+	Pre-condition: Lookup by customer email
+	- Xstore displays a notification indicating that the customer was found.
+	- The customer is listed in the search results.
+	- The user can view the customer's details correctly.
+	- Customer details are populated accurately.
+	- No errors are encountered during the process.-->
+	<TestCase name="CustMain-Lookup-009" applicationKey="REGISTER" >
+		<Parameter name="custEmail" values="btm.btm@btmglobal.com" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_EMAIL" values="!{custEmail}"/>
+		<!--<SequenceRef name="CHECK_CUSTOMER_ID_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>-->
+		<Assertion promptKey="CUSTOMER_MAINTENANCE" /> <!--This action to check customer detail display-->
+    </TestCase>
+	<!--Customer Mainteance - CustMain-Lookup-010:
+	Verify that there is no error  occur when a customer lookup returns a result.
+	Pre-condition: Lookup by customer address
+	- Xstore displays a notification indicating that the customer was found.
+	- The customer is listed in the search results.
+	- The user can view the customer's details correctly.
+	- Customer details are populated accurately.
+	- No errors are encountered during the process.-->
+	<TestCase name="CustMain-Lookup-010" applicationKey="REGISTER" >
+		<Parameter name="custPostalCode" values="12345" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="SEARCH_CUSTOMER_BY_POSTALCODE" values="!{custPostalCode}"/>
+    </TestCase>
+	<!--Customer Mainteance - CustMain-Lookup-011:
+	Verify that there is no error  occur when a customer lookup returns a result.
+	Pre-condition: Lookup by customer address
+	- Xstore displays a notification indicating that the customer was found.
+	- The customer is listed in the search results.
+	- The user can view the customer's details correctly.
+	- Customer details are populated accurately.
+	- No errors are encountered during the process.-->
+	<TestCase name="CustMain-Lookup-011" applicationKey="REGISTER" >
+		<Parameter name="custID" value="1" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<!--<SequenceRef name="CHECK_CUSTOMER_ID_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>-->
+		<Assertion promptKey="CUSTOMER_MAINTENANCE" /> <!--This action to check customer detail display-->
+    </TestCase>
+	<!--Customer Mainteance - CustMain-Lookup-012:
+	Verify that there is no error  occur when a customer lookup returns a result.
+	Pre-condition: Lookup by customer Postal code
+	- Xstore displays a notification indicating that the customer was found.
+	- The customer is listed in the search results.
+	- The user can view the customer's details correctly.
+	- Customer details are populated accurately.
+	- No errors are encountered during the process.-->
+	<TestCase name="CustMain-Lookup-012" applicationKey="REGISTER" >
+		<Parameter name="custPostalCode" value="12345" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_POSTAL_CODE" values="!{custPostalCode}"/>
+		<!--<SequenceRef name="CHECK_CUSTOMER_ID_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>-->
+		<Assertion promptKey="CUSTOMER_MAINTENANCE" /> <!--This action to check customer detail display-->
+    </TestCase>
+	<!--Customer Mainteance - CustMain-Lookup-013:
+	Verify that there is no error  occur when a customer lookup returns a customer list.
+	Pre-condition: Lookup by customer phone
+	- Xstore displays a notification indicating that the customer was found.
+	- The customer is listed in the search results.
+	- The user can view the customer's details correctly.
+	- Customer details are populated accurately.
+	- No errors are encountered during the process.-->
+	<TestCase name="CustMain-Lookup-013" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="096767526" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_PHONE" values="!{teleNumber}"/>
+		<!--<SequenceRef name="CHECK_CUSTOMER_ID_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>-->
+		<Assertion promptKey="CUSTOMER_MAINTENANCE" /> <!--This action to check customer detail display-->
+    </TestCase>
+	<!--Customer Mainteance - CustMain-Lookup-014:
+	Verify that there is no error  occur when a customer lookup returns a customer list.
+	Pre-condition: Lookup by customer First / Last Name
+	- Xstore displays a notification indicating that the customer was found.
+	- The customer is listed in the search results.
+	- The user can view the customer's details correctly.
+	- Customer details are populated accurately.
+	- No errors are encountered during the process.-->
+	<TestCase name="CustMain-Lookup-014" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<!--<SequenceRef name="CHECK_CUSTOMER_ID_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>-->
+		<Assertion promptKey="CUSTOMER_MAINTENANCE" /> <!--This action to check customer detail display-->
+    </TestCase>
+	<!--Customer Mainteance - CustMain-Lookup-015:
+	Verify that there is no error  occur when a customer lookup returns a customer list.
+	Pre-condition: Lookup by customer email
+	- Xstore displays a notification indicating that the customer was found.
+	- The customer is listed in the search results.
+	- The user can view the customer's details correctly.
+	- Customer details are populated accurately.
+	- No errors are encountered during the process.-->
+	<TestCase name="CustMain-Lookup-015" applicationKey="REGISTER" >
+		<Parameter name="custEmail" value="btm.btm@btmglobal.com" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_EMAIL" values="!{custEmail}"/>
+		<!--<SequenceRef name="CHECK_CUSTOMER_ID_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>-->
+		<Assertion promptKey="CUSTOMER_MAINTENANCE" /> <!--This action to check customer detail display-->
+    </TestCase>
+	<!--Customer Mainteance - CustMain-Lookup-016:
+	Verify that there is no error  occur when a customer lookup returns a customer list.
+	Pre-condition: Lookup by customer address
+	- Xstore displays a notification indicating that the customer was found.
+	- The customer is listed in the search results.
+	- The user can view the customer's details correctly.
+	- Customer details are populated accurately.
+	- No errors are encountered during the process.-->
+	<TestCase name="CustMain-Lookup-016" applicationKey="REGISTER" >
+		<Parameter name="custState" value="NY" />
+		<Parameter name="custCity" value="Schenectady" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ADDRESS" values="!{custState},!{custCity}"/>
+	<!--<SequenceRef name="CHECK_CUSTOMER_ID_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>-->
+    </TestCase>
+
+	<!--Customer Mainteance - CustMain-Lookup-017:
+	Verify that there is no error  occur when a customer lookup returns a customer list.
+	Pre-condition: Lookup by customer Postal code
+	- Xstore displays a notification indicating that the customer was found.
+	- The customer is listed in the search results.
+	- The user can view the customer's details correctly.
+	- Customer details are populated accurately.
+	- No errors are encountered during the process.-->
+	<TestCase name="CustMain-Lookup-017" applicationKey="REGISTER" >
+		<Parameter name="custPostalCode" value="12345" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_POSTAL_CODE" values="!{custPostalCode}"/>
+		<!--<SequenceRef name="CHECK_CUSTOMER_ID_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>-->
+		<Assertion promptKey="CUSTOMER_MAINTENANCE" /> <!--This action to check customer detail display-->
+    </TestCase>
+
+	<!--Customer Mainteance - CustMain-Lookup-018:
+	Verify that there is no error  occur when a customer lookup returns a customer list.
+	Pre-condition: Lookup by customer Postal code and customer name
+	- Xstore displays a notification indicating that the customer was found.
+	- The customer is listed in the search results.
+	- The user can view the customer's details correctly.
+	- Customer details are populated accurately.
+	- No errors are encountered during the process.-->
+	<TestCase name="CustMain-Lookup-018" applicationKey="REGISTER" >
+		<Parameter name="custPostalCode" value="12345" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_POSTAL_CODE_AND_CUST_NAME" values="!{custPostalCode}, !{custFirstName}, !{custLastName}"/>
+		<!--<SequenceRef name="CHECK_CUSTOMER_ID_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>-->
+		<Assertion promptKey="CUSTOMER_MAINTENANCE" /> <!--This action to check customer detail display-->
+    </TestCase>
+	<!--Customer Mainteance - CustMain-Lookup-019:
+	Verify that there is no error  occur when a customer lookup returns a customer list.
+	Pre-condition: Lookup by customer phone and customer name
+	- Xstore displays a notification indicating that the customer was found.
+	- The customer is listed in the search results.
+	- The user can view the customer's details correctly.
+	- Customer details are populated accurately.
+	- No errors are encountered during the process.-->
+	<TestCase name="CustMain-Lookup-019" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="096767526" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_PHONE_AND_CUST_NAME" values="!{teleNumber}, !{custFirstName}, !{custLastName}"/>
+		<!--<SequenceRef name="CHECK_CUSTOMER_ID_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>-->
+		<Assertion promptKey="CUSTOMER_MAINTENANCE" /> <!--This action to check customer detail display-->
+    </TestCase>
+	<!--Customer Mainteance - CustMain-Lookup-020:
+	Verify that there is no error  occur when a customer lookup returns a customer list.
+	Pre-condition: Lookup by customer email and customer name
+	- Xstore displays a notification indicating that the customer was found.
+	- The customer is listed in the search results.
+	- The user can view the customer's details correctly.
+	- Customer details are populated accurately.
+	- No errors are encountered during the process.-->
+	<TestCase name="CustMain-Lookup-020" applicationKey="REGISTER" >
+		<Parameter name="custEmail" value="btm.btm@btmglobal.com" />
+		<Parameter name="custFirstName" value="BTM" />
+		<Parameter name="custLastName" value="BTM" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_EMAIL_AND_CUST_NAME" values="!{custEmail}, !{custFirstName}, !{custLastName}"/>
+		<!--<SequenceRef name="CHECK_CUSTOMER_ID_IN_CUSTOMER_RESULT" values="!{checkCustId}"/>-->
+		<Assertion promptKey="CUSTOMER_MAINTENANCE" /> <!--This action to check customer detail display-->
+    </TestCase>
+
+	<!--Customer Mainteance - CustMain-Add-001:
+	Verify that an error is triggered when attempting to add a new customer without providing values for required fields
+	- Pre-condition: Do not modify the default country setting before executing the test.-->
+	<TestCase name="CustMain-Add-001" applicationKey="REGISTER" >
+		<Parameter name="teleNumber" value="0906767522" />
+		<Parameter name="lastName" value="Test" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CREATE_NEW_CUSTOMER_WITH_PHONE" values="!{teleNumber}, !{lastName}"/>
+    </TestCase>
+
+	<!--Customer Mainteance - CustMain-Edit-002:
+	Verify that an error is triggered when attempting to add a new customer without providing values for required fields
+	- Pre-condition: Do not modify the default country setting before executing the test.-->
+	<TestCase name="CustMain-Edit-002" applicationKey="REGISTER" >
+		<Parameter name="custID" value="1" />
+		<Parameter name="firstName" value="Test" />
+		<Parameter name="lastName" value="Auto" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="" />
+		<Parameter name="city" value="HCM" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="AK" />
+		<Parameter name="phoneNumber1" value="123456789" />
+		<Parameter name="email1" value="" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="EDIT_CUSTOMER_DASHBOARD" values="!{firstName},!{lastName},!{gender},!{organizationName},!{organizationTypeCode},!{birthDate},
+		!{address1},!{city},!{postalCode},!{state},!{phoneNumber1},!{email1}"/>
+    </TestCase>
+	<!--Customer Mainteance - CustMain-Edit-003:
+	Verify that an error is triggered when attempting to add a new customer without providing values for required fields
+	- Pre-condition: Do not modify the default country setting before executing the test.-->
+	<TestCase name="CustMain-Edit-003" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="firstName" value="Test" />
+		<Parameter name="lastName" value="Auto 2" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="1111111" />
+		<Parameter name="email1" value="" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="EDIT_CUSTOMER_DASHBOARD" values="!{firstName},!{lastName},!{gender},!{organizationName},!{organizationTypeCode},!{birthDate},
+		!{address1},!{city},!{postalCode},!{state},!{phoneNumber1},!{email1}"/>
+    </TestCase>
+	<!--Customer Mainteance - CustMain-Edit-004:
+	Verify that an error is triggered when attempting to add a new customer without providing values for required fields
+	- Pre-condition: Do not modify the default country setting before executing the test.-->
+	<TestCase name="CustMain-Edit-004" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="firstName" value="" />
+		<Parameter name="lastName" value="Auto 3" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="Testing address" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="11111112222" />
+		<Parameter name="email1" value="" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="EDIT_CUSTOMER_DASHBOARD" values="!{firstName},!{lastName},!{gender},!{organizationName},!{organizationTypeCode},!{birthDate},
+		!{address1},!{city},!{postalCode},!{state},!{phoneNumber1},!{email1}"/>
+    </TestCase>
+	<!--Customer Mainteance - CustMain-Edit-005:
+	Verify that an error is triggered when attempting to add a new customer without providing values for required fields
+	- Pre-condition: Do not modify the default country setting before executing the test.-->
+	<TestCase name="CustMain-Edit-005" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="firstName" value="" />
+		<Parameter name="lastName" value="Auto 345" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="Testing address" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="11113333" />
+		<Parameter name="email1" value="test@gmail.com" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="EDIT_CUSTOMER_DASHBOARD" values="!{firstName},!{lastName},!{gender},!{organizationName},!{organizationTypeCode},!{birthDate},
+		!{address1},!{city},!{postalCode},!{state},!{phoneNumber1},!{email1}"/>
+    </TestCase>
+	<!--Customer Mainteance - CustMain-Edit-006:
+	Verify that an error is triggered when attempting to add a new customer without providing values for required fields
+	- Pre-condition: Do not modify the default country setting before executing the test.-->
+	<TestCase name="CustMain-Edit-006" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="firstName" value="" />
+		<Parameter name="lastName" value="Auto 13212" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="111134344" />
+		<Parameter name="email1" value="" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="EDIT_CUSTOMER_DASHBOARD" values="!{firstName},!{lastName},!{gender},!{organizationName},!{organizationTypeCode},!{birthDate},
+		!{address1},!{city},!{postalCode},!{state},!{phoneNumber1},!{email1}"/>
+    </TestCase>
+	<!--Customer Mainteance - CustMain-Edit-007:
+	Verify that an error is triggered when attempting to add a new customer without providing values for required fields
+	- Pre-condition: Do not modify the default country setting before executing the test.-->
+	<TestCase name="CustMain-Edit-007" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="firstName" value="" />
+		<Parameter name="lastName" value="Auto 1321234" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="" />
+		<Parameter name="email1" value="test1234@gmail.com" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="EDIT_CUSTOMER_DASHBOARD" values="!{firstName},!{lastName},!{gender},!{organizationName},!{organizationTypeCode},!{birthDate},
+		!{address1},!{city},!{postalCode},!{state},!{phoneNumber1},!{email1}"/>
+    </TestCase>
+	<!--Customer Mainteance - CustMain-Edit-008:
+	Verify that an error is triggered when attempting to add a new customer without providing values for required fields
+	- Pre-condition: Do not modify the default country setting before executing the test.-->
+	<TestCase name="CustMain-Edit-008" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="firstName" value="" />
+		<Parameter name="lastName" value="Test 123" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="Test" />
+		<Parameter name="organizationTypeCode" value="Company" />
+		<Parameter name="birthDate" value="2001-01-15 00:00:00.0" />
+		<Parameter name="address1" value="" />
+		<Parameter name="city" value="" />
+		<Parameter name="postalCode" value="" />
+		<Parameter name="state" value="" />
+		<Parameter name="phoneNumber1" value="" />
+		<Parameter name="email1" value="" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="EDIT_CUSTOMER_DASHBOARD" values="!{firstName},!{lastName},!{gender},!{organizationName},!{organizationTypeCode},!{birthDate},
+		!{address1},!{city},!{postalCode},!{state},!{phoneNumber1},!{email1}"/>
+    </TestCase>
+	<!--Customer Mainteance - CustMain-Edit-009:
+	Verify that an error is triggered when attempting to add a new customer without providing values for required fields
+	- Pre-condition: Do not modify the default country setting before executing the test.-->
+	<TestCase name="CustMain-Edit-009" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="firstName" value="" />
+		<Parameter name="lastName" value="Test 123" />
+		<Parameter name="gender" value="" />
+		<Parameter name="organizationName" value="" />
+		<Parameter name="organizationTypeCode" value="" />
+		<Parameter name="birthDate" value="" />
+		<Parameter name="address1" value="Test automation Xunit" />
+		<Parameter name="city" value="HCM" />
+		<Parameter name="postalCode" value="44123" />
+		<Parameter name="state" value="AK" />
+		<Parameter name="phoneNumber1" value="" />
+		<Parameter name="email1" value="" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="EDIT_CUSTOMER_DASHBOARD" values="!{firstName},!{lastName},!{gender},!{organizationName},!{organizationTypeCode},!{birthDate},
+		!{address1},!{city},!{postalCode},!{state},!{phoneNumber1},!{email1}"/>
+    </TestCase>
+
+	<!--Customer Mainteance - CustMain-HA-Cre-001:
+	Verify that the customer house account is created susscessfully
+	Pre-condition: Customer do not have house account yet-->
+	<!--<TestCase name="CustMain-HA-Cre-001" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="houseAccountAmount" value="1200" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="CREATE_HOUSE_ACCOUNT" values="!{houseAccountAmount}"/>
+    </TestCase>-->
+
+	<!--Customer Mainteance - CustMain-HA-Cre-002:
+	Verify that the customer house account is editted susscessfully
+	Pre-condition: Update the account credit limit-->
+	<!--<TestCase name="CustMain-HA-Cre-002" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="updateCredit" value="2000" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="UPDATE_HOUSE_ACCOUNT_CREDIT" values="!{updateCredit}"/>
+    </TestCase>-->
+
+	<!--Customer Mainteance - CustMain-HA-Cre-003:
+	Verify that the customer house account is editted susscessfully
+	Pre-condition: Update the account credit limit-->
+	<!--<TestCase name="CustMain-HA-Cre-003" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="UPDATE_HOUSE_ACCOUNT_STATUS" />
+    </TestCase>-->
+	<!--Customer Mainteance - CustMain-HA-Cre-004:
+	Verify that the customer house account is editted susscessfully
+	Pre-condition: Update the account credit limit-->
+	<!--<TestCase name="CustMain-HA-Cre-004" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="UPDATE_HOUSE_ACCOUNT_STATUS" values="!{updateLastNameBuyer}" />
+    </TestCase>-->
+	<!--Customer Mainteance - CustMain-HA-Cre-005:
+	Verify that the customer house account is editted susscessfully
+	Pre-condition: Update the account credit limit-->
+	<!--<TestCase name="CustMain-HA-Cre-005" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="addLastName" value="Test" />
+		<Parameter name="addFirstName" value="Xunit" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="ADD_HOUSE_ACCOUNT_BUYER" values="!{addLastName}, !{addFirstName}" />
+    </TestCase>-->
+	<!--Customer Mainteance - CustMain-HA-Cre-006:
+	Verify that the customer house account is editted susscessfully
+	Pre-condition: Update the account credit limit-->
+	<!--<TestCase name="CustMain-HA-Cre-005" applicationKey="REGISTER" >
+		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
+		<Parameter name="addLastName1" value="Test" />
+		<Parameter name="addFirstName1" value="Xunit" />
+		<Parameter name="addLastName2" value="Test" />
+		<Parameter name="addFirstName2" value="Xunit 2" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="CUSTOMER_MAINTENANCE_LOGGED_IN"/>
+		<SequenceRef name="CUSTOMER_SEARCH_BY_ID" values="!{custID}"/>
+		<SequenceRef name="ADD_HOUSE_ACCOUNT_BUYER" values="!{addLastName1}, !{addFirstName1}" />
+		<SequenceRef name="ADD_HOUSE_ACCOUNT_BUYER" values="!{addLastName2}, !{addFirstName2}" />
+    </TestCase>-->
+</XunitConfig>

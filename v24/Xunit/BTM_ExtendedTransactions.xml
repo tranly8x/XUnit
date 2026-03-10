@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<!-- TEST CASES -->
+	<!--Extended Transactions-->	
+    <TestCase name="EXTENDTRN-SS-ITM-001" applicationKey="REGISTER" >
+		<Parameter name="witemId" value="%?WARRANTY_ITEMS_FILE.ItemId" />
+		<!--<Parameter name="warrantyId" value="%?WARRANTY_ITEMS_FILE.WarrantyId" />-->
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />
+		<SequenceRef name="LAYAWAY" />
+		<SequenceRef name="SELECT_BTN_NEW_LAYWAY" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_FULLNAME" values="BTM, Thoi"/>
+		<SequenceRef name="SCAN_ITEM" values="%?ITEMS_FILE.ItemId" interations="2"/>
+		<SequenceRef name="SELECT_BTN_DONE_LAYWAY" />
+		<SequenceRef name="LAYAWAY_DEPOSIT" values="3"/>
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+		<SequenceRef name="CHANDE_DUE" />
+    </TestCase>
+
+</XunitConfig>

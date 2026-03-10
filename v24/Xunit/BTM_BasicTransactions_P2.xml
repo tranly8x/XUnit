@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<XunitConfig>
+	<!-- Common Parameter -->
+	<Parameter name="newQty" value="4" />
+	<Parameter name="priceReasonCode" value="PC2" />
+	<Parameter name="transDiscountOpAMT" value="TRANS_AMT" />
+	<Parameter name="transDiscountOpPCT" value="TRANS_PCT" />
+	<Parameter name="discountOpAMT" value="ITEM_AMT" />
+	<Parameter name="discountOpPCT" value="ITEM_PCT" />
+	<Parameter name="discountReasonCode" value="DC2" />
+	<Parameter name="newPostalCode" value="60046" />
+	<Parameter name="newTaxAMT" value="1.5" />
+	<Parameter name="newTaxPCT" value="5" />
+	<Parameter name="discountAMT" value="10" />
+	<Parameter name="discountPCT" value="5" />
+	<Parameter name="certificateHolderName" value="Test Tax Exempt" />
+	<Parameter name="certificateNbr" value="123456" />
+	<Parameter name="taxExemptReasonCode" value="TE3" />
+	<Parameter name="voidReasoncode" value="VL1" />
+	<Parameter name="transTaxReasonCode" value="TC2" />
+	<Parameter name="couponid" value="XUNITCOUPON" />
+	<Parameter name="newQty" value="3" />
+	<Parameter name="priceChangereascode" values="PC2" />
+	<Parameter name="newprice" value="30" />
+	<!-- TEST CASES -->
+	<!--Sales-Item Types-restricted-Item-->	
+    <!--<TestCase name="BASICTRN-S-ITM-003" applicationKey="REGISTER" >
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<SequenceRef name="START_SALE_BEFORE_LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="SELECT_FIRST_COMM_ASSOC" />
+		<SequenceRef name="SKIP_CUST" />        
+        <SequenceRef name="SCAN_ITEM" values="!{itemid}" />
+		<SequenceRef name="SELECT_AMT_DUE" />
+		<SequenceRef name="TENDER_BY_CASH" values="@getTransaction.getTotal.abs"/>
+		<SequenceRef name="PRINT_ONLY" />
+    </TestCase>-->
+	<!--Verify that a verified return can be completed with a new customer.-->
+	<!--<TestCase name="BASICTRN-VR-COP-001" applicationKey="REGISTER" >
+		<Parameter name="returnRC" value="RET41" />
+		<Parameter name="returnComment" value="Test auto return" />
+		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" />
+		<Parameter name="teleNumber" value="011223344" />
+		<Parameter name="lastName" value="Test auto create verified return" />
+		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
+		<SequenceRef name="START_SALE_LOGGED_IN" />
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100" />
+		<SequenceRef name="CREATE_NEW_CUSTOMER_START_SALE" values="!{teleNumber},!{lastName}" />
+		<SequenceRef name="CREATE_SALE_BY_CASH" values="!{itemid}" />
+		<Assertion class="dtv.xunit.assertion.LastTransactionAssertion">
+			<Parameter name="TYPE_CODE" value="RETAIL_SALE" />
+			<Parameter name="STATUS_CODE" value="COMPLETE" />
+		</Assertion>		
+		<SequenceRef name="SELECT_COMM_ASSOC_BY_ID" values="100" />
+		<SequenceRef name="CUSTOMER_SEARCH_BY_PHONE" values="!{teleNumber}" />
+		<SequenceRef name="SEARCH_VERIFIED_RETURN_TRANSACTION" values="@getBarcode(@getLastTransactionId),!{returnRC},!{returnComment}" />
+		<SequenceRef name="GO_SALE_SCREEN" />
+		<SequenceRef name="CANCEL_TRANSACTION_HAS_ITEM" />
+    </TestCase>-->
+</XunitConfig>
