@@ -10,7 +10,7 @@
 	<Parameter name="custLAYLastName" value="BTMLAY" />
 	<Parameter name="teleNumberSS" value="1111111111" />
 	<Parameter name="teleNumberSO" value="2222222222" />
-	<Parameter name="teleNumberSS" value="3333333333" />
+	<Parameter name="teleNumberLAY" value="3333333333" />
 	<Parameter name="associateID" value="100" />
 	
 	<!-- SEND SALE -->
