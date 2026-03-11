@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!-- v25 Migration: Upgraded from v24 by GOD PROMPT -->
 <XunitConfig>
 	<Parameter name="discountOpAMT" values="TRANS_AMT" />
 	<Parameter name="discountOpPCT" values="TRANS_PCT" />
@@ -12,7 +13,7 @@
 	<Parameter name="newPostalCode" values="60046" />
 	<Parameter name="newTaxAMT" values="1.20" />
 	<Parameter name="origTransSeq" values="120" />
-	<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+	<Parameter name="origTransBusinessDate" value="@getCurrentBusinessDate" />
 	<Parameter name="origLocationId" values="1005" />
 	<Parameter name="origWorkStationId" values="1" />
 	<Parameter name="newprice" values="10" />
@@ -997,7 +998,7 @@ Verify that user can add non-serialized coupon into transaction by manual enter 
 	<!--<TestCase name="TRAN-OPT-TAX-AMT-005" applicationKey="REGISTER" >
 		<Parameter name="itemid" values="%?REGULAR_ITEMS_FILE.ItemId" />
 		<Parameter name="origTransSeq" values="120" />
-		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origTransBusinessDate" value="@getCurrentBusinessDate" />
 		<Parameter name="origLocationId" values="1005" />
 		<Parameter name="origWorkStationId" values="1" />
 		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
@@ -1014,7 +1015,7 @@ Verify that user can add non-serialized coupon into transaction by manual enter 
     </TestCase>
 	<TestCase name="TRAN-OPT-TAX-AMT-006" applicationKey="REGISTER" >
 		<Parameter name="origTransSeq" values="120" />
-		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origTransBusinessDate" value="@getCurrentBusinessDate" />
 		<Parameter name="origLocationId" values="1005" />
 		<Parameter name="origWorkStationId" values="1" />
 		<Parameter name="itemid" values="%?ITEMS_DB.ItemId" />
@@ -1032,7 +1033,7 @@ Verify that user can add non-serialized coupon into transaction by manual enter 
     </TestCase>
 	<TestCase name="TRAN-OPT-TAX-AMT-007" applicationKey="REGISTER" >
 		<Parameter name="origTransSeq" values="120" />
-		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origTransBusinessDate" value="@getCurrentBusinessDate" />
 		<Parameter name="origLocationId" values="1005" />
 		<Parameter name="origWorkStationId" values="1" />
 		<Parameter name="item1" values="%?ITEMS_DB.ItemId" />
@@ -1336,7 +1337,7 @@ Verify that user can add non-serialized coupon into transaction by manual enter 
 	<!--<TestCase name="TRAN-OPT-TAX-PER-005" applicationKey="REGISTER" >
 		<Parameter name="itemid" values="%?REGULAR_ITEMS_FILE.ItemId" />
 		<Parameter name="origTransSeq" values="120" />
-		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origTransBusinessDate" value="@getCurrentBusinessDate" />
 		<Parameter name="origLocationId" values="1005" />
 		<Parameter name="origWorkStationId" values="1" />
 		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
@@ -1354,7 +1355,7 @@ Verify that user can add non-serialized coupon into transaction by manual enter 
     </TestCase>
 	<TestCase name="TRAN-OPT-TAX-PER-006" applicationKey="REGISTER" >
 		<Parameter name="origTransSeq" values="120" />
-		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origTransBusinessDate" value="@getCurrentBusinessDate" />
 		<Parameter name="origLocationId" values="1005" />
 		<Parameter name="origWorkStationId" values="1" />
 		<Parameter name="itemid" values="%?ITEMS_DB.ItemId" />
@@ -1373,7 +1374,7 @@ Verify that user can add non-serialized coupon into transaction by manual enter 
     </TestCase>
 	<TestCase name="TRAN-OPT-TAX-PER-007" applicationKey="REGISTER" >
 		<Parameter name="origTransSeq" values="120" />
-		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origTransBusinessDate" value="@getCurrentBusinessDate" />
 		<Parameter name="origLocationId" values="1005" />
 		<Parameter name="origWorkStationId" values="1" />
 		<Parameter name="item1" values="%?ITEMS_DB.ItemId" />
@@ -1674,7 +1675,7 @@ Verify that user can add non-serialized coupon into transaction by manual enter 
 	<!--<TestCase name="TRAN-OPT-TAX-EXEM-005" applicationKey="REGISTER" >
 		<Parameter name="itemid" values="%?REGULAR_ITEMS_FILE.ItemId" />
 		<Parameter name="origTransSeq" values="120" />
-		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origTransBusinessDate" value="@getCurrentBusinessDate" />
 		<Parameter name="origLocationId" values="1005" />
 		<Parameter name="origWorkStationId" values="1" />
 		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />
@@ -1693,7 +1694,7 @@ Verify that user can add non-serialized coupon into transaction by manual enter 
 	<TestCase name="TRAN-OPT-TAX-EXEM-006" applicationKey="REGISTER" >
 		<Parameter name="itemid" values="%?REGULAR_ITEMS_FILE.ItemId" />
 		<Parameter name="origTransSeq" values="120" />
-		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origTransBusinessDate" value="@getCurrentBusinessDate" />
 		<Parameter name="origLocationId" values="1005" />
 		<Parameter name="origWorkStationId" values="1" />
 		<Parameter name="itemid" values="%?ITEMS_DB.ItemId" />
@@ -1712,7 +1713,7 @@ Verify that user can add non-serialized coupon into transaction by manual enter 
     </TestCase>
 	<TestCase name="TRAN-OPT-TAX-EXEM-007" applicationKey="REGISTER" >
 		<Parameter name="origTransSeq" values="120" />
-		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origTransBusinessDate" value="@getCurrentBusinessDate" />
 		<Parameter name="origLocationId" values="1005" />
 		<Parameter name="origWorkStationId" values="1" />
 		<Parameter name="item1" values="%?ITEMS_DB.ItemId" />
@@ -2242,7 +2243,7 @@ Verify that user can add non-serialized coupon into transaction by manual enter 
 		<Parameter name="itemid" values="1020" />
 		<Parameter name="couponid" values="XUNITCOUPON" />
 		<Parameter name="origTransSeq" values="120" />
-		<Parameter name="origTransBusinessDate" values="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origTransBusinessDate" value="@getCurrentBusinessDate" />
 		<Parameter name="origLocationId" values="1005" />
 		<Parameter name="origWorkStationId" values="1" />
 		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />

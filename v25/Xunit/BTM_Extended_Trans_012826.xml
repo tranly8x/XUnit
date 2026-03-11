@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!-- v25 Migration: Upgraded from v24 by GOD PROMPT -->
 <XunitConfig>
 	<!-- EXTENDTRN-SO-PICKUP-003: Verify that a special order transaction can be successfully completed by partially picking up items. -->
 	<TestCase name="EXTENDTRN-SO-PICKUP-003" applicationKey="REGISTER" >

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!-- v25 Migration: Upgraded from v24 by GOD PROMPT -->
 <XunitConfig>
 	<!-- Common Parameter -->
 	<Parameter name="newQty" value="4" />
@@ -2678,7 +2679,7 @@ Verify that the user can add a group discount for the blind return.-->
 	<!-- <TestCase name="BASICTRN-UR-ITM-002" applicationKey="REGISTER" >
 		<Parameter name="itemid" value="9100" />
 		<Parameter name="origTransSeq" value="120" />
-		<Parameter name="origTransBusinessDate" value="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origTransBusinessDate" value="@getCurrentBusinessDate" />
 		<Parameter name="origLocationId" value="1005" />
 		<Parameter name="origWorkStationId" value="1" />
 		<Parameter name="warrantyID" value="11223344556673432" />
@@ -2870,7 +2871,7 @@ Verify that the user can add a group discount for the blind return.-->
 	<TestCase name="BASICTRN-UR-TOP-011" applicationKey="REGISTER" >
 		<Parameter name="itemid" value="%?REGULAR_ITEMS_FILE.ItemId" /> 
 		<Parameter name="origTransSeq" value="120" />
-		<Parameter name="origTransBusinessDate" value="Tue Jul 01 00:00:00 ICT 2025" />
+		<Parameter name="origTransBusinessDate" value="@getCurrentBusinessDate" />
 		<Parameter name="origLocationId" value="1005" />
 		<Parameter name="origWorkStationId" value="1" />
 		<SequenceRef name="LOGIN" values="!{userid}, !{password}" />

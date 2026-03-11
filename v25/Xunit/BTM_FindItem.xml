@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!-- v25 Migration: Upgraded from v24 by GOD PROMPT -->
 <XunitConfig>
 	<!-- TEST CASES -->
 		<Parameter name="itemid" value="" />	
@@ -9,7 +10,7 @@
 		<Parameter name="Style" value="" />
 		<Parameter name="Desc" value="" />	
 		<Parameter name="origTransSeq" value="37" />
-		<Parameter name="origTransBusinessDate" value="8/25/2025" />
+		<Parameter name="origTransBusinessDate" value="@getCurrentBusinessDate" />
 		<Parameter name="origLocationId" value="357" />
 		<Parameter name="origWorkStationId" value="5" />
 		<Parameter name="custID" value="%?CUSTOMERS_DB.CustId" />
