@@ -23,7 +23,7 @@
 	<Exception name="ORDER_CONFIRM_ON_HAND_ITEM" action="YES" />
 	<Exception name="PAYROLL_ERROR_LIST" action="ACCEPT" />
 	<Exception name="PRINT_ACKNOWLEDGEMENT" action="ACCEPT" />
-	<Exception name="PRINT_RECEIPTS" action="ACCEPT" />
+	<Exception name="PRINT_RECEIPTS" action="PRINT_ONLY" />
 	<Exception name="PROMPT_FOR_ROUNDUP_DONATION" action="NO" />
 	<Exception name="PROMPT_LOYALTY_CARD" action="CONTINUE" />
 	<Exception name="PROMPT_VOID_DONATION_ITEM" action="YES" />
