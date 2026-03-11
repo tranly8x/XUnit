@@ -3,9 +3,9 @@
 	
 	<!--Exchange Tender By Cash-->
 	<TestSequence name="EXCHANGE_TENDER_BY_CASH" parameters="total,cashAMTABS">
-		<TestStep action="REFUND_LOCAL_CURRENCY" description="REFUND_LOCAL_CURRENCY (MobilePromptTenderMenuOp)" condition="@and(@invert(@isPositive(!{total})),@invert(@equals(!{cashAMTABS},0.00)0)"/>
-		<TestStep action="TENDER_LOCAL_CURRENCY" description="TENDER_LOCAL_CURRENCY (MobilePromptTenderMenuOp)" condition="@and(@isPositive(!{total}),@invert(@equals(!{cashAMTABS},0.00)0)"/>
-		<TestStep action="ACCEPT" data="!{cashAMTABS}" description="Enter !{cashAMTABS} (CashSuggestionPromptTenderAmtOp)" condition="@invert(@equals(!{cashAMTABS},0.00)0)"/>
+		<TestStep action="REFUND_LOCAL_CURRENCY" description="REFUND_LOCAL_CURRENCY (MobilePromptTenderMenuOp)" condition="@and(@invert(@isPositive(!{total})),@invert(@equals(!{cashAMTABS},0.00)))"/>
+		<TestStep action="TENDER_LOCAL_CURRENCY" description="TENDER_LOCAL_CURRENCY (MobilePromptTenderMenuOp)" condition="@and(@isPositive(!{total}),@invert(@equals(!{cashAMTABS},0.00)))"/>
+		<TestStep action="ACCEPT" data="!{cashAMTABS}" description="Enter !{cashAMTABS} (CashSuggestionPromptTenderAmtOp)" condition="@invert(@equals(!{cashAMTABS},0.00))"/>
   	</TestSequence>
 	
 	<TestSequence name="VOID_ITEM_NO_COMMENT" parameters="itemid,reasonCode"> <!--Void line does not require enter comment-->
@@ -63,19 +63,6 @@
         </TestStep>
 	</TestSequence>
 	<!--Create a customer by Phone and LastName-->
-	<TestSequence name="UPDATE_SEND_SALE_FIRST_LAST_NAME" parameters="updatedFirstName, updatedLastName">		
-		<TestStep action="EDIT_SEND_SALE_DESTINATION" description="EDIT_SEND_SALE_DESTINATION (PromptItemScanOp)"/>
-		<TestStep action="ACCEPT" description="ACCEPT (PromptEditSendSaleDestinationOp)">
-			<Form name="SEND_SALE_DEST"><TestStep action="ACCEPT" description="ACCEPT (CustomerEditOp)">
-            <Form name="CUSTOMER_EDIT">
-                <Field name="lastName" value="!{lastName}"/>
-            </Form>
-        </TestStep>
-				<Field name="firstName" value="!{updatedFirstName}"/>
-				<Field name="lastName" value="!{updatedLastName}"/>
-			</Form>
-		</TestStep>		
-	</TestSequence>
 	<!--Update sendsale fist name last name-->
 	<TestSequence name="UPDATE_SEND_SALE_FIRST_LAST_NAME" parameters="updatedFirstName, updatedLastName">		
 		<TestStep action="EDIT_SEND_SALE_DESTINATION" description="EDIT_SEND_SALE_DESTINATION (PromptItemScanOp)"/>

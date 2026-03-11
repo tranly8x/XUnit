@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
 <XunitConfig>
-	<Parameter name="custPartyId" value="!{rtlLocId}!{wkstnId}000101" />
+	<Parameter name="custPartyId" value="101" />
 	<Parameter name="associateID" value="100" />
 	<!-- TEST CASES -->
 	
