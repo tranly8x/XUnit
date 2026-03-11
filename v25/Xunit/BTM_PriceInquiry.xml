@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!-- v25 Migration: Upgraded from v24 by GOD PROMPT -->
 <XunitConfig>
 	<!-- TEST CASES -->
 	<!--PRICE-INQ-SALE-001: Verify that the item id, description and price are displayed correctly when scanning or entering a merchandise item.-->	
